@@ -64,6 +64,14 @@
   text-align: center;
 }
 
+.viewBtnWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5vh;
+  position: relative;
+  z-index: 2;
+}
+
 .viewBtn {
   display: inline-flex;
   align-items: center;

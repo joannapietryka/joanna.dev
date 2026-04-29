@@ -38,7 +38,7 @@ const STEP_TOOLS = [
     body: "Custom graphics and visuals created quickly to match your product.",
     logo: "/assets/logos/canva-logo.png",
     logoAlt: "Canva",
-    toolName: "Nano Banana",
+    toolName: "Nano Banana / Canva",
     secondaryLogo: "/assets/logos/higgsfield_ai-logo.png",
     secondaryLogoAlt: "Higgsfield AI",
   },
