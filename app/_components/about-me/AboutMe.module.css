@@ -1,0 +1,595 @@
+/* ── AboutMe – "Digital Product Builder / Why work with me" section ────── */
+
+.about {
+  width: 100%;
+  position: relative;
+  padding: 10vh 5rem 12vh;
+  overflow: hidden;
+}
+
+/* ── Ambient blobs ────────────────────────────────────────────────────── */
+.blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.blob1 {
+  width: 540px;
+  height: 540px;
+  background: radial-gradient(circle, rgba(224, 195, 252, 0.55) 0%, transparent 70%);
+  top: -10%;
+  left: -8%;
+}
+
+.blob2 {
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(204, 224, 255, 0.5) 0%, transparent 70%);
+  bottom: -15%;
+  right: -6%;
+}
+
+.blob3 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(255, 195, 225, 0.35) 0%, transparent 70%);
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ── Inner layout ─────────────────────────────────────────────────────── */
+.inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── LEFT column ──────────────────────────────────────────────────────── */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Reveal animation ────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Heading block ─────────────────────────────────────────────────────── */
+.headingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.eyebrowDot {
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4a6bff;
+  box-shadow: 0 0 8px rgba(74, 107, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.eyebrowText {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5D5E8C;
+}
+
+.title {
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+  line-height: 0.97;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  background: linear-gradient(180deg, #1a1a3a 0%, #3e408a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lead {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #5D5E8C;
+  font-weight: 300;
+  max-width: 560px;
+  margin-top: 0.25rem;
+}
+
+/* ── Two-column card grid ─────────────────────────────────────────────── */
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.cardDelay1 { transition-delay: 80ms; }
+.cardDelay2 { transition-delay: 160ms; }
+.cardDelay3 { transition-delay: 240ms; }
+.cardDelay4 { transition-delay: 320ms; }
+
+/* Shared glass card */
+.glassCard {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px -12px rgba(31, 38, 135, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.875rem;
+}
+
+.cardLabel {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5D5E8C;
+}
+
+.iconBlue { color: #4a6bff; }
+.iconPink { color: #ff55a3; }
+
+.cardBody {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  font-weight: 500;
+  color: #2A2B5F;
+  flex: 1;
+}
+
+/* brand pills */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.pill {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #2A2B5F;
+}
+
+/* progress bar */
+.progressWrap {
+  margin-top: auto;
+}
+
+.progressBar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0.4rem;
+}
+
+.progressFill {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(to right, #4a6bff, #ff55a3);
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5D5E8C;
+}
+
+/* ── AI-workflow wide card ─────────────────────────────────────────────── */
+.aiCard {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px -12px rgba(31, 38, 135, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  border-radius: 1.5rem;
+  padding: 1.5rem 1.75rem;
+}
+
+.aiCardGlow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(204, 224, 255, 0.25) 0%, rgba(255, 195, 225, 0.2) 100%);
+  border-radius: 50%;
+  filter: blur(40px);
+  transform: translate(50%, -50%);
+  pointer-events: none;
+}
+
+.aiCardInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.aiIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #2A2B5F;
+}
+
+.aiCardTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #2A2B5F;
+  margin-bottom: 0.35rem;
+}
+
+.aiCardBody {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #5D5E8C;
+}
+
+/* ── Result callout quote ─────────────────────────────────────────────── */
+.callout {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.32) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-left: 3px solid #4a6bff;
+  box-shadow:
+    0 24px 48px -12px rgba(31, 38, 135, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.callout::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  background: linear-gradient(135deg, #ff55a3, #4a6bff, #4ae3ff);
+  opacity: 0.15;
+  filter: blur(8px);
+}
+
+.callout p {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #2A2B5F;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── RIGHT column – portrait ──────────────────────────────────────────── */
+.right {
+  position: relative;
+  height: 680px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* spinning dashed ring */
+.spinRing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: #2A2B5F;
+  opacity: 0.2;
+  z-index: 0;
+  animation: spin 32s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* portrait */
+.portraitMask {
+  position: relative;
+  width: 82%;
+  max-width: 380px;
+  aspect-ratio: 3 / 4;
+  border-radius: 200px 200px 28px 28px;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 32px 64px -16px rgba(31, 38, 135, 0.18);
+}
+
+.portraitImg {
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: luminosity;
+  opacity: 0.85;
+  transition: mix-blend-mode 0.6s ease, opacity 0.6s ease;
+}
+
+.portraitMask:hover .portraitImg {
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.portraitOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+/* glass lens decoration */
+.glassLens {
+  position: absolute;
+  bottom: 10%;
+  right: -8%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5), 0 8px 16px rgba(0, 0, 0, 0.04);
+  z-index: 10;
+}
+
+/* ── Floating "Building..." capsule ───────────────────────────────────── */
+.buildingCapsule {
+  position: absolute;
+  top: 26%;
+  left: -6%;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.22) 100%);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 16px 40px -8px rgba(31, 38, 135, 0.15),
+    0 4px 12px -2px rgba(31, 38, 135, 0.1);
+}
+
+/* the colourful orb inside the capsule */
+.refOrb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #ffffff 0%,
+    #ffd1d1 8%,
+    #ff55a3 30%,
+    #4a6bff 70%,
+    #1e255e 100%
+  );
+  box-shadow:
+    inset -5px -5px 10px rgba(0, 0, 0, 0.15),
+    inset 3px 3px 8px rgba(255, 255, 255, 0.9),
+    0 6px 16px -3px rgba(74, 107, 255, 0.4);
+}
+
+.buildingText {
+  font-family: var(--font-sora), sans-serif;
+  font-weight: 500;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  color: #2A2B5F;
+}
+
+/* ── Status badge ─────────────────────────────────────────────────────── */
+.statusBadge {
+  position: absolute;
+  bottom: 22%;
+  right: -8%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px -12px rgba(31, 38, 135, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.statusDotWrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.statusInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statusLabel {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5D5E8C;
+}
+
+.statusValue {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2A2B5F;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .about {
+    padding: 8vh 3rem 10vh;
+  }
+
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .right {
+    height: 520px;
+    order: -1;
+  }
+
+  .buildingCapsule {
+    left: 0;
+  }
+
+  .statusBadge {
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .about {
+    padding: 6vh 1.25rem 8vh;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .right {
+    height: 440px;
+  }
+
+  .portraitMask {
+    width: 80%;
+  }
+
+  .glassLens {
+    display: none;
+  }
+}

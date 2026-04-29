@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { AboutMe } from "../about-me/AboutMe";
 import { AITools } from "../ai-tools/AITools";
 import { Contact } from "../contact/Contact";
 import { Projects } from "../projects/Projects";
@@ -621,6 +622,7 @@ export function StudioGlass() {
           <Services />
           <AITools />
           <Projects />
+          <AboutMe />
           <Contact />
         </main>
       </div>
