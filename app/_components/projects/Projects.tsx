@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Projects.module.css";
 
@@ -259,6 +260,13 @@ export function Projects() {
         <p className={styles.status}>
           SCROLL&nbsp;//&nbsp;TO&nbsp;EXPLORE&nbsp;THE&nbsp;BUILD
         </p>
+        <Link href="/work" className={styles.viewBtn}>
+          View Portfolio
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </Link>
       </div>
 
       {/* ── Scroll travel wrapper ───────────────────────────────────────── */}
