@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { SiteNav } from "../_components/site-nav/SiteNav";
 import styles from "./ServicesPage.module.css";
 
 /* ── Service data ─────────────────────────────────────────────────────────── */
@@ -247,6 +248,7 @@ export default function ServicesPage() {
 
   return (
     <div className={styles.page}>
+      <SiteNav />
       {/* ambient background */}
       <div className={styles.ambientBg}>
         <div className={`${styles.glowShape} ${styles.glow1}`} />

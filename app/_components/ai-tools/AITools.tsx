@@ -121,8 +121,19 @@ export function AITools() {
         const tagsEl    = leftColRef.current?.querySelector(`.${styles.tags}`);
         const subheadEl = leftColRef.current?.querySelector(`.${styles.subheading}`);
 
-        /* initial states */
-        if (headingLines.length) gsap.set(headingLines, { y: 48, opacity: 0 });
+        /* initial states — heading: word-split stagger (hero-style) */
+        if (heading) {
+          headingLines.forEach((line) => {
+            const words = (line.textContent || "").trim().split(/\s+/);
+            line.innerHTML = words
+              .map((w) => `<span style="display:inline-block">${w}</span>`)
+              .join(" ");
+          });
+        }
+        const wordEls = heading
+          ? Array.from(heading.querySelectorAll<HTMLElement>("span[style]"))
+          : [];
+        if (wordEls.length) gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
         if (tagsEl)    gsap.set(tagsEl,    { y: 20, opacity: 0 });
         if (subheadEl) gsap.set(subheadEl, { y: 20, opacity: 0 });
         if (orbit)     gsap.set(orbit,     { scale: 0.65, opacity: 0 });
@@ -142,8 +153,9 @@ export function AITools() {
 
         tl.to(tagsEl, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0);
 
-        tl.to(headingLines, {
-          y: 0, opacity: 1, duration: 0.85, ease: "power3.out", stagger: 0.18,
+        tl.to(wordEls, {
+          y: 0, opacity: 1, rotation: 0,
+          duration: 0.65, ease: "power3.out", stagger: 0.08,
         }, 0.1);
 
         tl.to(subheadEl, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, 0.4);

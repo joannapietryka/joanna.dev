@@ -6,6 +6,7 @@ import { AITools } from "../ai-tools/AITools";
 import { Contact } from "../contact/Contact";
 import { Projects } from "../projects/Projects";
 import { Services } from "../services/Services";
+import { SiteNav } from "../site-nav/SiteNav";
 import styles from "./StudioGlass.module.css";
 
 /* ── global GSAP types (CDN) ─────────────────────────────────────────────── */
@@ -194,6 +195,22 @@ export function StudioGlass() {
       scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
     }
   };
+
+  /* handle hash on mount — e.g. navigated here from /work with /#services */
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return;
+    const attempt = (tries = 0) => {
+      const scroller = scrollRef.current;
+      const target   = document.getElementById(hash);
+      if (scroller && target) {
+        scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+      } else if (tries < 10) {
+        setTimeout(() => attempt(tries + 1), 150);
+      }
+    };
+    setTimeout(() => attempt(), 500);
+  }, []);
 
   /* passive scroll → CSS var for orb parallax */
   useEffect(() => {
@@ -517,18 +534,7 @@ export function StudioGlass() {
 
       <div className={styles.gridOverlay} aria-hidden="true" />
 
-      <header className={styles.header}>
-        <div className={styles.logo}>joanna.dev</div>
-        <nav className={styles.navLinks} aria-label="Primary">
-          <button type="button" onClick={() => scrollToSection("services")}>Services</button>
-          <button type="button" onClick={() => scrollToSection("about")}>About me</button>
-          <button type="button" onClick={() => scrollToSection("contact")}>Contact</button>
-        </nav>
-        {/* mobile only – desktop: display:none */}
-        <button className={styles.menuToggle} type="button" aria-label="Open menu">
-          <span />
-        </button>
-      </header>
+      <SiteNav onScrollTo={scrollToSection} />
 
       {/* scroll-to-explore indicator — outside scrollRoot so it doesn't scroll */}
       <div ref={scrollHintRef} className={styles.scrollHint} aria-hidden="true">
@@ -589,7 +595,7 @@ export function StudioGlass() {
                       className={styles.titleOverlap}
                     />
                     <TitleWord
-                      word="Fast."
+                      word="Fast"
                       wordIndex="2"
                       className={styles.titleAccent}
                     />

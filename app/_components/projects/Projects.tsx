@@ -175,13 +175,21 @@ export function Projects() {
 
       gsapCtx = gsap.context(() => {
 
-        /* ── heading fade-up on scroll ─────────────────────────────── */
+        /* ── heading word-split stagger (hero-style) ─────────────────── */
         if (heading) {
-          gsap.set(heading, { y: 30, opacity: 0 });
-          gsap.to(heading, {
+          const h2 = heading.querySelector("h2") ?? heading;
+          const words = (h2.textContent || "").trim().split(/\s+/);
+          h2.innerHTML = words
+            .map((w) => `<span style="display:inline-block">${w}</span>`)
+            .join(" ");
+          const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
+          gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
+          gsap.to(wordEls, {
             y: 0,
             opacity: 1,
-            duration: 0.9,
+            rotation: 0,
+            stagger: 0.1,
+            duration: 0.65,
             ease: "power3.out",
             scrollTrigger: {
               trigger: heading,

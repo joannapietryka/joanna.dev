@@ -47,7 +47,17 @@ export function AboutMe() {
         /* ── set initial hidden states ─────────────────────────────────── */
         if (photo)   gsap.set(photo,   { x: -70, opacity: 0 });
         if (eyebrow) gsap.set(eyebrow, { y: 20,  opacity: 0 });
-        if (title)   gsap.set(title,   { y: 48,  opacity: 0 });
+
+        /* word-split the title for hero-style stagger */
+        let titleWords: HTMLElement[] = [];
+        if (title) {
+          const words = (title.textContent || "").trim().split(/\s+/);
+          title.innerHTML = words
+            .map((w) => `<span style="display:inline-block">${w}</span>`)
+            .join(" ");
+          titleWords = Array.from(title.querySelectorAll<HTMLElement>("span"));
+          gsap.set(titleWords, { y: 60, opacity: 0, rotation: -6 });
+        }
         if (lead)    gsap.set(lead,    { y: 24,  opacity: 0 });
         if (cards.length) gsap.set(cards, { y: 32, scale: 0.9, opacity: 0 });
         if (aiCard)  gsap.set(aiCard,  { y: 28,  opacity: 0 });
@@ -76,10 +86,11 @@ export function AboutMe() {
           }, 0.15);
         }
 
-        /* Pattern 2 – title slides up */
-        if (title) {
-          tl.to(title, {
-            y: 0, opacity: 1, duration: 0.75, ease: "power3.out",
+        /* Pattern 2 – title word-split stagger (hero-style) */
+        if (titleWords.length) {
+          tl.to(titleWords, {
+            y: 0, opacity: 1, rotation: 0,
+            stagger: 0.1, duration: 0.65, ease: "power3.out",
           }, 0.3);
         }
 

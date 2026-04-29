@@ -41,6 +41,7 @@ export function Services() {
   const sectionRef      = useRef<HTMLElement>(null);
   const pinRef          = useRef<HTMLDivElement>(null);
   const headingRef      = useRef<HTMLDivElement>(null);
+  const h2Ref           = useRef<HTMLHeadingElement>(null);
   const stackRef        = useRef<HTMLDivElement>(null);
   const ctaRef          = useRef<HTMLAnchorElement>(null);
   const codeSnippetRef  = useRef<HTMLDivElement>(null);
@@ -92,6 +93,29 @@ export function Services() {
 
         /* CTA hidden; no y-offset — opacity-only prevents any perceived movement */
         if (cta) gsap.set(cta, { opacity: 0 });
+
+        /* ── h2 heading – word-split stagger (hero-style) ─────────────── */
+        const h2 = h2Ref.current;
+        if (h2) {
+          const words = (h2.textContent || "").trim().split(/\s+/);
+          h2.innerHTML = words
+            .map((w) => `<span style="display:inline-block">${w}</span>`)
+            .join(" ");
+          const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
+          gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
+          gsap.to(wordEls, {
+            y: 0, opacity: 1, rotation: 0,
+            stagger: 0.1,
+            duration: 0.65,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: h2,
+              scroller,
+              start: "top 85%",
+              once: true,
+            },
+          });
+        }
 
         /* ── One-shot card timeline ──────────────────────────────────
          *
@@ -206,7 +230,7 @@ export function Services() {
             <span className={styles.tag}>Scope: End-to-End</span>
           </div>
 
-          <h2 className={styles.heading}>Build&nbsp;for&nbsp;Results</h2>
+          <h2 ref={h2Ref} className={styles.heading}>Build&nbsp;for&nbsp;Results</h2>
 
           <p className={styles.status}>
           High-performance digital solutions, built for real results

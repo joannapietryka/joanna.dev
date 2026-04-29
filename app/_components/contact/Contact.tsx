@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Contact.module.css";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Gsap = any;
 
 type Field = "name" | "email" | "message";
 
@@ -33,11 +36,39 @@ function validate(form: FormState): Errors {
 }
 
 export function Contact() {
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [serverError, setServerError] = useState("");
+
+  useEffect(() => {
+    let retryTimer: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+    const tryInit = () => {
+      if (cancelled) return;
+      const gsap: Gsap = (window as Gsap).gsap;
+      const ST: Gsap   = (window as Gsap).ScrollTrigger;
+      if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
+      const h2 = headingRef.current;
+      if (!h2) return;
+      const scroller = document.getElementById("scroll-root") ?? undefined;
+      const words = (h2.textContent || "").trim().split(/\s+/);
+      h2.innerHTML = words
+        .map((w) => `<span style="display:inline-block">${w}</span>`)
+        .join(" ");
+      const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
+      gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
+      gsap.to(wordEls, {
+        y: 0, opacity: 1, rotation: 0,
+        stagger: 0.1, duration: 0.65, ease: "power3.out",
+        scrollTrigger: { trigger: h2, scroller, start: "top 85%", once: true },
+      });
+    };
+    tryInit();
+    return () => { cancelled = true; clearTimeout(retryTimer); };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -101,8 +132,8 @@ export function Contact() {
             <span className={styles.metaStatus}>Accepting projects</span>
           </div>
 
-          <h2 className={styles.heading}>
-            Write me<br />a message
+          <h2 ref={headingRef} className={styles.heading}>
+            Write me a message
           </h2>
 
           <p className={styles.body}>

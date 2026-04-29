@@ -1,39 +1,5 @@
-import Link from "next/link";
+import { SiteNav } from "../_components/site-nav/SiteNav";
 import styles from "./Work.module.css";
-
-const PROJECTS = [
-  {
-    id: "featured",
-    tag: "Frontend Development",
-    date: "2024",
-    title: "Mercedes-Benz — Interactive Campaign Experience",
-    desc: "A high-performance, scroll-driven brand campaign featuring real-time 3D configurator integration, fluid micro-interactions, and sub-second load times across 12 markets.",
-    tech: ["React", "GSAP", "WebGL", "Next.js"],
-    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-    imgAlt: "Abstract gradient composition",
-  },
-] as const;
-
-const GRID_PROJECTS = [
-  {
-    id: "bnp",
-    tag: "Design & Build",
-    date: "2023",
-    title: "BNP Paribas — Digital Banking Onboarding",
-    desc: "End-to-end redesign of the onboarding flow. Reduced drop-off by 34% through motion-guided UX and accessible form architecture.",
-    img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
-    imgAlt: "Typography and layout design",
-  },
-  {
-    id: "ferrero",
-    tag: "Creative Tech",
-    date: "2023",
-    title: "Ferrero Rocher — Holiday Gifting Platform",
-    desc: "Seasonal e-commerce experience with personalised gift builder, 3D packaging preview, and AR product showcase.",
-    img: "https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=2574&auto=format&fit=crop",
-    imgAlt: "Abstract minimal architecture",
-  },
-] as const;
 
 export default function WorkPage() {
   return (
@@ -60,15 +26,7 @@ export default function WorkPage() {
       </div>
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <header className={styles.header}>
-        <Link href="/" className={styles.logo}>joanna.dev</Link>
-        <nav className={styles.nav}>
-          <Link href="/#services">Services</Link>
-          <Link href="/#about">About me</Link>
-          <Link href="/#contact">Contact</Link>
-          <Link href="/work" className={styles.navActive}>Work</Link>
-        </nav>
-      </header>
+      <SiteNav />
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
       <main className={styles.main}>
@@ -85,50 +43,103 @@ export default function WorkPage() {
         {/* ── Projects list ──────────────────────────────────────────── */}
         <div className={styles.projectsList}>
 
-          {/* Featured */}
-          {PROJECTS.map((p) => (
-            <article key={p.id} className={styles.featured}>
-              <div className={styles.featuredImgWrap}>
-                <img src={p.img} alt={p.imgAlt} className={styles.featuredImg} />
+          {/* Featured — video showcase */}
+          <article className={styles.featured}>
+            <div className={styles.featuredImgWrap}>
+              <video
+                src="/assets/videos/project-1.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className={styles.featuredImg}
+              />
+            </div>
+            <div className={styles.featuredCard}>
+              <div className={styles.cardMeta}>
+                <span className={styles.cardTag}>Web Design & Development</span>
+                <span className={styles.cardDate}>2025</span>
               </div>
-              <div className={styles.featuredCard}>
-                <div className={styles.cardMeta}>
-                  <span className={styles.cardTag}>{p.tag}</span>
-                  <span className={styles.cardDate}>{p.date}</span>
-                </div>
-                <h2 className={styles.cardTitle}>{p.title}</h2>
-                <p className={styles.cardDesc}>{p.desc}</p>
-                <div className={styles.cardTechRow}>
-                  {p.tech.map((t) => (
-                    <span key={t} className={styles.techPill}>{t}</span>
-                  ))}
-                </div>
-                <span className={styles.cardLink}>
-                  View Case Study
+              <h2 className={styles.cardTitle}>Psychologist — Brand & Web</h2>
+              <p className={styles.cardDesc}>
+                Psychologist website designed and built in Webflow, featuring smooth on-scroll animations, a custom logo, and an integrated blog for content publishing.
+              </p>
+              <div className={styles.cardTechRow}>
+                {["Webflow", "GSAP", "CSS Animations", "Logo Design"].map((t) => (
+                  <span key={t} className={styles.techPill}>{t}</span>
+                ))}
+              </div>
+              <a href="https://www.katarzynapietryka.com/fr-fr" target="_blank" rel="noopener noreferrer" className={styles.cardLink}>
+                  Visit Site
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="5" y1="12" x2="19" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                   </svg>
-                </span>
-              </div>
-            </article>
-          ))}
+                </a>
+            </div>
+          </article>
 
           {/* Grid */}
           <div className={styles.grid2}>
-            {GRID_PROJECTS.map((p) => (
-              <article key={p.id} className={styles.gridCard}>
-                <div className={styles.gridImgWrap}>
-                  <img src={p.img} alt={p.imgAlt} className={styles.gridImg} />
-                </div>
-                <div className={styles.gridCardMeta}>
-                  <span className={styles.cardTag}>{p.tag}</span>
-                  <span className={styles.cardDate}>{p.date}</span>
-                </div>
-                <h2 className={styles.gridCardTitle}>{p.title}</h2>
-                <p className={styles.gridCardDesc}>{p.desc}</p>
-              </article>
-            ))}
+
+            {/* Card 1 — Avamex */}
+            <article className={styles.gridCard}>
+              <div className={styles.gridImgWrap}>
+                <video
+                  src="/assets/videos/project-2.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className={styles.gridImg}
+                />
+              </div>
+              <div className={styles.gridCardMeta}>
+                <span className={styles.cardTag}>Web Design & Development</span>
+                <span className={styles.cardDate}>2025</span>
+              </div>
+              <h2 className={styles.gridCardTitle}>Avamex — IT Outsourcing</h2>
+              <p className={styles.gridCardDesc}>
+                Webflow website for an outsourcing company, featuring custom branding, smooth animations, and AI-generated graphics tailored to the brand.
+              </p>
+              <a href="https://avamex.krakow.pl/" target="_blank" rel="noopener noreferrer" className={styles.gridCardLink}>
+                Visit Site
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
+            {/* Card 2 — Lido Agency */}
+            <article className={styles.gridCard}>
+              <div className={styles.gridImgWrap}>
+                <video
+                  src="/assets/videos/project-3.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className={styles.gridImg}
+                />
+              </div>
+              <div className={styles.gridCardMeta}>
+                <span className={styles.cardTag}>Web Design & Development</span>
+                <span className={styles.cardDate}>2025</span>
+              </div>
+              <h2 className={styles.gridCardTitle}>Lido Agency</h2>
+              <p className={styles.gridCardDesc}>
+                High-performance Next.js website for a flat rental company with a bespoke logo, custom visuals, and a seamless browsing experience.
+              </p>
+              <a href="https://lido-agency.vercel.app/" target="_blank" rel="noopener noreferrer" className={styles.gridCardLink}>
+                Visit Site
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </article>
+
           </div>
 
         </div>
