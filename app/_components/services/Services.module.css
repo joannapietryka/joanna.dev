@@ -1,0 +1,449 @@
+/* ── Services – scroll-pinned card-stack reveal ──────────────────────────── */
+
+/*
+ * The outer section owns all the scroll space.
+ * 500vh = 100vh visible panel + 400vh of scroll travel for the
+ * 4-phase animation (one full viewport height per phase).
+ * No GSAP pin is used — CSS sticky handles the fixed viewport
+ * behaviour natively, which is perfectly smooth inside the custom
+ * scroll container and avoids any layout-spacer jitter.
+ */
+.services {
+  width: 100%;
+  height: 300vh;   /* 100vh visible + 200vh sticky travel while cards are shown */
+  position: relative;
+  background: transparent;
+}
+
+/* ── Sticky viewport panel (CSS sticky – no GSAP pin) ─────────────────────── */
+.pinWrap {
+  width: 100%;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7vh 5rem 0;
+  overflow: visible;
+}
+
+/* Centred gradient glow sitting behind the card stack */
+/* Two soft blobs — one on each side, framing the centre card */
+.pinWrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 38% 45% at 22% 62%,
+      rgba(178, 141, 255, 0.28) 0%,
+      rgba(255, 181, 232, 0.12) 55%,
+      transparent 75%
+    ),
+    radial-gradient(
+      ellipse 38% 45% at 78% 62%,
+      rgba(100, 149, 237, 0.24) 0%,
+      rgba(255, 181, 232, 0.10) 55%,
+      transparent 75%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header area ─────────────────────────────────────────────────────────── */
+.headerArea {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5vh;
+  max-width: 900px;
+}
+
+.tags {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(10, 10, 10, 0.8);
+}
+
+.heading {
+  font-family: var(--font-sora), system-ui, -apple-system, sans-serif;
+  font-size: clamp(4.5rem, 8vw, 7.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: #0a0a0a;
+  margin-bottom: 1.4rem;
+}
+
+.status {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.6rem;
+  color: rgba(10, 10, 10, 0.4);
+  line-height: 1.85;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ── Stack / spread container ────────────────────────────────────────────── */
+.stackWrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  /*
+   * Height must accommodate:
+   *   - card height 400px
+   *   - deepest stacked card peeking 38px above (-38px y offset)
+   *   - fan-out y: +32px below centre
+   *   Total: 400 + 38 + 32 = 470px → use 520px for breathing room
+   */
+  height: 520px;
+  overflow: visible;
+  /* subtle depth for the rotation during stacking phase */
+  perspective: 1400px;
+}
+
+/* ── Cards – all centred via left/top; GSAP drives x/y/rotation/scale ────── */
+.card {
+  position: absolute;
+  /* centred in stackWrap without relying on CSS transform (avoids GSAP conflict) */
+  left: calc(50% - 170px); /* 170 = half of 340px width  */
+  top:  calc(50% - 200px); /* 200 = half of 400px height */
+  width: 340px;
+  height: 400px;
+  border-radius: 24px;
+  padding: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  will-change: transform, opacity;
+  /* prevent sub-pixel shimmer during scale+rotation */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* glassmorphism */
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transition: box-shadow 0.35s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.card:hover {
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* featured = Apps, centre card – heavier shadow in final state */
+.cardFeatured {
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* ── Ghost background number ─────────────────────────────────────────────── */
+.cardNum {
+  position: absolute;
+  bottom: -2.5rem;
+  right: -0.75rem;
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: 14rem;
+  font-weight: 900;
+  line-height: 1;
+  /* transparent fill with faint outline only */
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.03);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.45s ease;
+}
+
+.card:hover .cardNum {
+  color: rgba(0, 0, 0, 0.045);
+}
+
+/* ── Card internals ──────────────────────────────────────────────────────── */
+.cardHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: auto;
+}
+
+.cardTitle {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+/* ── Glass lens pill tag ─────────────────────────────────────────────────── */
+.tagPill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.lens {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.1) 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(26, 27, 53, 0.05),
+    0 4px 12px rgba(26, 27, 53, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.05);
+}
+
+.lensCore {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  filter: blur(4px);
+  opacity: 0.9;
+  transition: filter 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* SVG noise texture for glass feel */
+.lensNoise {
+  position: absolute;
+  inset: 0;
+  /* stylelint-disable-next-line */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tagName {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(26, 27, 53, 0.75);
+  white-space: nowrap;
+}
+
+/* hover: lens core animates */
+.card:hover .lensCore {
+  filter: blur(6px) brightness(1.2);
+  transform: scale(1.1) rotate(45deg);
+}
+
+.card:hover .lens {
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(26, 27, 53, 0.05),
+    0 8px 20px rgba(255, 107, 139, 0.18);
+}
+
+.cardBody {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: rgba(10, 10, 10, 0.6);
+  font-weight: 500;
+}
+
+/* ── CTA button — mirrors the hero actionBtn style ───────────────────────── */
+.cta {
+  position: absolute;
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  background: var(--text-primary);
+  color: #ffffff;
+  border: none;
+  padding: 1.2rem 3rem;
+  border-radius: 100px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  z-index: 50;
+  transition: transform 0.3s;
+}
+
+.cta:hover {
+  transform: scale(1.05);
+}
+
+/* ── Code-snippet widget (right side, lg+ only) ─────────────────────────── */
+.codeSnippet {
+  display: none;                 /* hidden on mobile */
+  position: absolute;
+  top: 14vh;                    /* nudged down from the heading */
+  right: 5rem;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .codeSnippet {
+    display: flex;
+  }
+}
+
+/* Light glass — matches the card aesthetic */
+.codeBox {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  color: rgba(10, 10, 10, 0.65);
+  line-height: 1.75;
+  text-align: left;
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  min-width: 270px;
+}
+
+.trafficLights {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotRed    { background: rgba(239,  68,  68, 0.85); }
+.dotYellow { background: rgba(234, 179,   8, 0.85); }
+.dotGreen  { background: rgba( 34, 197,  94, 0.85); }
+
+/* Each line clips from left on GSAP typing reveal */
+.codeLine {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+/* Syntax colours – light-background friendly */
+.kwConst     { color: #0369a1; }              /* sky-700  */
+.kwStr       { color: #15803d; }              /* green-700 */
+.kwPurp      { color: #7c3aed; }              /* violet-600 */
+.codeComment { color: rgba(10, 10, 10, 0.3); }
+
+/* Blinking cursor appended after last line finishes typing */
+.cursor {
+  display: inline-block;
+  width: 1px;
+  height: 0.85em;
+  background: rgba(10, 10, 10, 0.55);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  opacity: 0;                   /* GSAP sets opacity: 1 after typing */
+  animation: cursorBlink 0.9s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .card {
+    width: 300px;
+    left: calc(50% - 150px);
+  }
+}
+
+@media (max-width: 768px) {
+  .pinWrap {
+    padding: 6vh 2rem 0;
+  }
+
+  .heading {
+    font-size: clamp(3rem, 12vw, 5rem);
+  }
+
+  .card {
+    width: 280px;
+    left: calc(50% - 140px);
+  }
+}

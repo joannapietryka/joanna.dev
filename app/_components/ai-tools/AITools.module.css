@@ -1,0 +1,332 @@
+/* ── AITools – 2-column layout with orbital diagram ──────────────────────── */
+
+.section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9vh 0 10vh;
+}
+
+/* ── wrapper — matches hero max-width + padding ───────────────────────────── */
+.pinWrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5rem;
+}
+
+/* ── LEFT column ──────────────────────────────────────────────────────────── */
+.leftCol {
+  flex: 0 0 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── tags — matches Services "Build for Results" style ───────────────────── */
+.tags {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(10, 10, 10, 0.8);
+}
+
+/* ── heading ──────────────────────────────────────────────────────────────── */
+.heading {
+  font-family: var(--font-sora), system-ui, -apple-system, sans-serif;
+  font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: #0a0a0a;
+  margin-bottom: 1.4rem;
+}
+
+/*
+ *  Each line on its own block row.
+ *  No <br /> in the JSX, so the only spacing between lines
+ *  comes from the h2's line-height (0.92) — very tight.
+ */
+.headingLine {
+  display: block;
+  line-height: 0.92;
+}
+
+/* ── subheading ───────────────────────────────────────────────────────────── */
+.subheading {
+  font-size: 0.7rem;
+  line-height: 1.75;
+  color: rgba(10, 10, 10, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  margin-bottom: 2.25rem;
+}
+
+/* ── step list ────────────────────────────────────────────────────────────── */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.stepRow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.stepIndex {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(10, 10, 10, 0.35);
+  flex-shrink: 0;
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+.stepTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  flex: 1;
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+.stepBody {
+  font-size: 0.68rem;
+  line-height: 1.65;
+  color: rgba(10, 10, 10, 0.5);
+  padding-left: 1.55rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+/* ── tool chip badge ──────────────────────────────────────────────────────── */
+.toolChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.55);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border-radius: 100px;
+  padding: 0.28rem 0.6rem;
+  flex-shrink: 0;
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+.chipLogo {
+  object-fit: contain;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.chipLabel {
+  white-space: nowrap;
+}
+
+/* ── RIGHT column ─────────────────────────────────────────────────────────── */
+.rightCol {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 560px;
+}
+
+/* ── orbit focal ──────────────────────────────────────────────────────────── */
+.orbitFocal {
+  position: relative;
+  width: min(540px, 100%);
+  aspect-ratio: 1;
+  overflow: visible;
+}
+
+/* ── rotating rings SVG (CW, 120s) ───────────────────────────────────────── */
+.orbitSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: orbitRotateCW 120s linear infinite;
+  will-change: transform;
+}
+
+/* ── counter-rotating text ring (CCW, 90s) ───────────────────────────────── */
+.orbitTextSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: orbitRotateCCW 90s linear infinite;
+  will-change: transform;
+}
+
+@keyframes orbitRotateCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbitRotateCCW {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* ── logo ring — co-rotates with orbitSvg ────────────────────────────────── */
+/*
+ *  Positioned exactly over the orbit focal (inset 0).
+ *  Rotates CW at the same 120 s speed as the rings SVG so logos
+ *  appear to sit on the moving ring.
+ */
+.orbitLogosRing {
+  position: absolute;
+  inset: 0;
+  animation: orbitRotateCW 120s linear infinite;
+  will-change: transform;
+}
+
+/* ── individual logo nodes ────────────────────────────────────────────────── */
+/*
+ *  top/left are set via inline style (computed from angle in TSX).
+ *  transform: translate(-50%, -50%) centres the node on its orbit point.
+ */
+.logoNode {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+/* ── logo image wrapper — counter-rotates so icons stay upright ──────────── */
+.logoImgWrap {
+  animation: orbitRotateCCW 120s linear infinite;
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── logo image — no circle, just the raw icon ───────────────────────────── */
+.logoImg {
+  object-fit: contain;
+  border-radius: 8px;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.2));
+  transition: filter 0.3s ease;
+}
+
+.logoImgWrap:hover .logoImg {
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.28));
+}
+
+/* ── center label ─────────────────────────────────────────────────────────── */
+.centerText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  text-align: center;
+  gap: 0.1rem;
+}
+
+.centerAi {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.centerTools {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.35);
+  line-height: 1;
+}
+
+/* ── responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  .pinWrap {
+    flex-direction: column;
+    gap: 4rem;
+    padding: 0 2rem;
+  }
+
+  .leftCol {
+    flex: none;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .rightCol {
+    width: 100%;
+    min-height: 0;
+  }
+
+  .orbitFocal {
+    width: min(420px, 88vw);
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 2.2rem;
+  }
+
+  .orbitFocal {
+    width: min(320px, 88vw);
+  }
+}

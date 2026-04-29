@@ -1,0 +1,456 @@
+/* ── Contact – light liquid glass, matches the rest of the page ─────────── */
+
+.contact {
+  width: 100%;
+  position: relative;
+  background: transparent;
+}
+
+/* ── Ambient blobs – same palette/opacity as .services pinWrap::before ───── */
+.blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+}
+
+.blob1 {
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(178, 141, 255, 0.28) 0%,
+    rgba(255, 181, 232, 0.12) 55%,
+    transparent 75%
+  );
+  top: -5%;
+  left: -8%;
+}
+
+.blob2 {
+  width: 32vw;
+  height: 32vw;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 181, 232, 0.22) 0%,
+    rgba(178, 141, 255, 0.08) 55%,
+    transparent 75%
+  );
+  bottom: 5%;
+  left: 20%;
+}
+
+.blob3 {
+  width: 28vw;
+  height: 28vw;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(100, 149, 237, 0.24) 0%,
+    rgba(255, 181, 232, 0.1) 55%,
+    transparent 75%
+  );
+  top: 15%;
+  right: 0;
+}
+
+/* ── Inner grid ───────────────────────────────────────────────────────────── */
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 90vh;
+  align-items: center;
+  padding: 0 4rem;
+  gap: 4rem;
+}
+
+/* ── Left ─────────────────────────────────────────────────────────────────── */
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.8rem;
+  padding: 8vh 0;
+  position: relative;
+}
+
+/* status pill – mirrors .metaLabel from the hero */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.metaPill {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 100px;
+  opacity: 0.8;
+}
+
+.metaDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 6px rgba(22, 163, 74, 0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(22, 163, 74, 0.6); }
+  50%       { box-shadow: 0 0 14px rgba(22, 163, 74, 0.9); }
+}
+
+.metaStatus {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #16a34a;
+}
+
+.heading {
+  font-family: var(--font-sora), system-ui, -apple-system, sans-serif;
+  font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.body {
+  max-width: 38ch;
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* email pill – mirrors hero .actionBtn outline variant */
+.emailLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  padding: 11px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: fit-content;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.emailLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Bubble image ─────────────────────────────────────────────────────────── */
+/*
+ * The source image has a black background.  We place it inside a container
+ * that carries a dark radial gradient (dark at centre → transparent at edge).
+ * mix-blend-mode:screen then makes every black pixel invisible against the
+ * dark centre, while the coloured glass sphere shows through.
+ * The gradient fades to transparent so it blends cleanly into the white page.
+ */
+.bubbleWrap {
+  position: absolute;
+  bottom: -4vh;
+  right: -4%;
+  width: 52%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bubble {
+  width: 100%;
+  height: auto;
+  animation: float 9s ease-in-out infinite alternate;
+  display: block;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0) rotate(-1.5deg); }
+  100% { transform: translateY(-20px) rotate(2deg); }
+}
+
+/* ── Right ────────────────────────────────────────────────────────────────── */
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8vh 0;
+}
+
+/* ── Glass form card – identical recipe to .card in Services ──────────────── */
+.card {
+  width: 100%;
+  max-width: 520px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border-radius: 32px;
+  padding: 3.2rem 3.2rem 3rem;
+  /* glass highlight shimmer */
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 55%
+  );
+  transition: box-shadow 0.35s;
+}
+
+.card:hover {
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* corner labels – mirrors hero .metaLabel */
+.cardLabel {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.25);
+}
+
+.cardLabelBr {
+  top: auto;
+  left: auto;
+  bottom: 1.5rem;
+  right: 2rem;
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  resize: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(10, 10, 10, 0.28);
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: rgba(178, 141, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(178, 141, 255, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.inputErr {
+  border-color: rgba(239, 68, 68, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08) !important;
+}
+
+.errMsg {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: #dc2626;
+  padding-left: 2px;
+}
+
+.srvErr {
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: #dc2626;
+  padding: 10px 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.04);
+}
+
+/* ── Submit – mirrors hero .actionBtn exactly ─────────────────────────────── */
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 1.2rem 2rem;
+  background: var(--text-primary);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+  margin-top: 0.6rem;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: scale(1.03);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ──────────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Success state ────────────────────────────────────────────────────────── */
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 3rem 0 2rem;
+  text-align: center;
+}
+
+.successRing {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-primary);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(178, 141, 255, 0.2);
+}
+
+.successTitle {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.successBody {
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 30ch;
+}
+
+.resetBtn {
+  margin-top: 0.6rem;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.resetBtn:hover {
+  color: var(--text-primary);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .inner {
+    grid-template-columns: 1fr;
+    padding: 0 2rem;
+    gap: 0;
+  }
+
+  .left {
+    padding-bottom: 2rem;
+    gap: 1.4rem;
+  }
+
+  .bubbleWrap {
+    display: none;
+  }
+
+  .right {
+    padding-top: 0;
+    padding-bottom: 6vh;
+  }
+
+  .card {
+    padding: 2.4rem 2rem;
+  }
+}
