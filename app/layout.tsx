@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Playfair_Display, Sora } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const jetBrainsMono = JetBrains_Mono({
@@ -32,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${jetBrainsMono.variable} ${playfairDisplay.variable} ${sora.variable}`}
     >
-      <body>{children}</body>
+      <body>{children}<Analytics /></body>
     </html>
   );
 }
