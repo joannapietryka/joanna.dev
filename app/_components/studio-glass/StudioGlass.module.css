@@ -132,12 +132,24 @@
   text-transform: uppercase;
 }
 
-.navLinks a {
+.navLinks a,
+.navLinks button {
   opacity: 0.5;
   transition: opacity 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  padding: 0;
 }
 
-.navLinks a:hover {
+.navLinks a:hover,
+.navLinks button:hover {
   opacity: 1;
 }
 

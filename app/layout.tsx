@@ -18,8 +18,8 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "Studio Glass",
-  description: "Studio Glass - Elegant Layout",
+  title: "joanna.dev",
+  description: "joanna.dev – Digital Product Builder",
 };
 
 export default function RootLayout({

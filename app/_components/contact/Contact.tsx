@@ -84,7 +84,7 @@ export function Contact() {
   };
 
   return (
-    <section className={styles.contact}>
+    <section className={styles.contact} id="contact">
       {/* ── ambient blobs ─────────────────────────────────────────── */}
       <div className={styles.blobs} aria-hidden="true">
         <div className={`${styles.blob} ${styles.blob1}`} />

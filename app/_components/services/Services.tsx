@@ -194,7 +194,7 @@ export function Services() {
 
   return (
     /* outer section – ScrollTrigger pinSpacing adds height here automatically */
-    <section ref={sectionRef} className={styles.services}>
+    <section ref={sectionRef} className={styles.services} id="services">
 
       {/* ── pinned viewport panel ──────────────────────────────────────── */}
       <div ref={pinRef} className={styles.pinWrap}>

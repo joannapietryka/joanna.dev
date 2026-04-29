@@ -126,7 +126,7 @@ export function AboutMe() {
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.about}>
+    <section ref={sectionRef} className={styles.about} id="about">
       <div className={styles.inner}>
 
         {/* ── LEFT: portrait ────────────────────────────────────────────── */}

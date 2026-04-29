@@ -25,13 +25,13 @@ export async function POST(req: NextRequest) {
     }
 
     const { error } = await resend.emails.send({
-      from: "Studio.Glass Contact <onboarding@resend.dev>",
+      from: "joanna.dev Contact <onboarding@resend.dev>",
       to: TO,
       replyTo: email,
       subject: `New message from ${name}`,
       html: `
         <div style="font-family:ui-monospace,monospace;max-width:600px;margin:0 auto;padding:40px 32px;background:#fafafa;border-radius:16px;">
-          <p style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#666;margin-bottom:32px;">Studio.Glass — Contact Form</p>
+          <p style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#666;margin-bottom:32px;">joanna.dev — Contact Form</p>
           <h2 style="font-size:22px;font-weight:800;color:#0a0a0a;margin-bottom:24px;letter-spacing:-0.02em;">New message from ${name}</h2>
           <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
             <tr>

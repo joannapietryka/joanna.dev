@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AboutMe } from "../about-me/AboutMe";
 import { AITools } from "../ai-tools/AITools";
@@ -186,6 +185,15 @@ export function StudioGlass() {
   /* guard: entrance plays once per mount, never on scroll-up/down */
   const entrancePlayedRef = useRef(false);
   const glowRingRef = useRef<HTMLDivElement>(null);
+
+  /* scroll to a section id within the custom scroll container */
+  const scrollToSection = (id: string) => {
+    const scroller = scrollRef.current;
+    const target = document.getElementById(id);
+    if (scroller && target) {
+      scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+    }
+  };
 
   /* passive scroll → CSS var for orb parallax */
   useEffect(() => {
@@ -510,11 +518,11 @@ export function StudioGlass() {
       <div className={styles.gridOverlay} aria-hidden="true" />
 
       <header className={styles.header}>
-        <div className={styles.logo}>STUDIO.GLASS</div>
+        <div className={styles.logo}>joanna.dev</div>
         <nav className={styles.navLinks} aria-label="Primary">
-          <Link href="/work">Work</Link>
-          <Link href="/approach">Approach</Link>
-          <Link href="/journal">Journal</Link>
+          <button type="button" onClick={() => scrollToSection("services")}>Services</button>
+          <button type="button" onClick={() => scrollToSection("about")}>About me</button>
+          <button type="button" onClick={() => scrollToSection("contact")}>Contact</button>
         </nav>
         {/* mobile only – desktop: display:none */}
         <button className={styles.menuToggle} type="button" aria-label="Open menu">
