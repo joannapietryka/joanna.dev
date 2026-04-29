@@ -793,3 +793,44 @@
   }
 }
 
+/* ── Extra-small phones (≤390px) ────────────────────────────────────────── */
+@media (max-width: 390px) {
+  .header {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .main { padding: 0.5rem; }
+
+  .heroScrollSpace { padding-top: 1vh; }
+
+  .glassAssembly {
+    height: 94vh;
+    top: 3vh;
+  }
+
+  .heroTitle {
+    font-size: clamp(2rem, 10.5vw, 2.8rem);
+  }
+
+  .heroContent {
+    padding-left: 5%;
+  }
+
+  .heroSubtitle {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+  }
+
+  .actionBtn {
+    width: calc(100% - 2.5rem);
+    margin: 0.4rem 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.68rem;
+  }
+
+  .metaLabel {
+    font-size: 0.5rem;
+    padding: 6px 10px 6px 8px;
+  }
+}
+

@@ -128,10 +128,12 @@ export function Services() {
         tl.to(c1, { y: -20, scale: 0.91, rotation: 3, duration: 0.85, ease: "power2.inOut" }, 2);
         tl.to(c0, { y: -38, scale: 0.83, rotation: -7, duration: 0.85, ease: "power2.inOut" }, 2);
 
-        /* Phase 4 – fan out */
-        tl.to(c0, { x: -364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
-        tl.to(c1, { x: 0, y: -16, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
-        tl.to(c2, { x: 364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+        /* Phase 4 – fan out (desktop only; mobile keeps the stack) */
+        if (window.innerWidth > 640) {
+          tl.to(c0, { x: -364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+          tl.to(c1, { x: 0, y: -16, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+          tl.to(c2, { x: 364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+        }
 
         /* CTA fades in as cards settle */
         if (cta) {

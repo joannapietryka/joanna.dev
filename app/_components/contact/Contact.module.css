@@ -454,3 +454,47 @@
     padding: 2.4rem 2rem;
   }
 }
+
+@media (max-width: 480px) {
+  .inner {
+    padding: 0 1.25rem;
+  }
+
+  .heading {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+  }
+
+  .body {
+    font-size: 0.75rem;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+  }
+
+  .left {
+    gap: 1.1rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .inner {
+    padding: 0 1rem;
+  }
+
+  .heading {
+    font-size: clamp(2.1rem, 11vw, 2.8rem);
+  }
+
+  .card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .submitBtn {
+    font-size: 0.68rem;
+    padding: 1rem 1.5rem;
+  }
+}

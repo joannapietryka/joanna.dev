@@ -435,7 +435,7 @@
 
 @media (max-width: 768px) {
   .pinWrap {
-    padding: 6vh 2rem 0;
+    padding: 6vh 1.5rem 0;
   }
 
   .heading {
@@ -443,7 +443,48 @@
   }
 
   .card {
-    width: 280px;
-    left: calc(50% - 140px);
+    width: min(280px, calc(100vw - 3rem));
+    left: calc(50% - min(140px, calc(50vw - 1.5rem)));
+  }
+}
+
+@media (max-width: 480px) {
+  .pinWrap {
+    padding: 5vh 1.25rem 0;
+  }
+
+  .heading {
+    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  }
+
+  .status {
+    font-size: 0.55rem;
+  }
+
+  .card {
+    width: min(260px, calc(100vw - 2.5rem));
+    left: calc(50% - min(130px, calc(50vw - 1.25rem)));
+    padding: 1.75rem 1.25rem;
+    border-radius: 24px;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+
+  .cardBody {
+    font-size: 0.72rem;
+  }
+
+  .cta {
+    padding: 1rem 2rem;
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .card {
+    width: calc(100vw - 2rem);
+    left: 1rem;
   }
 }
