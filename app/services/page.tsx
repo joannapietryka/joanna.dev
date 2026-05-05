@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { SiteNav } from "../_components/site-nav/SiteNav";
 import styles from "./ServicesPage.module.css";
 
@@ -237,8 +237,8 @@ const SERVICES = [
   },
 ] as const;
 
-/* ── Page component ───────────────────────────────────────────────────────── */
-export default function ServicesPage() {
+/* ── Inner component (uses useSearchParams — must be inside Suspense) ─────── */
+function ServicesContent() {
   const searchParams = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animKey, setAnimKey] = useState(0);
@@ -380,5 +380,14 @@ export default function ServicesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ── Default export wraps content in Suspense (required for useSearchParams) */
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={null}>
+      <ServicesContent />
+    </Suspense>
   );
 }
