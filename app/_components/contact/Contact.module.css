@@ -332,7 +332,10 @@
   gap: 10px;
   width: 100%;
   padding: 1.2rem 2rem;
-  background: var(--text-primary);
+  background: linear-gradient(to top, #677be6 50%, #0a0a0a 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  overflow: hidden;
   color: #fff;
   border: none;
   border-radius: 100px;
@@ -342,12 +345,21 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.3s, opacity 0.3s;
+  transition: background-position 0.3s ease-out, transform 0.3s ease, opacity 0.3s;
   margin-top: 0.6rem;
 }
 
+.submitBtn svg {
+  transition: transform 0.25s ease;
+}
+
 .submitBtn:hover:not(:disabled) {
-  transform: scale(1.03);
+  background-position: bottom;
+  transform: scale(1.02);
+}
+
+.submitBtn:hover:not(:disabled) svg {
+  transform: translateX(4px);
 }
 
 .submitBtn:disabled {

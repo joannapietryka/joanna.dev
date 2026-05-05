@@ -100,11 +100,11 @@
 
 .status {
   font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.6rem;
-  color: rgba(10, 10, 10, 0.4);
-  line-height: 1.85;
+  font-size: 0.7rem;
+  color: rgba(10, 10, 10, 0.45);
+  line-height: 1.75;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   font-weight: 500;
   text-align: center;
 }
@@ -178,6 +178,14 @@
   box-shadow:
     0 40px 80px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* ── Full-card cover link ────────────────────────────────────────────────── */
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
 }
 
 /* ── Ghost background number ─────────────────────────────────────────────── */
@@ -312,7 +320,7 @@
 /* ── CTA button — mirrors the hero actionBtn style ───────────────────────── */
 .cta {
   position: absolute;
-  bottom: 3rem;
+  bottom: 1.5rem;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -320,10 +328,10 @@
   background: var(--text-primary);
   color: #ffffff;
   border: none;
-  padding: 1.2rem 3rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 100px;
   font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -335,8 +343,25 @@
   transition: transform 0.3s;
 }
 
+.cta {
+  background: linear-gradient(to top, #677be6 50%, #0a0a0a 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  overflow: hidden;
+  transition: background-position 0.3s ease-out, transform 0.3s ease;
+}
+
+.cta svg {
+  transition: transform 0.25s ease;
+}
+
 .cta:hover {
-  transform: scale(1.05);
+  background-position: bottom;
+  transform: scale(1.02);
+}
+
+.cta:hover svg {
+  transform: translateX(4px);
 }
 
 /* ── Code-snippet widget (right side, lg+ only) ─────────────────────────── */
@@ -458,7 +483,7 @@
   }
 
   .status {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 
   .card {
@@ -477,8 +502,8 @@
   }
 
   .cta {
-    padding: 1rem 2rem;
-    font-size: 0.68rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.65rem;
   }
 }
 

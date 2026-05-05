@@ -14,6 +14,33 @@
   mix-blend-mode: difference;
   color: #ffffff;
   pointer-events: none; /* let clicks pass through transparent areas */
+  transition:
+    transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity   0.45s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* ── Scrolled away: slide up out of view ─────────────────────────────────── */
+.headerHidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Cursor at top after scroll: glass pill re-appears ───────────────────── */
+.headerGlassy {
+  mix-blend-mode: normal;
+  color: #0a0a0a;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  pointer-events: auto;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .logo,

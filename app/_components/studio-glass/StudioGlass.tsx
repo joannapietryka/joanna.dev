@@ -614,8 +614,12 @@ export function StudioGlass() {
                   </div>
                 </div>
 
-                <button type="button" className={styles.actionBtn}>
-                  Initiate Sequence
+                <button
+                  type="button"
+                  className={styles.actionBtn}
+                  onClick={() => scrollToSection("contact")}
+                >
+                  Start project
                   <svg
                     width="16"
                     height="16"

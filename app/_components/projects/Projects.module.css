@@ -64,40 +64,46 @@
   text-align: center;
 }
 
-.viewBtnWrap {
+.canvasGroup {
   display: flex;
-  justify-content: center;
-  margin-bottom: 5vh;
-  position: relative;
-  z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1;
 }
 
 .viewBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  margin-top: 2rem;
   padding: 0.75rem 1.75rem;
   border-radius: 100px;
-  border: 1px solid rgba(10, 10, 10, 0.2);
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border: none;
+  background: linear-gradient(to top, #677be6 50%, #0a0a0a 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  overflow: hidden;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(10, 10, 10, 0.7);
-  transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+  color: #ffffff;
+  transition: background-position 0.3s ease-out, transform 0.3s ease;
   text-decoration: none;
 }
 
+.viewBtn svg {
+  transition: transform 0.25s ease;
+}
+
 .viewBtn:hover {
-  background: rgba(10, 10, 10, 0.9);
-  color: #ffffff;
-  border-color: transparent;
-  transform: translateY(-2px);
+  background-position: bottom;
+  transform: scale(1.02);
+}
+
+.viewBtn:hover svg {
+  transform: translateX(4px);
 }
 
 /* ── Scroll space – gives height for the scrub travel ────────────────────── */
@@ -267,7 +273,11 @@
 }
 
 .cardStat {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto;
   background: #0a0a0a;
   color: #ffffff;
   font-family: var(--font-jetbrains-mono), monospace;
@@ -276,7 +286,7 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   padding: 0.35rem 0.75rem;
-  border-radius: 2px;
+  border-radius: 100px;
 }
 
 /* ── Mobile ───────────────────────────────────────────────────────────────── */
@@ -289,17 +299,33 @@
 
 @media (max-width: 768px) {
   .projects {
-    padding: 6rem 2rem 0;
+    padding: 4rem 1.5rem 0;
   }
 
   .heading {
     font-size: clamp(3rem, 12vw, 5rem);
   }
 
+  /* shorter scroll travel — still scrubs but far less swiping */
+  .scrollSpace {
+    height: 220vh;
+  }
+
+  .sticky {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .canvasGroup {
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+  }
+
   .canvasWrap {
-    width: 90vw;
-    height: 56vw;
-    min-height: 180px;
+    width: 94vw;
+    height: 58vw;
+    min-height: 200px;
     border-radius: 12px;
   }
 
@@ -318,4 +344,38 @@
 
   .cardLeft  { left: 2%; }
   .cardRight { right: 2%; }
+}
+
+@media (max-width: 480px) {
+  .projects {
+    padding: 3rem 1rem 0;
+  }
+
+  /* minimal travel on very small screens */
+  .scrollSpace {
+    height: 180vh;
+  }
+
+  .canvasWrap {
+    width: 96vw;
+    height: 60vw;
+    min-height: 180px;
+  }
+
+  .annotationCard {
+    width: 130px;
+    padding: 0.75rem;
+  }
+
+  .cardTitle {
+    font-size: 0.9rem;
+  }
+
+  .cardLeft  { left: 1%; }
+  .cardRight { right: 1%; }
+
+  .viewBtn {
+    font-size: 0.6rem;
+    padding: 0.65rem 1.25rem;
+  }
 }

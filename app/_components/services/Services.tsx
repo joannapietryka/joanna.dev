@@ -245,6 +245,13 @@ export function Services() {
               ref={(el) => { cardRefs.current[i] = el; }}
               className={`${styles.card} ${"featured" in card ? styles.cardFeatured : ""}`}
             >
+              {/* full-card link to the matching services tab */}
+              <Link
+                href={`/services?tab=${card.id}`}
+                className={styles.cardLink}
+                aria-label={`View ${card.title} services`}
+              />
+
               {/* ghost background number */}
               <div className={styles.cardNum} aria-hidden="true">
                 {card.index}

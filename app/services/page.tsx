@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SiteNav } from "../_components/site-nav/SiteNav";
 import styles from "./ServicesPage.module.css";
 
@@ -12,6 +13,7 @@ const SERVICES = [
     index: "01",
     tabLabel: "Web Design",
     title: "Websites",
+    lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
     description:
       "Fast, custom-built sites designed to turn visitors into clients. Clean design, strong messaging, and performance baked in — every pixel intentional, every interaction smooth.",
     stack: ["Next.js", "Tailwind", "Figma", "Framer", "GSAP", "Vercel"],
@@ -87,6 +89,7 @@ const SERVICES = [
     index: "02",
     tabLabel: "App Dev",
     title: "Apps",
+    lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
     description:
       "Complex problems require simple solutions. I design and build full-stack web applications that are as powerful as they are intuitive. From initial discovery to final deployment, I handle the entire product lifecycle.",
     stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Figma"],
@@ -162,6 +165,7 @@ const SERVICES = [
     index: "03",
     tabLabel: "Automations",
     title: "Automations",
+    lensGradient: "radial-gradient(circle at 30% 30%, #6495ED, #FF6B8B)",
     description:
       "Custom workflows that connect your tools and eliminate repetitive tasks — saving hours and reducing errors so you can focus on what actually matters. AI-powered where it counts.",
     stack: ["n8n", "Make", "Zapier", "Python", "OpenAI", "APIs"],
@@ -235,8 +239,20 @@ const SERVICES = [
 
 /* ── Page component ───────────────────────────────────────────────────────── */
 export default function ServicesPage() {
+  const searchParams = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animKey, setAnimKey] = useState(0);
+
+  /* sync active tab with ?tab= URL param on mount */
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (!tab) return;
+    const idx = SERVICES.findIndex((s) => s.id === tab);
+    if (idx >= 0) {
+      setActiveIndex(idx);
+      setAnimKey((k) => k + 1);
+    }
+  }, [searchParams]);
 
   const service = SERVICES[activeIndex];
 
@@ -254,18 +270,12 @@ export default function ServicesPage() {
         <div className={`${styles.glowShape} ${styles.glow1}`} />
         <div className={`${styles.glowShape} ${styles.glow2}`} />
         <div className={`${styles.glowShape} ${styles.glow3}`} />
+        <div className={`${styles.glowShape} ${styles.glow4}`} />
       </div>
       <div className={styles.noiseOverlay} />
 
       {/* main glass card */}
       <div className={styles.card}>
-        {/* close → back to home */}
-        <Link href="/" className={styles.closeBtn} aria-label="Back to home">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </Link>
 
         {/* ── Left accordion tabs ─────────────────────────────────────────── */}
         <div className={styles.tabsRail}>
@@ -287,7 +297,13 @@ export default function ServicesPage() {
         {/* ── Middle info panel ────────────────────────────────────────────── */}
         <div className={styles.infoPanel}>
           <div key={`tag-${animKey}`} className={`${styles.serviceTag} ${styles.contentEnter}`}>
-            <span className={styles.tagDot} />
+            <div className={styles.tagLens}>
+              <div
+                className={styles.tagLensCore}
+                style={{ background: service.lensGradient }}
+              />
+              <div className={styles.tagLensNoise} aria-hidden="true" />
+            </div>
             <span className={styles.tagText}>Service: {service.index}</span>
           </div>
 
@@ -316,14 +332,12 @@ export default function ServicesPage() {
             </div>
           </div>
 
-          <Link href="/" className={styles.startBtn}>
-            <span>Start Project</span>
-            <span className={styles.startBtnArrow}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </span>
+          <Link href="/#contact" className={styles.startBtn}>
+            Start Project
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </Link>
         </div>
 
