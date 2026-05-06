@@ -148,11 +148,11 @@ export function AboutMe() {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            <circle cx="250" cy="250" r="200" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 8" />
-            <circle cx="250" cy="250" r="160" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            <path d="M 250 10 L 250 40 M 250 460 L 250 490 M 10 250 L 40 250 M 460 250 L 490 250" stroke="currentColor" strokeWidth="2" />
-            <circle cx="250" cy="50" r="4" fill="currentColor" />
-            <circle cx="250" cy="450" r="4" fill="currentColor" />
+            <circle cx="250" cy="250" r="200" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 8" opacity="0.07" />
+            <circle cx="250" cy="250" r="160" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.07" />
+            <path d="M 250 10 L 250 40 M 250 460 L 250 490 M 10 250 L 40 250 M 460 250 L 490 250" stroke="currentColor" strokeWidth="2" opacity="0.07" />
+            <circle cx="250" cy="50" r="5" fill="#b28dff" />
+            <circle cx="250" cy="450" r="5" fill="#ffb5e8" />
           </svg>
 
           <div className={styles.portraitMask}>
@@ -165,8 +165,8 @@ export function AboutMe() {
               priority
             />
             <div className={styles.portraitOverlay} aria-hidden="true" />
-            <div ref={lensRef} className={styles.glassLens} aria-hidden="true" />
           </div>
+          <div ref={lensRef} className={styles.glassLens} aria-hidden="true" />
 
           <div className={styles.buildingCapsule} aria-hidden="true">
             <div className={styles.refOrb} />
@@ -192,7 +192,7 @@ export function AboutMe() {
               <span className={styles.eyebrowText}>Why work with me</span>
             </div>
             <h2 ref={titleRef} className={styles.title}>
-              Digital Product<br />Builder
+              Digital Product <br />Builder
             </h2>
             <p ref={leadRef} className={styles.lead}>
               Building digital products since 2015. I turn complex ideas into
@@ -204,7 +204,7 @@ export function AboutMe() {
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardLabel}>01 // Background</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#b28dff" }} aria-hidden="true">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                   <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
                   <line x1="12" y1="22.08" x2="12" y2="12" />
@@ -224,7 +224,7 @@ export function AboutMe() {
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardLabel}>02 // Stack</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#4a6bff" }} aria-hidden="true">
                   <polygon points="12 2 2 7 12 12 22 7 12 2" />
                   <polyline points="2 17 12 22 22 17" />
                   <polyline points="2 12 12 17 22 12" />
@@ -251,7 +251,7 @@ export function AboutMe() {
             <div className={styles.aiCardGlow} aria-hidden="true" />
             <div className={styles.aiCardInner}>
               <div className={styles.aiIcon}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#ff55a3" }} aria-hidden="true">
                   <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
               </div>

@@ -21,6 +21,15 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "joanna.dev",
   description: "joanna.dev – Digital Product Builder",
+  icons: {
+    /* Prefer small ICO + PNG; public/favicon.svg is multi‑MB and hurts tab icon loads */
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -33,13 +42,6 @@ export default function RootLayout({
       lang="en"
       className={`${jetBrainsMono.variable} ${playfairDisplay.variable} ${sora.variable}`}
     >
-      <head>
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-      </head>
       <body>{children}<Analytics /></body>
     </html>
   );

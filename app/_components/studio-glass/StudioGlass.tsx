@@ -84,10 +84,36 @@ function ScrollScrubCanvas({
     video.playsInline = true;
     video.preload = "auto";
     videoRef.current = video;
-    const onMeta = () => setReady(true);
-    video.addEventListener("loadedmetadata", onMeta);
+
+    let cancelled = false;
+    let settled = false;
+    const settle = () => {
+      if (cancelled || settled) return;
+      settled = true;
+      setReady(true);
+    };
+
+    /* loadedmetadata alone can hang if decode/network stalls */
+    video.addEventListener("loadedmetadata", settle);
+    video.addEventListener("loadeddata", settle);
+    video.addEventListener("canplay", settle);
+    video.addEventListener("error", settle);
+
+    try {
+      video.load();
+    } catch {
+      settle();
+    }
+
+    const timeoutId = window.setTimeout(settle, 10_000);
+
     return () => {
-      video.removeEventListener("loadedmetadata", onMeta);
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+      video.removeEventListener("loadedmetadata", settle);
+      video.removeEventListener("loadeddata", settle);
+      video.removeEventListener("canplay", settle);
+      video.removeEventListener("error", settle);
       videoRef.current = null;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
@@ -174,6 +200,12 @@ function ScrollScrubCanvas({
   );
 }
 
+/* ── Persists across SPA navigation so the entrance never replays ────────── */
+let heroEntrancePlayed = false;
+
+/* ── Subtitle stagger driven by hero scroll; max progress never decreases ─ */
+let heroSubtitleRevealProgress = 0;
+
 /* ── Main component ──────────────────────────────────────────────────────── */
 export function StudioGlass() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -181,10 +213,9 @@ export function StudioGlass() {
   const heroCardRef = useRef<HTMLElement>(null);
   const heroScrollSpaceRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const scrubProgressRef = useRef(0);
-  /* guard: entrance plays once per mount, never on scroll-up/down */
-  const entrancePlayedRef = useRef(false);
   const glowRingRef = useRef<HTMLDivElement>(null);
 
   /* scroll to a section id within the custom scroll container */
@@ -235,6 +266,7 @@ export function StudioGlass() {
     const space = heroScrollSpaceRef.current;
     const title = titleRef.current;
     const hint = scrollHintRef.current;
+    const subtitle = subtitleRef.current;
     if (!el || !card || !space || !title || !hint) return;
 
     let cancelled = false;
@@ -268,12 +300,14 @@ export function StudioGlass() {
           wordEls[2]?.querySelectorAll("[data-char]") ?? []
         ) as HTMLElement[];
 
+        /* ── subtitle word spans ──────────────────────────────────────── */
+        const subtitleSpans = subtitle
+          ? (Array.from(subtitle.querySelectorAll("[data-subtitle-word]")) as HTMLElement[])
+          : [];
 
-
-        /* ── Phase A: entrance (fires once, never on scroll-up) ──────── */
-        if (!entrancePlayedRef.current) {
-          /* Mark AFTER the cancelled guard so only the active effect owns it */
-          entrancePlayedRef.current = true;
+        /* ── Phase A: entrance (fires once, never replays after navigation) ── */
+        if (!heroEntrancePlayed) {
+          heroEntrancePlayed = true;
 
           /* lock scroll while the bubble is landing.
            * Measure scrollbar width BEFORE hiding so we can compensate
@@ -466,7 +500,7 @@ export function StudioGlass() {
             2.3
           );
         } else {
-          /* entrance already played – snap to final revealed state */
+          /* entrance already played (navigation back) – snap to final state */
           const snapCx = window.innerWidth <= 640 ? 50 : 18;
           card.style.clipPath = `circle(135% at ${snapCx}% 50%)`;
           if (w0.length) gsap.set(w0, { x: 0, rotation: 0, opacity: 1 });
@@ -482,11 +516,19 @@ export function StudioGlass() {
         };
         el.addEventListener("scroll", onFirstScroll, { passive: true, once: true });
 
-        /* ── Phase C: video scrub – whole heroScrollSpace, bidirectional
-         *   Entire 300 vh range drives video progress.
-         *   Card + h1 are already in final state and never reverse.
-         *   Based on Pattern 4 (pinned scroll) with scrub: 0.9
-         */
+        /* ── Phase C: video scrub + subtitle (same scroll, subtitle locks forward)
+
+          Video tracks scrub bidirectionally. Subtitle uses Pattern 2 (stagger)
+          mapped onto scroll progress [subStart, subEnd], slowed 2× vs original:
+          stagger 0.10, duration 0.24 (was 0.05 / 0.12). Scroll progress window
+          length doubles accordingly (~0.32 → ~0.64). heroSubtitleRevealProgress
+          only increases so words never hide when scrolling back up.
+
+          ──────────────────────────────────────────────────────────────────────── */
+
+        const subStart = 0.05;
+        const subEnd = 0.69;
+
         const videoProxy = { value: 0 };
         const videoTl = gsap.timeline({ defaults: { ease: "none" } });
 
@@ -499,6 +541,33 @@ export function StudioGlass() {
           },
         });
 
+        const subtitleTl =
+          subtitleSpans.length > 0
+            ? gsap.timeline({ paused: true }).fromTo(
+                subtitleSpans,
+                { y: 20, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  stagger: 0.1,
+                  duration: 0.24,
+                  ease: "power2.out",
+                  immediateRender: false,
+                }
+              )
+            : null;
+
+        if (subtitleSpans.length && subtitleTl) {
+          gsap.set(subtitleSpans, { y: 20, opacity: 0 });
+          subtitleTl.progress(heroSubtitleRevealProgress);
+          if (heroSubtitleRevealProgress >= 1) {
+            gsap.set(subtitleSpans, {
+              clearProps: "transform",
+              opacity: 1,
+            });
+          }
+        }
+
         ScrollTrigger.create({
           animation: videoTl,
           trigger: space,
@@ -506,6 +575,16 @@ export function StudioGlass() {
           start: "top top",
           end: "bottom bottom",
           scrub: 0.9,
+          onUpdate(self: { progress: number }) {
+            if (!subtitleSpans.length || !subtitleTl) return;
+            let subP = (self.progress - subStart) / (subEnd - subStart);
+            subP = Math.max(0, Math.min(1, subP));
+            heroSubtitleRevealProgress = Math.max(heroSubtitleRevealProgress, subP);
+            subtitleTl.progress(heroSubtitleRevealProgress);
+            if (heroSubtitleRevealProgress >= 1) {
+              gsap.set(subtitleSpans, { clearProps: "transform" });
+            }
+          },
         });
 
         ScrollTrigger.refresh();
@@ -516,10 +595,9 @@ export function StudioGlass() {
 
     return () => {
       cancelled = true;
-      /* Reset so the entrance replays correctly on remount (fixes StrictMode
-         double-invoke: first run may set the ref to true before cleanup fires) */
-      entrancePlayedRef.current = false;
       gsapCtx?.revert();
+      /* heroEntrancePlayed is intentionally NOT reset here — it is module-level
+         so it survives SPA navigation and prevents the entrance from replaying. */
     };
   }, []);
 
@@ -600,8 +678,10 @@ export function StudioGlass() {
                       className={styles.titleAccent}
                     />
                   </h1>
-                  <p className={styles.heroSubtitle}>
-                    Websites&nbsp;•&nbsp;Apps&nbsp;•&nbsp;Automations
+                  <p ref={subtitleRef} className={styles.heroSubtitle}>
+                    {["Websites", "\u00a0•\u00a0", "Apps", "\u00a0•\u00a0", "Automations"].map((word, i) => (
+                      <span key={i} data-subtitle-word="" className={styles.subtitleWord}>{word}</span>
+                    ))}
                   </p>
                 </div>
 

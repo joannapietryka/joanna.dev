@@ -82,7 +82,7 @@
 .subheading {
   font-size: 0.7rem;
   line-height: 1.75;
-  color: rgba(10, 10, 10, 0.45);
+  color: #0a0a0a99;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 500;
@@ -132,7 +132,7 @@
 .stepBody {
   font-size: 0.68rem;
   line-height: 1.65;
-  color: rgba(10, 10, 10, 0.5);
+  color: #0a0a0a99;
   padding-left: 1.55rem;
   font-family: var(--font-jetbrains-mono), monospace;
 }
@@ -289,7 +289,7 @@
 
 .centerTools {
   font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.45rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;

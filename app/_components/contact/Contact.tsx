@@ -7,16 +7,18 @@ import styles from "./Contact.module.css";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Gsap = any;
 
-type Field = "name" | "email" | "message";
+type Field = "name" | "surname" | "email" | "message";
 
 interface FormState {
   name: string;
+  surname: string;
   email: string;
   message: string;
 }
 
 interface Errors {
   name?: string;
+  surname?: string;
   email?: string;
   message?: string;
 }
@@ -24,6 +26,7 @@ interface Errors {
 function validate(form: FormState): Errors {
   const errors: Errors = {};
   if (!form.name.trim()) errors.name = "Name is required.";
+  if (!form.surname.trim()) errors.surname = "Surname is required.";
   if (!form.email.trim()) {
     errors.email = "Email is required.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -37,7 +40,7 @@ function validate(form: FormState): Errors {
 
 export function Contact() {
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
+  const [form, setForm] = useState<FormState>({ name: "", surname: "", email: "", message: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -85,7 +88,7 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ name: true, email: true, message: true });
+    setTouched({ name: true, surname: true, email: true, message: true });
     const errs = validate(form);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
@@ -104,7 +107,7 @@ export function Contact() {
         setStatus("error");
       } else {
         setStatus("success");
-        setForm({ name: "", email: "", message: "" });
+        setForm({ name: "", surname: "", email: "", message: "" });
         setTouched({});
         setErrors({});
       }
@@ -188,15 +191,28 @@ export function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className={styles.form}>
-                <div className={styles.field}>
-                  <label htmlFor="c-name" className={styles.label}>Name</label>
-                  <input
-                    id="c-name" name="name" type="text" autoComplete="name"
-                    placeholder="Your name"
-                    value={form.name} onChange={handleChange} onBlur={handleBlur}
-                    className={`${styles.input}${errors.name && touched.name ? ` ${styles.inputErr}` : ""}`}
-                  />
-                  {errors.name && touched.name && <span className={styles.errMsg}>{errors.name}</span>}
+                <div className={styles.fieldRow}>
+                  <div className={styles.field}>
+                    <label htmlFor="c-name" className={styles.label}>Name</label>
+                    <input
+                      id="c-name" name="name" type="text" autoComplete="given-name"
+                      placeholder="Your name"
+                      value={form.name} onChange={handleChange} onBlur={handleBlur}
+                      className={`${styles.input}${errors.name && touched.name ? ` ${styles.inputErr}` : ""}`}
+                    />
+                    {errors.name && touched.name && <span className={styles.errMsg}>{errors.name}</span>}
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="c-surname" className={styles.label}>Surname</label>
+                    <input
+                      id="c-surname" name="surname" type="text" autoComplete="family-name"
+                      placeholder="Your surname"
+                      value={form.surname} onChange={handleChange} onBlur={handleBlur}
+                      className={`${styles.input}${errors.surname && touched.surname ? ` ${styles.inputErr}` : ""}`}
+                    />
+                    {errors.surname && touched.surname && <span className={styles.errMsg}>{errors.surname}</span>}
+                  </div>
                 </div>
 
                 <div className={styles.field}>

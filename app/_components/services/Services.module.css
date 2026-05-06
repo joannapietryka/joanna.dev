@@ -71,26 +71,24 @@
 }
 
 .tag {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-  padding: 0.5rem 1.25rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 6px 14px;
   border-radius: 100px;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(10, 10, 10, 0.8);
+  letter-spacing: 0.16em;
+  color: var(--text-primary);
+  opacity: 0.8;
 }
 
 .heading {
   font-family: var(--font-sora), system-ui, -apple-system, sans-serif;
-  font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+  font-size: clamp(2.8rem, 4.5vw, 4.2rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 0.85;
@@ -101,7 +99,7 @@
 .status {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.7rem;
-  color: rgba(10, 10, 10, 0.45);
+  color: #0a0a0a99;
   line-height: 1.75;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -313,7 +311,7 @@
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.8rem;
   line-height: 1.75;
-  color: rgba(10, 10, 10, 0.6);
+  color: #0a0a0a99;
   font-weight: 500;
 }
 
@@ -464,7 +462,7 @@
   }
 
   .heading {
-    font-size: clamp(3rem, 12vw, 5rem);
+    font-size: 2.2rem;
   }
 
   .card {
@@ -479,7 +477,7 @@
   }
 
   .heading {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+    font-size: 1.9rem;
   }
 
   .status {

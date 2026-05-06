@@ -104,13 +104,13 @@ export function SiteNav({ onScrollTo }: Props) {
         </Link>
 
         <nav className={styles.navLinks} aria-label="Primary">
-          <a
+          <Link
             href="/services"
             className={pathname === "/services" ? styles.navActive : ""}
-            onClick={(e) => handle("services", e)}
+            onClick={close}
           >
             Services
-          </a>
+          </Link>
           <Link
             href="/work"
             className={pathname === "/work" ? styles.navActive : ""}
@@ -138,9 +138,9 @@ export function SiteNav({ onScrollTo }: Props) {
         aria-hidden={!open}
       >
         <nav className={styles.mobileNav} aria-label="Mobile primary">
-          <a href="/services" className={styles.mobileLink} onClick={(e) => handle("services", e)}>
+          <Link href="/services" className={styles.mobileLink} onClick={close}>
             <span className={styles.mobileLinkIdx}>01</span>Services
-          </a>
+          </Link>
           <Link href="/work" className={styles.mobileLink} onClick={close}>
             <span className={styles.mobileLinkIdx}>02</span>Work
           </Link>

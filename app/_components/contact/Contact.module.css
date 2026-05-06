@@ -129,7 +129,7 @@
 
 .heading {
   font-family: var(--font-sora), system-ui, -apple-system, sans-serif;
-  font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+  font-size: clamp(2.8rem, 4.5vw, 4.2rem);
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: -0.03em;
@@ -138,9 +138,12 @@
 
 .body {
   max-width: 38ch;
-  font-size: clamp(0.78rem, 1vw, 0.88rem);
-  line-height: 1.8;
-  color: var(--text-secondary);
+  font-size: 0.7rem;
+  line-height: 1.75;
+  color: #0a0a0a99;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
 }
 
 /* email pill – mirrors hero .actionBtn outline variant */
@@ -259,6 +262,18 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1.4rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
 }
 
 .field {
@@ -473,7 +488,7 @@
   }
 
   .heading {
-    font-size: clamp(2.5rem, 11vw, 3.5rem);
+    font-size: 2.2rem;
   }
 
   .body {
@@ -497,7 +512,7 @@
   }
 
   .heading {
-    font-size: clamp(2.1rem, 11vw, 2.8rem);
+    font-size: 1.9rem;
   }
 
   .card {

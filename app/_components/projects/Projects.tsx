@@ -67,11 +67,34 @@ export function Projects() {
     video.preload = "auto";
     videoRef.current = video;
 
-    const onMeta = () => setVideoReady(true);
-    video.addEventListener("loadedmetadata", onMeta);
+    let cancelled = false;
+    let settled = false;
+    const settle = () => {
+      if (cancelled || settled) return;
+      settled = true;
+      setVideoReady(true);
+    };
+
+    video.addEventListener("loadedmetadata", settle);
+    video.addEventListener("loadeddata", settle);
+    video.addEventListener("canplay", settle);
+    video.addEventListener("error", settle);
+
+    try {
+      video.load();
+    } catch {
+      settle();
+    }
+
+    const timeoutId = window.setTimeout(settle, 10_000);
 
     return () => {
-      video.removeEventListener("loadedmetadata", onMeta);
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+      video.removeEventListener("loadedmetadata", settle);
+      video.removeEventListener("loadeddata", settle);
+      video.removeEventListener("canplay", settle);
+      video.removeEventListener("error", settle);
       videoRef.current = null;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
