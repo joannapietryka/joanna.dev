@@ -304,14 +304,19 @@
     font-size: 2.2rem;
   }
 
+  .headerArea {
+    margin-bottom: 1rem;
+  }
+
   /* shorter scroll travel — still scrubs but far less swiping */
   .scrollSpace {
-    height: 220vh;
+    height: 115vh;
   }
 
   .sticky {
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 0.25rem;
   }
 
   .canvasGroup {
@@ -349,9 +354,13 @@
     padding: 3rem 1rem 0;
   }
 
+  .headerArea {
+    margin-bottom: 0.75rem;
+  }
+
   /* minimal travel on very small screens */
   .scrollSpace {
-    height: 180vh;
+    height: 100vh;
   }
 
   .canvasWrap {

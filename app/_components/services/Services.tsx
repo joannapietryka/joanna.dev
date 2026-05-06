@@ -50,10 +50,12 @@ export function Services() {
   const codeLineRefs    = useRef<(HTMLParagraphElement | null)[]>([null, null, null]);
   /* card[0]=Websites  card[1]=Apps  card[2]=Automations */
   const cardRefs        = useRef<(HTMLDivElement | null)[]>([null, null, null]);
+  /** Preserves entity markup so matchMedia can reset h2 before each GSAP split */
+  const headingMarkupRef = useRef<string>("");
 
   useEffect(() => {
     let retryTimer: ReturnType<typeof setTimeout>;
-    let gsapCtx: Gsap = null;
+    let revertAll: (() => void) | null = null;
     let cancelled = false;
 
     const tryInit = () => {
@@ -63,148 +65,165 @@ export function Services() {
       if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
 
       const section = sectionRef.current;
-      const pin     = pinRef.current;
       const heading = headingRef.current;
       const cta     = ctaRef.current;
       const [c0, c1, c2] = cardRefs.current;
-      if (!section || !pin || !heading || !c0 || !c1 || !c2) return;
+      if (!section || !heading || !c0 || !c1 || !c2) return;
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
 
-      gsapCtx = gsap.context(() => {
-        /* ── Card initial state ──────────────────────────────────────
-         *
-         *  All three cards start centred (x:0) and invisible,
-         *  90px below their rest position so they "rise in".
-         *
-         *  Z-order is fixed so each new card lands on top:
-         *    c0 (Websites)     → zIndex 1  (deepest in stack)
-         *    c1 (Apps)         → zIndex 2
-         *    c2 (Automations)  → zIndex 3  (front when stacked)
-         *
-         *  Heading is always visible — no GSAP animation on it.
-         *  Animating the heading with a y-offset created the same
-         *  "content moves" artefact the user reported.
-         */
-        gsap.set([c0, c1, c2], { x: 0, y: 90, opacity: 0, scale: 1, rotation: 0 });
-        gsap.set(c0, { zIndex: 1 });
-        gsap.set(c1, { zIndex: 2 });
-        gsap.set(c2, { zIndex: 3 });
-
-        /* CTA hidden; no y-offset — opacity-only prevents any perceived movement */
-        if (cta) gsap.set(cta, { opacity: 0 });
-
-        /* ── h2 heading – word-split stagger (hero-style) ─────────────── */
+      const wireHeadingWords = () => {
         const h2 = h2Ref.current;
-        if (h2) {
-          const words = (h2.textContent || "").trim().split(/\s+/);
-          h2.innerHTML = words
-            .map((w) => `<span style="display:inline-block">${w}</span>`)
-            .join(" ");
-          const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
-          gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
-          gsap.to(wordEls, {
-            y: 0, opacity: 1, rotation: 0,
-            stagger: 0.1,
-            duration: 0.65,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: h2,
-              scroller,
-              start: "top 85%",
-              once: true,
-            },
-          });
-        }
-
-        /* ── One-shot card timeline ──────────────────────────────────
-         *
-         *  Fires once when the section enters the viewport (scroll down).
-         *  No scrub — the animation plays in real time (≈4s total) and
-         *  never reverses on up-scroll.
-         *
-         *  STACK PHASE  (0 → 3s)
-         *  Phase 1 (0 → 0.85s): c0 rises into view
-         *  Phase 2 (1 → 1.85s): c1 rises; c0 stacks behind
-         *  Phase 3 (2 → 2.85s): c2 rises; c1+c0 stack deeper
-         *
-         *  FAN-OUT  (3 → 4s)
-         *  All cards spread to their final 3-column positions.
-         */
-        const tl = gsap.timeline({
+        if (!h2) return;
+        if (!headingMarkupRef.current) headingMarkupRef.current = h2.innerHTML;
+        h2.innerHTML = headingMarkupRef.current;
+        const words = (h2.textContent || "").trim().split(/\s+/);
+        h2.innerHTML = words
+          .map((w) => `<span style="display:inline-block">${w}</span>`)
+          .join(" ");
+        const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
+        gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
+        gsap.to(wordEls, {
+          y: 0, opacity: 1, rotation: 0,
+          stagger: 0.1,
+          duration: 0.65,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: section,
+            trigger: h2,
             scroller,
-            start: "top 80%",
+            start: "top 85%",
             once: true,
           },
         });
+      };
 
-        /* Phase 1 */
-        tl.to(c0, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 0);
-
-        /* Phase 2 */
-        tl.to(c1, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 1);
-        tl.to(c0, { y: -20, scale: 0.91, rotation: -4, duration: 0.85, ease: "power2.inOut" }, 1);
-
-        /* Phase 3 */
-        tl.to(c2, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 2);
-        tl.to(c1, { y: -20, scale: 0.91, rotation: 3, duration: 0.85, ease: "power2.inOut" }, 2);
-        tl.to(c0, { y: -38, scale: 0.83, rotation: -7, duration: 0.85, ease: "power2.inOut" }, 2);
-
-        /* Phase 4 – fan out (desktop only; mobile keeps the stack) */
-        if (window.innerWidth > 640) {
-          tl.to(c0, { x: -364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
-          tl.to(c1, { x: 0, y: -16, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
-          tl.to(c2, { x: 364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
-        }
-
-        /* CTA fades in as cards settle */
-        if (cta) {
-          tl.to(cta, { opacity: 1, duration: 0.4, ease: "power2.out" }, 3.75);
-        }
-
-        /* ── Code-snippet typing animation ──────────────────────────
-         *
-         *  Each line is clipped from the right (inset 100% → 0%).
-         *  Left-to-right reveal mimics a typewriter.  Fires once when
-         *  the snippet enters the viewport; independent of the scrub TL.
-         */
+      const wireSnippetTyping = () => {
         const snippetEl  = codeSnippetRef.current;
         const codeLines  = codeLineRefs.current.filter(Boolean);
         const cursorEl   = cursorRef.current;
 
-        if (snippetEl && codeLines.length) {
-          gsap.set(codeLines, { clipPath: "inset(0 100% 0 0)" });
+        if (!snippetEl || !codeLines.length) return;
 
-          const typingTl = gsap.timeline({
+        gsap.set(codeLines, { clipPath: "inset(0 100% 0 0)" });
+
+        const typingTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: snippetEl,
+            scroller,
+            start: "top 82%",
+            once: true,
+          },
+        });
+
+        codeLines.forEach((line, i) => {
+          const chars   = (line as HTMLElement).textContent?.length ?? 20;
+          const dur     = Math.max(0.35, chars * 0.022);
+          typingTl.to(line, {
+            clipPath: "inset(0 0% 0 0)",
+            duration: dur,
+            ease: "none",
+          }, i * 0.55);
+        });
+
+        if (cursorEl) {
+          typingTl.set(cursorEl, { opacity: 1 }, ">");
+        }
+      };
+
+      if (typeof gsap.matchMedia === "function") {
+        const mq = gsap.matchMedia();
+
+        mq.add("(max-width: 768px)", () => {
+          const mobileEls: HTMLElement[] = [c0, c1, c2];
+          if (cta) mobileEls.push(cta);
+          gsap.set(mobileEls, { clearProps: true });
+
+          const ctx = gsap.context(() => {
+            wireHeadingWords();
+          }, section);
+
+          ST.refresh();
+          return () => ctx.revert();
+        });
+
+        mq.add("(min-width: 769px)", () => {
+          const ctx = gsap.context(() => {
+            gsap.set([c0, c1, c2], { x: 0, y: 90, opacity: 0, scale: 1, rotation: 0 });
+            gsap.set(c0, { zIndex: 1 });
+            gsap.set(c1, { zIndex: 2 });
+            gsap.set(c2, { zIndex: 3 });
+            if (cta) gsap.set(cta, { opacity: 0 });
+
+            wireHeadingWords();
+
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: section,
+                scroller,
+                start: "top 80%",
+                once: true,
+              },
+            });
+
+            tl.to(c0, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 0);
+            tl.to(c1, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 1);
+            tl.to(c0, { y: -20, scale: 0.91, rotation: -4, duration: 0.85, ease: "power2.inOut" }, 1);
+            tl.to(c2, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 2);
+            tl.to(c1, { y: -20, scale: 0.91, rotation: 3, duration: 0.85, ease: "power2.inOut" }, 2);
+            tl.to(c0, { y: -38, scale: 0.83, rotation: -7, duration: 0.85, ease: "power2.inOut" }, 2);
+            tl.to(c0, { x: -364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+            tl.to(c1, { x: 0, y: -16, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+            tl.to(c2, { x: 364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+            if (cta) {
+              tl.to(cta, { opacity: 1, duration: 0.4, ease: "power2.out" }, 3.75);
+            }
+
+            wireSnippetTyping();
+          }, section);
+
+          ST.refresh();
+          return () => ctx.revert();
+        });
+
+        revertAll = () => mq.revert();
+      } else {
+        /* Fallback — single desktop timeline */
+        const ctx = gsap.context(() => {
+          gsap.set([c0, c1, c2], { x: 0, y: 90, opacity: 0, scale: 1, rotation: 0 });
+          gsap.set(c0, { zIndex: 1 });
+          gsap.set(c1, { zIndex: 2 });
+          gsap.set(c2, { zIndex: 3 });
+          if (cta) gsap.set(cta, { opacity: 0 });
+          wireHeadingWords();
+          const tl = gsap.timeline({
             scrollTrigger: {
-              trigger: snippetEl,
+              trigger: section,
               scroller,
-              start: "top 82%",
+              start: "top 80%",
               once: true,
             },
           });
-
-          codeLines.forEach((line, i) => {
-            /* duration proportional to char count for consistent "speed" */
-            const chars   = (line as HTMLElement).textContent?.length ?? 20;
-            const dur     = Math.max(0.35, chars * 0.022);
-            typingTl.to(line, {
-              clipPath: "inset(0 0% 0 0)",
-              duration: dur,
-              ease: "none",
-            }, i * 0.55);
-          });
-
-          /* cursor blinks once last line finishes */
-          if (cursorEl) {
-            typingTl.set(cursorEl, { opacity: 1 }, ">");
+          tl.to(c0, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 0);
+          tl.to(c1, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 1);
+          tl.to(c0, { y: -20, scale: 0.91, rotation: -4, duration: 0.85, ease: "power2.inOut" }, 1);
+          tl.to(c2, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 2);
+          tl.to(c1, { y: -20, scale: 0.91, rotation: 3, duration: 0.85, ease: "power2.inOut" }, 2);
+          tl.to(c0, { y: -38, scale: 0.83, rotation: -7, duration: 0.85, ease: "power2.inOut" }, 2);
+          if (typeof window !== "undefined" && window.innerWidth > 640) {
+            tl.to(c0, { x: -364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+            tl.to(c1, { x: 0, y: -16, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
+            tl.to(c2, { x: 364, y: 32, scale: 1, rotation: 0, duration: 1, ease: "power2.inOut" }, 3);
           }
-        }
+          if (cta) {
+            tl.to(cta, { opacity: 1, duration: 0.4, ease: "power2.out" }, 3.75);
+          }
+          wireSnippetTyping();
+          ST.refresh();
+        }, section);
+        revertAll = () => ctx.revert();
+      }
 
-        ST.refresh();
-      }, section);
+      ST.refresh();
     };
 
     tryInit();
@@ -212,7 +231,7 @@ export function Services() {
     return () => {
       cancelled = true;
       clearTimeout(retryTimer);
-      gsapCtx?.revert();
+      revertAll?.();
     };
   }, []);
 

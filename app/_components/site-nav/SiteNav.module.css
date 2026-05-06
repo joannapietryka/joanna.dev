@@ -230,15 +230,48 @@
   }
 }
 
-@media (max-width: 640px) {
-  .header {
-    padding: 1.5rem 1.5rem;
+/*
+ * Touch / narrow viewports: never auto-hide the header — `nearTop` only
+ * updates from mousemove. Show hamburger from tablet widths down.
+ *
+ * Disable mix-blend-mode:difference here — it makes white-on-white bars from
+ * currentColor effectively disappear on light heroes (bars blend away).
+ */
+@media (max-width: 768px) {
+  .headerHidden {
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
   }
+
+  .header,
+  .header.headerGlassy {
+    mix-blend-mode: normal;
+    color: #0a0a0a;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.06); */
+    pointer-events: auto;
+    padding: 1rem 1.25rem;
+  }
+
   .navLinks {
     display: none;
   }
+
   .menuToggle {
     display: flex;
     align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    margin: -8px -6px -8px 0;
+  }
+
+  /* Explicit stroke colour — not tied to difference blending */
+  .menuToggle span,
+  .menuToggle span::before,
+  .menuToggle span::after {
+    background: #0a0a0a;
   }
 }

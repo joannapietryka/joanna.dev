@@ -289,11 +289,11 @@
 
 .centerTools {
   font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(10, 10, 10, 0.35);
+  color: #0a0a0a;
   line-height: 1;
 }
 

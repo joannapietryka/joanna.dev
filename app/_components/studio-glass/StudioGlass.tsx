@@ -259,6 +259,32 @@ export function StudioGlass() {
     return () => el.removeEventListener("scroll", update);
   }, []);
 
+  /* Hide “Scroll to explore” when the hero card is outside the scroll viewport (restore-scroll / deep links). */
+  useEffect(() => {
+    const root = scrollRef.current;
+    const hero = heroCardRef.current;
+    const hint = scrollHintRef.current;
+    if (!root || !hero || !hint) return;
+
+    const heroInScrollViewport = () => {
+      const rr = root.getBoundingClientRect();
+      const hr = hero.getBoundingClientRect();
+      return hr.bottom > rr.top + 2 && hr.top < rr.bottom - 2;
+    };
+
+    const sync = () => {
+      hint.classList.toggle(styles.scrollHintHidden, !heroInScrollViewport());
+    };
+
+    sync();
+    root.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      root.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
+
   /* ── GSAP: entrance + scroll-driven video scrub ───────────────────────── */
   useEffect(() => {
     const el = scrollRef.current;

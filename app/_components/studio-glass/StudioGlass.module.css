@@ -586,6 +586,11 @@
   opacity: 0; /* GSAP fades this in */
 }
 
+.scrollHintHidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .scrollHintText {
   font-size: 0.6rem;
   letter-spacing: 0.16em;
@@ -711,11 +716,12 @@
   /* ── layout ── */
   .main { padding: 0.75rem; }
 
-  .heroScrollSpace { padding-top: 1.5vh; }
+  /* Sit hero block lower under the fixed SiteNav */
+  .heroScrollSpace { padding-top: 3.25vh; }
 
   .glassAssembly {
-    height: 92vh;
-    top: 4vh;
+    height: 86vh;
+    top: 9vh;
   }
 
   /* ── card: column, video on top ── */
@@ -736,10 +742,10 @@
     right: auto;
     top: auto;
     width: 100%;
-    height: 40%;
+    height: 38%;
     flex-shrink: 0;
     order: -1;
-    padding: 1.5rem 1.5rem 0;
+    padding: 2rem 1.25rem 0;
     overflow: hidden;
   }
 
@@ -757,7 +763,7 @@
 
   /* ── copy area ── */
   .heroContent {
-    padding: 1.6rem 6% 0.5rem;
+    padding: 0.85rem 5% 0.35rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -771,30 +777,32 @@
 
   .titleOverlap {
     margin-left: 8%;
-    margin-top: -0.15em;
+    margin-top: -0.12em;
   }
 
   .titleAccent {
     margin-left: 16%;
-    margin-top: -0.15em;
+    margin-top: -0.12em;
   }
 
   .heroSubtitle {
-    margin-top: 0.9rem;
+    margin-top: 0.55rem;
     margin-left: 8%;
   }
 
-  /* ── CTA: full-width pill ── */
+  /* ── CTA: rounded-rectangle (glass-style corners), full width ── */
   .actionBtn {
     position: relative;
     bottom: auto;
     right: auto;
     width: calc(100% - 3.2rem);
-    margin: 0.5rem 1.6rem 1.8rem;
+    margin: 0.35rem 1.6rem 1.5rem;
     justify-content: center;
-    padding: 1.15rem 1.5rem;
+    padding: 1rem 1.5rem;
     font-size: 0.75rem;
-    border-radius: 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   }
 
   /* ── meta labels: pill style with status dot ── */
@@ -837,11 +845,11 @@
 
   .main { padding: 0.5rem; }
 
-  .heroScrollSpace { padding-top: 1vh; }
+  .heroScrollSpace { padding-top: 2.75vh; }
 
   .glassAssembly {
-    height: 94vh;
-    top: 3vh;
+    height: 87vh;
+    top: 8vh;
   }
 
   .heroTitle {
@@ -858,9 +866,10 @@
 
   .actionBtn {
     width: calc(100% - 2.5rem);
-    margin: 0.4rem 1.25rem 1.5rem;
-    padding: 1rem 1.25rem;
+    margin: 0.3rem 1.25rem 1.35rem;
+    padding: 0.95rem 1.25rem;
     font-size: 0.68rem;
+    border-radius: 14px;
   }
 
   .metaLabel {

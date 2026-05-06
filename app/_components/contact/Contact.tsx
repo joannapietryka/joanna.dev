@@ -136,7 +136,7 @@ export function Contact() {
           </div>
 
           <h2 ref={headingRef} className={styles.heading}>
-            Write me a message
+            Write me a&nbsp;message
           </h2>
 
           <p className={styles.body}>
@@ -181,7 +181,7 @@ export function Contact() {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </div>
-                <p className={styles.successTitle}>Message&nbsp;sent.</p>
+                <p className={styles.successTitle}>Message&nbsp;sent</p>
                 <p className={styles.successBody}>
                   Thanks for reaching out — I&rsquo;ll be in touch soon.
                 </p>
