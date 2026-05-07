@@ -168,7 +168,7 @@ const SERVICES = [
     lensGradient: "radial-gradient(circle at 30% 30%, #6495ED, #FF6B8B)",
     description:
       "Custom workflows that connect your tools and eliminate repetitive tasks — saving hours and reducing errors so you can focus on what actually matters. AI-powered where it counts.",
-    stack: ["n8n", "Make", "Zapier", "Python", "OpenAI", "APIs"],
+    stack: ["n8n", "Make", "Zapier", "OpenAI", "APIs"],
     phases: [
       {
         num: "01",
@@ -272,6 +272,12 @@ function ServicesContent() {
         <div className={`${styles.glowShape} ${styles.glow3}`} />
         <div className={`${styles.glowShape} ${styles.glow4}`} />
       </div>
+      {/* Mobile: same ambient stack as /work (orbs + grid, no spin ring) */}
+      <div className={styles.workAmbientMobile} aria-hidden>
+        <div className={styles.workOrb1} />
+        <div className={styles.workOrb2} />
+        <div className={styles.workGrid} />
+      </div>
       <div className={styles.noiseOverlay} />
 
       {/* main glass card */}
@@ -332,7 +338,7 @@ function ServicesContent() {
             </div>
           </div>
 
-          <Link href="/#contact" className={styles.startBtn}>
+          <Link href="/#contact" className={`${styles.startBtn} ${styles.startBtnPanel}`}>
             Start Project
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12" />
@@ -379,6 +385,15 @@ function ServicesContent() {
           </section>
         </div>
       </div>
+
+      {/* Mobile: outside .card so position:fixed isn’t trapped by backdrop-filter; desktop hidden */}
+      <Link href="/#contact" className={`${styles.startBtn} ${styles.startBtnDock}`}>
+        Start Project
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </Link>
     </div>
   );
 }

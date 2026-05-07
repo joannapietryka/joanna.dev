@@ -8,6 +8,13 @@
   background: #ffffff;
   color: #0a0a0a;
   position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-bottom: 50px;
+  }
 }
 
 /* ── Ambient background ────────────────────────────────────────────────────── */

@@ -57,11 +57,9 @@ export function Contact() {
       const h2 = headingRef.current;
       if (!h2) return;
       const scroller = document.getElementById("scroll-root") ?? undefined;
-      const words = (h2.textContent || "").trim().split(/\s+/);
-      h2.innerHTML = words
-        .map((w) => `<span style="display:inline-block">${w}</span>`)
-        .join(" ");
       const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
+      if (wordEls.length === 0) return;
+
       gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
       gsap.to(wordEls, {
         y: 0, opacity: 1, rotation: 0,
@@ -136,7 +134,9 @@ export function Contact() {
           </div>
 
           <h2 ref={headingRef} className={styles.heading}>
-            Write me a&nbsp;message
+            <span className={styles.headingPart}>Write</span>{" "}
+            <span className={styles.headingPart}>me</span>{" "}
+            <span className={`${styles.headingPart} ${styles.headingPhrase}`}>a message</span>
           </h2>
 
           <p className={styles.body}>

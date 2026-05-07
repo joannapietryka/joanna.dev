@@ -13,9 +13,10 @@ export function AboutMe() {
   const eyebrowRef   = useRef<HTMLDivElement>(null);
   const titleRef     = useRef<HTMLHeadingElement>(null);
   const leadRef      = useRef<HTMLParagraphElement>(null);
-  const cardGridRef  = useRef<HTMLDivElement>(null);
-  const aiCardRef    = useRef<HTMLDivElement>(null);
-  const lensRef      = useRef<HTMLDivElement>(null);
+  const cardGridRef    = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
+  const aiCardRef      = useRef<HTMLDivElement>(null);
+  const lensRef        = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let retryTimer: ReturnType<typeof setTimeout>;
@@ -39,9 +40,10 @@ export function AboutMe() {
         const eyebrow  = eyebrowRef.current;
         const title    = titleRef.current;
         const lead     = leadRef.current;
-        const cardGrid = cardGridRef.current;
-        const aiCard   = aiCardRef.current;
-        const lens     = lensRef.current;
+        const cardGrid      = cardGridRef.current;
+        const progressFill  = progressFillRef.current;
+        const aiCard        = aiCardRef.current;
+        const lens          = lensRef.current;
         const cards    = cardGrid ? Array.from(cardGrid.children) as HTMLElement[] : [];
 
         /* ── set initial hidden states ─────────────────────────────────── */
@@ -60,6 +62,14 @@ export function AboutMe() {
         }
         if (lead)    gsap.set(lead,    { y: 24,  opacity: 0 });
         if (cards.length) gsap.set(cards, { y: 32, scale: 0.9, opacity: 0 });
+        if (progressFill) {
+          gsap.set(progressFill, {
+            scaleX: 0,
+            transformOrigin: "left center",
+            force3D: true,
+            willChange: "transform",
+          });
+        }
         if (aiCard)  gsap.set(aiCard,  { y: 28,  opacity: 0 });
 
         /* ── timeline fires once when section enters viewport ──────────── */
@@ -107,6 +117,20 @@ export function AboutMe() {
             y: 0, scale: 1, opacity: 1,
             duration: 0.6, stagger: 0.1, ease: "back.out(1.2)",
           }, 0.6);
+        }
+
+        /* Progress fill — tied to grid reveal (stack card), no hover */
+        if (progressFill) {
+          tl.to(
+            progressFill,
+            {
+              scaleX: 1,
+              duration: 0.95,
+              ease: "power2.out",
+              onComplete: () => gsap.set(progressFill, { clearProps: "willChange" }),
+            },
+            0.72
+          );
         }
 
         /* AI card fades up */
@@ -203,7 +227,7 @@ export function AboutMe() {
           <div ref={cardGridRef} className={styles.cardGrid}>
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardLabel}>01 // Background</span>
+                <span className={styles.cardLabel}>// Background</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#b28dff" }} aria-hidden="true">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                   <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
@@ -223,7 +247,7 @@ export function AboutMe() {
 
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardLabel}>02 // Stack</span>
+                <span className={styles.cardLabel}>// Stack</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#4a6bff" }} aria-hidden="true">
                   <polygon points="12 2 2 7 12 12 22 7 12 2" />
                   <polyline points="2 17 12 22 22 17" />
@@ -237,7 +261,7 @@ export function AboutMe() {
               </p>
               <div className={styles.progressWrap}>
                 <div className={styles.progressBar}>
-                  <div className={styles.progressFill} />
+                  <div ref={progressFillRef} className={styles.progressFill} />
                 </div>
                 <div className={styles.progressLabels}>
                   <span>Frontend Mastery</span>

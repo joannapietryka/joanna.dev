@@ -89,6 +89,11 @@
   pointer-events: none;
 }
 
+/* Hidden on desktop — shown under @media (max-width: 900px), mirrors app/work/Work.module.css .bg */
+.workAmbientMobile {
+  display: none;
+}
+
 /* ── Main glass card ──────────────────────────────────────────────────────── */
 .card {
   position: relative;
@@ -388,6 +393,11 @@
   transform: translateX(4px);
 }
 
+/* Desktop-only CTA in panel / mobile duplicate hidden until breakpoint */
+.startBtnDock {
+  display: none;
+}
+
 /* ── Right detail panel ───────────────────────────────────────────────────── */
 .detailPanel {
   flex: 1;
@@ -551,25 +561,144 @@
 
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
+  /*
+   * body { overflow: hidden } — this layer must be the scroll container:
+   * fixed viewport + overflow-y auto. Single column: tabs → info → detail.
+   */
   .page {
-    padding-top: calc(1.5rem + 4vh);
+    align-items: stretch;
+    justify-content: flex-start;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding-top: calc(2rem + 4vh + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(6.25rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    background-color: #ffffff;
+  }
+
+  /* Same ambient as /work — fixed viewport layer while .page scrolls */
+  .ambientBg {
+    display: none;
+  }
+
+  .noiseOverlay {
+    display: none;
+  }
+
+  .workAmbientMobile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .workOrb1 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--color-1);
+    opacity: 0.18;
+    filter: blur(100px);
+    top: -10%;
+    left: 30%;
+    animation: servicesWorkFloat1 25s ease-in-out infinite alternate;
+  }
+
+  .workOrb2 {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: var(--color-3);
+    opacity: 0.12;
+    filter: blur(120px);
+    bottom: 10%;
+    right: -10%;
+    animation: servicesWorkFloat2 30s ease-in-out infinite alternate-reverse;
+  }
+
+  .workGrid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  @keyframes servicesWorkFloat1 {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    100% {
+      transform: translate(10%, 15%) scale(1.1);
+    }
+  }
+
+  @keyframes servicesWorkFloat2 {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    100% {
+      transform: translate(-10%, -10%) scale(1.15);
+    }
   }
 
   .card {
     flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-    border-radius: 0;
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    margin-top: 0.5rem;
+    border-radius: 28px 28px 0 0;
   }
 
+  /* Tabs first, then info (unchanged styles), then detail */
   .tabsRail {
+    order: 1;
     width: 100%;
     height: auto;
     flex-direction: row;
+    flex-shrink: 0;
     border-right: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding: 0.75rem 1rem;
     gap: 0.5rem;
+  }
+
+  .infoPanel {
+    order: 2;
+    width: 100%;
+    flex-shrink: 0;
+    padding: 1.5rem;
+    /* Match desktop opaque strip; drop horizontal-only shadow */
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.07);
+  }
+
+  .detailPanel {
+    order: 3;
+    flex: none;
+    width: 100%;
+    overflow: visible;
+    padding: 1.5rem;
+    padding-bottom: 6rem;
+    /* Same treatment as desktop right column — sits after info strip */
+    background: rgba(0, 0, 0, 0.01);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
   }
 
   .stepPanel {
@@ -586,13 +715,38 @@
     font-size: 0.6rem;
   }
 
-  .stepNum:last-child {
+  /* Tab labels only — hide 01 / 02 / 03 and slash on mobile */
+  .stepPanel .stepNum {
     display: none;
   }
 
-  .infoPanel {
-    width: 100%;
-    padding: 1.5rem;
+  .startBtnPanel {
+    display: none !important;
+  }
+
+  /* Sibling of .card — not clipped by backdrop-filter stacking */
+  .startBtnDock {
+    display: inline-flex;
+    position: fixed;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+    width: calc(100% - 2rem);
+    max-width: 420px;
+    justify-content: center;
+    z-index: 95;
+    box-shadow:
+      0 -10px 40px rgba(0, 0, 0, 0.08),
+      0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .startBtnDock:hover {
+    transform: translateX(-50%) scale(1.02);
+  }
+
+  .startBtnDock:hover svg {
+    transform: translateX(4px);
   }
 
   .serviceTitle {
@@ -602,16 +756,14 @@
   .phaseGrid {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 640px) {
-  .page {
-    padding-top: calc(0.75rem + 1.5vh);
+  .stackPills {
+    margin-bottom: 1.5rem;
   }
 }
 
-@media (max-width: 390px) {
-  .page {
-    padding-top: calc(0.5rem + 1vh);
+@media (min-width: 901px) {
+  .startBtnDock {
+    display: none !important;
   }
 }

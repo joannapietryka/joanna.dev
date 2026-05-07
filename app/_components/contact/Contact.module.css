@@ -136,8 +136,17 @@
   color: var(--text-primary);
 }
 
+/* Animated chunks — phrase stays on one line (GSAP no longer splits "a" / "message") */
+.headingPart {
+  display: inline-block;
+}
+
+.headingPhrase {
+  white-space: nowrap;
+}
+
 .body {
-  max-width: 38ch;
+  max-width: min(92vw, 50ch);
   font-size: 0.7rem;
   line-height: 1.75;
   color: #0a0a0a99;
@@ -503,6 +512,10 @@
   .left {
     gap: 1.1rem;
     padding-bottom: 1.5rem;
+  }
+
+  .cardLabelBr {
+    bottom: 0.5rem;
   }
 }
 

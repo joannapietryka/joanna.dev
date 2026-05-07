@@ -16,12 +16,45 @@ declare global {
     gsap: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ScrollTrigger: any;
+    /** Lenis UMD build (cdn.jsdelivr.net/npm/lenis/…/lenis.min.js) */
+    Lenis: new (options?: Record<string, unknown>) => {
+      destroy: () => void;
+      on: (event: string, callback: () => void) => void;
+      raf: (time: number) => void;
+      scrollTo: (target: number | HTMLElement, options?: Record<string, unknown>) => void;
+    };
   }
 }
 
 /* ── helpers ─────────────────────────────────────────────────────────────── */
 function clamp01(v: number) {
   return Math.max(0, Math.min(1, v));
+}
+
+function loadStylesheet(href: string, attr = "data-lenis"): Promise<void> {
+  return new Promise((res, rej) => {
+    if (document.querySelector(`link[${attr}][href="${href}"]`)) {
+      res();
+      return;
+    }
+    const l = document.createElement("link");
+    l.rel = "stylesheet";
+    l.href = href;
+    l.setAttribute(attr, "1");
+    l.onload = () => res();
+    l.onerror = () => rej(new Error(`Failed to load stylesheet ${href}`));
+    document.head.appendChild(l);
+  });
+}
+
+const LENIS_JS =
+  "https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js";
+const LENIS_CSS =
+  "https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.css";
+
+/** Smooth-step easing (ease-in-out) for Lenis programmatic scroll — MY_GSAP: sine-like feel */
+function easeInOutQuad(t: number): number {
+  return t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
 }
 
 function loadScript(src: string): Promise<void> {
@@ -210,6 +243,7 @@ let heroSubtitleRevealProgress = 0;
 export function StudioGlass() {
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<InstanceType<Window["Lenis"]> | null>(null);
   const heroCardRef = useRef<HTMLElement>(null);
   const heroScrollSpaceRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -222,8 +256,13 @@ export function StudioGlass() {
   const scrollToSection = (id: string) => {
     const scroller = scrollRef.current;
     const target = document.getElementById(id);
-    if (scroller && target) {
-      scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+    if (!scroller || !target) return;
+    const top = target.offsetTop;
+    const lenis = lenisRef.current;
+    if (lenis) {
+      lenis.scrollTo(top, { duration: 1.2, easing: easeInOutQuad });
+    } else {
+      scroller.scrollTo({ top, behavior: "smooth" });
     }
   };
 
@@ -233,9 +272,14 @@ export function StudioGlass() {
     if (!hash) return;
     const attempt = (tries = 0) => {
       const scroller = scrollRef.current;
-      const target   = document.getElementById(hash);
+      const target = document.getElementById(hash);
       if (scroller && target) {
-        scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+        const lenis = lenisRef.current;
+        if (lenis) {
+          lenis.scrollTo(target.offsetTop, { duration: 1.2, easing: easeInOutQuad });
+        } else {
+          scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+        }
       } else if (tries < 10) {
         setTimeout(() => attempt(tries + 1), 150);
       }
@@ -298,6 +342,7 @@ export function StudioGlass() {
     let cancelled = false;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gsapCtx: any = null;
+    let lenisTicker: ((time: number) => void) | null = null;
 
     const init = async () => {
       await loadScript(
@@ -310,6 +355,48 @@ export function StudioGlass() {
 
       const { gsap, ScrollTrigger } = window;
       gsap.registerPlugin(ScrollTrigger);
+
+      const content = el.querySelector("main");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (
+        !cancelled &&
+        !reduceMotion &&
+        typeof window.Lenis === "function" &&
+        content instanceof HTMLElement
+      ) {
+        try {
+          await loadStylesheet(LENIS_CSS);
+        } catch {
+          /* Lenis optional stylesheet — scroll still smooth without it */
+        }
+        await loadScript(LENIS_JS);
+        if (!cancelled && typeof window.Lenis === "function") {
+          const lenis = new window.Lenis({
+            wrapper: el,
+            content,
+            duration: 1.2,
+            easing: easeInOutQuad,
+            orientation: "vertical",
+            gestureOrientation: "vertical",
+            smoothWheel: true,
+          });
+
+          if (cancelled) {
+            lenis.destroy();
+          } else {
+            lenisRef.current = lenis;
+            lenis.on("scroll", ScrollTrigger.update);
+            lenisTicker = (time: number) => {
+              lenis.raf(time * 1000);
+            };
+            gsap.ticker.add(lenisTicker);
+            gsap.ticker.lagSmoothing(0);
+          }
+        }
+      }
+
+      if (cancelled) return;
 
       gsapCtx = gsap.context(() => {
         /* ── collect per-word char elements ──────────────────────────── */
@@ -621,6 +708,11 @@ export function StudioGlass() {
 
     return () => {
       cancelled = true;
+      if (lenisTicker) {
+        window.gsap?.ticker.remove(lenisTicker);
+      }
+      lenisRef.current?.destroy();
+      lenisRef.current = null;
       gsapCtx?.revert();
       /* heroEntrancePlayed is intentionally NOT reset here — it is module-level
          so it survives SPA navigation and prevents the entrance from replaying. */

@@ -122,6 +122,18 @@
   overflow: hidden;
 }
 
+/* Desktop-only container (mobile switches to cardsAfter flow) */
+.cardsInSticky {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Hidden on desktop; mobile turns this into a scrollable list after video */
+.cardsAfter {
+  display: none;
+}
+
 /* Ambient glow behind the canvas */
 .sticky::before {
   content: "";
@@ -317,12 +329,43 @@
     align-items: flex-start;
     justify-content: flex-start;
     padding-top: 0.25rem;
+    /* remove 100vh on mobile */
+    height: auto;
+    min-height: 0;
   }
 
   .canvasGroup {
     gap: 1rem;
     width: 100%;
     align-items: center;
+  }
+
+  .cardsInSticky {
+    display: none;
+  }
+
+  .cardsAfter {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem 0 0;
+  }
+
+  .cardsAfter .annotationCard {
+    position: relative;
+    top: auto;
+    translate: none;
+    left: auto;
+    right: auto;
+    width: min(100%, 520px);
+    margin: 0 auto;
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .cardsAfter .cardDesc {
+    display: block;
   }
 
   .canvasWrap {

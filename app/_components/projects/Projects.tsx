@@ -195,6 +195,7 @@ export function Projects() {
       if (!section || !scrollSpace) return;
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
+      const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
 
       gsapCtx = gsap.context(() => {
 
@@ -223,12 +224,14 @@ export function Projects() {
           });
         }
 
-        /* ── annotation cards – initialise to hidden state ──────────── */
-        cardRefs.current.forEach((el) => {
-          if (!el) return;
-          el.style.opacity   = "0";
-          el.style.transform = "translateY(16px)";
-        });
+        /* ── annotation cards – desktop only (mobile renders below the scrub) */
+        if (!isMobile) {
+          cardRefs.current.forEach((el) => {
+            if (!el) return;
+            el.style.opacity   = "0";
+            el.style.transform = "translateY(16px)";
+          });
+        }
 
         /* ── scrub proxy → video progress + card visibility ─────────── */
         const proxy = { value: 0 };
@@ -240,19 +243,20 @@ export function Projects() {
           ease: "none",
           onUpdate() {
             progressRef.current = proxy.value;
-
-            /* update annotation card visibility */
-            const p = proxy.value;
-            ANNOTATIONS.forEach((ann, i) => {
-              const el      = cardRefs.current[i];
-              if (!el) return;
-              const visible = p >= ann.show && p < ann.hide;
-              /* deduplicate: only write inline styles when state changes */
-              if (visible === lastVisibleRef.current[i]) return;
-              lastVisibleRef.current[i] = visible;
-              el.style.opacity   = visible ? "1" : "0";
-              el.style.transform = visible ? "translateY(0)" : "translateY(16px)";
-            });
+            if (!isMobile) {
+              /* update annotation card visibility */
+              const p = proxy.value;
+              ANNOTATIONS.forEach((ann, i) => {
+                const el      = cardRefs.current[i];
+                if (!el) return;
+                const visible = p >= ann.show && p < ann.hide;
+                /* deduplicate: only write inline styles when state changes */
+                if (visible === lastVisibleRef.current[i]) return;
+                lastVisibleRef.current[i] = visible;
+                el.style.opacity   = visible ? "1" : "0";
+                el.style.transform = visible ? "translateY(0)" : "translateY(16px)";
+              });
+            }
           },
         });
 
@@ -260,8 +264,12 @@ export function Projects() {
           animation: tl,
           trigger: scrollSpace,
           scroller,
-          start: "top top",
-          end:   "bottom bottom",
+          /*
+           * Mobile: start earlier (as soon as it enters viewport) and
+           * finish before it slides under the fixed menu.
+           */
+          start: isMobile ? "top 85%" : "top top",
+          end:   isMobile ? "bottom 35%" : "bottom bottom",
           scrub: 1,
         });
 
@@ -314,20 +322,37 @@ export function Projects() {
           </div>
 
           {/* ── Annotation cards ────────────────────────────────────── */}
-          {ANNOTATIONS.map((ann, i) => (
-            <div
-              key={ann.index}
-              ref={(el) => { cardRefs.current[i] = el; }}
-              className={`${styles.annotationCard} ${ann.side === "right" ? styles.cardRight : styles.cardLeft}`}
-            >
-              <div className={styles.cardIndex}>{ann.index}</div>
-              <h3 className={styles.cardTitle}>{ann.title}</h3>
-              <p className={styles.cardDesc}>{ann.desc}</p>
-              <div className={styles.cardStat}>{ann.stat}</div>
-            </div>
-          ))}
+          <div className={styles.cardsInSticky}>
+            {ANNOTATIONS.map((ann, i) => (
+              <div
+                key={ann.index}
+                ref={(el) => { cardRefs.current[i] = el; }}
+                className={`${styles.annotationCard} ${ann.side === "right" ? styles.cardRight : styles.cardLeft}`}
+              >
+                <div className={styles.cardIndex}>{ann.index}</div>
+                <h3 className={styles.cardTitle}>{ann.title}</h3>
+                <p className={styles.cardDesc}>{ann.desc}</p>
+                <div className={styles.cardStat}>{ann.stat}</div>
+              </div>
+            ))}
+          </div>
 
         </div>
+      </div>
+
+      {/* Mobile: cards appear after the scroll-scrub video section */}
+      <div className={styles.cardsAfter}>
+        {ANNOTATIONS.map((ann) => (
+          <div
+            key={`after-${ann.index}`}
+            className={styles.annotationCard}
+          >
+            <div className={styles.cardIndex}>{ann.index}</div>
+            <h3 className={styles.cardTitle}>{ann.title}</h3>
+            <p className={styles.cardDesc}>{ann.desc}</p>
+            <div className={styles.cardStat}>{ann.stat}</div>
+          </div>
+        ))}
       </div>
 
     </section>

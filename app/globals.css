@@ -42,3 +42,11 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Bottom breathing room on mobile — avoids content clipped above home indicator / chrome */
+@media (max-width: 768px) {
+  #scroll-root {
+    padding-bottom: 50px;
+    box-sizing: border-box;
+  }
+}

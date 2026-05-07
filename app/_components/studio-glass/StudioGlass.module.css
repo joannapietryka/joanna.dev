@@ -687,6 +687,7 @@
 
   .heroTitle {
     font-size: clamp(2.8rem, 8vw, 5rem);
+    margin: 1.5rem 0;
   }
 
   .photoContainer {
@@ -746,7 +747,6 @@
     flex-shrink: 0;
     order: -1;
     padding: 2rem 1.25rem 0;
-    overflow: hidden;
   }
 
   /*
@@ -764,7 +764,6 @@
   /* ── copy area ── */
   .heroContent {
     padding: 0.85rem 5% 0.35rem;
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -796,7 +795,7 @@
     bottom: auto;
     right: auto;
     width: calc(100% - 3.2rem);
-    margin: 0.35rem 1.6rem 1.5rem;
+    margin: 2rem 1.6rem 1.5rem;
     justify-content: center;
     padding: 1rem 1.5rem;
     font-size: 0.75rem;
@@ -866,7 +865,7 @@
 
   .actionBtn {
     width: calc(100% - 2.5rem);
-    margin: 0.3rem 1.25rem 1.35rem;
+    margin: 2.5em 1.25rem 1.35rem;
     padding: 0.95rem 1.25rem;
     font-size: 0.68rem;
     border-radius: 14px;
