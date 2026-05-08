@@ -332,6 +332,7 @@
     /* remove 100vh on mobile */
     height: auto;
     min-height: 0;
+    overflow: visible;
   }
 
   .canvasGroup {

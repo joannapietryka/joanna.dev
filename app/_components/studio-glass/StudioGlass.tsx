@@ -9,7 +9,7 @@ import { Services } from "../services/Services";
 import { SiteNav } from "../site-nav/SiteNav";
 import styles from "./StudioGlass.module.css";
 
-/* ── global GSAP types (CDN) ─────────────────────────────────────────────── */
+/* ── global types (optional CDN / in-app webview safety) ─────────────────── */
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -343,6 +343,7 @@ export function StudioGlass() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gsapCtx: any = null;
     let lenisTicker: ((time: number) => void) | null = null;
+    let gsapApi: { ticker: { add: (fn: (t: number) => void) => void; remove: (fn: (t: number) => void) => void; lagSmoothing: (v: number) => void }; set: (...args: any[]) => void } | null = null;
 
     const revealStaticHero = () => {
       // If GSAP/CDN fails (common in in-app iOS webviews), the hero defaults to:
@@ -374,19 +375,28 @@ export function StudioGlass() {
     };
 
     const init = async () => {
-      await loadScript(
-        "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-      );
-      await loadScript(
-        "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
-      );
+      /*
+       * iOS (and in-app webviews) can be slow or flaky with 3rd-party CDNs.
+       * Prefer bundling GSAP via npm (dynamic import = split chunk, same origin).
+       */
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
       if (cancelled) return;
-
-      const { gsap, ScrollTrigger } = window;
+      gsapApi = gsap;
       gsap.registerPlugin(ScrollTrigger);
 
       const content = el.querySelector("main");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // If animation setup takes too long (slow iPhone), reveal something ASAP.
+      // If/when GSAP finishes loading, we’ll snap to final state via heroEntrancePlayed.
+      const fallbackTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        heroEntrancePlayed = true;
+        revealStaticHero();
+      }, 700);
 
       if (
         !cancelled &&
@@ -428,6 +438,7 @@ export function StudioGlass() {
       if (cancelled) return;
 
       gsapCtx = gsap.context(() => {
+        window.clearTimeout(fallbackTimer);
         /* ── collect per-word char elements ──────────────────────────── */
         const wordEls = Array.from(
           title.querySelectorAll("[data-word]")
@@ -741,7 +752,7 @@ export function StudioGlass() {
     return () => {
       cancelled = true;
       if (lenisTicker) {
-        window.gsap?.ticker.remove(lenisTicker);
+        gsapApi?.ticker.remove(lenisTicker);
       }
       lenisRef.current?.destroy();
       lenisRef.current = null;

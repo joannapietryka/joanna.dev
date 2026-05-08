@@ -721,7 +721,7 @@
   .heroScrollSpace { padding-top: 3.25vh; }
 
   .glassAssembly {
-    height: 86vh;
+    height: auto;
     top: 9vh;
   }
 
@@ -731,6 +731,7 @@
     align-items: stretch;
     justify-content: flex-start;
     border-radius: 32px;
+    height: auto;
   }
 
   /*
@@ -743,7 +744,9 @@
     right: auto;
     top: auto;
     width: 100%;
-    height: 38%;
+    /* Keep scrub canvas height stable even when hero container is auto-height */
+    height: min(42vh, 420px);
+    min-height: 300px;
     flex-shrink: 0;
     order: -1;
     padding: 2rem 1.25rem 0;
@@ -848,7 +851,7 @@
 
   .glassAssembly {
     height: 87vh;
-    top: 8vh;
+    top: 10vh;
   }
 
   .heroTitle {
