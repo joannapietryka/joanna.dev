@@ -2,12 +2,13 @@ import type {Metadata} from 'next';
 
 import {ServicesPageClient} from './ServicesPageClient';
 
-export function generateMetadata({
+export async function generateMetadata({
   params
 }: {
-  params: {locale: string};
-}): Metadata {
-  const isFr = params.locale === 'fr';
+  params: Promise<{locale: string}>;
+}): Promise<Metadata> {
+  const {locale} = await params;
+  const isFr = locale === 'fr';
   const path = '/services';
 
   return {
@@ -16,9 +17,9 @@ export function generateMetadata({
       ? 'Services — sites web, apps et automatisations.'
       : 'Services — websites, apps, and automations.',
     alternates: {
-      canonical: isFr ? `/fr${path}` : path,
+      canonical: `/${locale}${path}`,
       languages: {
-        en: path,
+        en: `/en${path}`,
         fr: `/fr${path}`
       }
     }

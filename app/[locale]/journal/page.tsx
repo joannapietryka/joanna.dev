@@ -1,19 +1,20 @@
 import type {Metadata} from 'next';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
 
-export function generateMetadata({
+export async function generateMetadata({
   params
 }: {
-  params: {locale: string};
-}): Metadata {
-  const isFr = params.locale === 'fr';
+  params: Promise<{locale: string}>;
+}): Promise<Metadata> {
+  const {locale} = await params;
+  const isFr = locale === 'fr';
   const path = '/journal';
   return {
     title: isFr ? 'Journal — joanna.dev' : 'Journal — joanna.dev',
     description: isFr ? 'Journal (bientôt disponible).' : 'Journal (coming soon).',
     alternates: {
-      canonical: isFr ? `/fr${path}` : path,
-      languages: {en: path, fr: `/fr${path}`}
+      canonical: `/${locale}${path}`,
+      languages: {en: `/en${path}`, fr: `/fr${path}`}
     }
   };
 }

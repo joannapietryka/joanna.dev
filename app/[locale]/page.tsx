@@ -1,19 +1,20 @@
 import type {Metadata} from 'next';
 import {StudioGlass} from '../_components/studio-glass/StudioGlass';
 
-export function generateMetadata({
+export async function generateMetadata({
   params
 }: {
-  params: {locale: string};
-}): Metadata {
-  const isFr = params.locale === 'fr';
+  params: Promise<{locale: string}>;
+}): Promise<Metadata> {
+  const {locale} = await params;
+  const isFr = locale === 'fr';
   return {
     title: 'joanna.dev',
     description: isFr ? 'joanna.dev – Créatrice de produits digitaux' : 'joanna.dev – Digital Product Builder',
     alternates: {
-      canonical: isFr ? '/fr' : '/',
+      canonical: isFr ? '/fr' : '/en',
       languages: {
-        en: '/',
+        en: '/en',
         fr: '/fr'
       }
     }

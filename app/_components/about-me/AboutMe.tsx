@@ -111,6 +111,17 @@ export function AboutMe() {
             });
           }
 
+          // Glass lens float (fix: was skipped by early return on mobile).
+          if (lens) {
+            gsap.to(lens, {
+              y: -14,
+              duration: 1.8,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          }
+
           // Title (fix: word-split spans were left hidden on mobile).
           if (titleWords.length && title) {
             gsap.to(titleWords, {

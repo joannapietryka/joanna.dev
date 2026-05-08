@@ -1,9 +1,10 @@
 "use client";
 
+import {useLocale} from "next-intl";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { SiteNav } from "../../_components/site-nav/SiteNav";
+import {useSearchParams} from "next/navigation";
+import {Suspense, useEffect, useState} from "react";
+import {SiteNav} from "../../_components/site-nav/SiteNav";
 import styles from "../../services/ServicesPage.module.css";
 
 /* ── Service data ─────────────────────────────────────────────────────────── */
@@ -74,15 +75,14 @@ const SERVICES = [
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path d="M4 4h16v16H4z" />
-            <path d="M4 9h16" />
-            <path d="M9 9v11" />
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
           </svg>
         ),
       },
       {
         title: "Figma Source Files",
-        desc: "Every component, token, and layout delivered in a clean, reusable Figma system.",
+        desc: "The complete design system with components, styles, and interactive prototypes.",
         icon: (
           <svg
             width="20"
@@ -92,14 +92,15 @@ const SERVICES = [
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path d="M12 2v20" />
-            <path d="M2 12h20" />
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
           </svg>
         ),
       },
       {
         title: "Performance Report",
-        desc: "Speed, accessibility, SEO — audited and delivered with actionable insights.",
+        desc: "Lighthouse audit, Core Web Vitals baseline, and a list of ongoing optimisation recommendations.",
         icon: (
           <svg
             width="20"
@@ -109,8 +110,7 @@ const SERVICES = [
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path d="M3 3v18h18" />
-            <path d="M7 14l3-3 4 4 6-6" />
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
           </svg>
         ),
       },
@@ -119,36 +119,36 @@ const SERVICES = [
   {
     id: "apps",
     index: "02",
-    tabLabel: "Web Apps",
+    tabLabel: "App Dev",
     title: "Apps",
-    lensGradient: "radial-gradient(circle at 30% 30%, #FF4D88, #FFB84D)",
+    lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
     description:
-      "Full-stack web apps built for clarity and speed. From dashboards to internal tools — designed, engineered, and shipped with clean UX and reliable code.",
-    stack: ["Next.js", "TypeScript", "Postgres", "Supabase", "Stripe", "Vercel"],
+      "Complex problems require simple solutions. I design and build full-stack web applications that are as powerful as they are intuitive. From initial discovery to final deployment, I handle the entire product lifecycle.",
+    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Figma"],
     phases: [
       {
         num: "01",
         label: "Phase 01",
         title: "Discovery & Logic",
-        body: "We map the user journey, data model, and core flows — then define the cleanest path to an MVP.",
+        body: "Mapping out user flows, data architecture, and technical requirements. We define the 'why' before the 'how'.",
       },
       {
         num: "02",
         label: "Phase 02",
         title: "Interface Systems",
-        body: "Component-based UI design in Figma with a scalable system for future iterations.",
+        body: "Designing a scalable UI kit and high-fidelity prototypes. Clean, accessible, and brand-aligned interfaces.",
       },
       {
         num: "03",
         label: "Phase 03",
         title: "Production Build",
-        body: "A robust Next.js codebase built with performance, scalability, and developer experience in mind.",
+        body: "Writing clean, performant code. Building the frontend, setting up the backend, and integrating APIs.",
       },
       {
         num: "04",
         label: "Phase 04",
         title: "QA & Handover",
-        body: "Full testing, deployment setup, and documentation. You get the full repo and everything needed to scale.",
+        body: "Rigorous testing across devices, speed optimisation, and deployment to a production-ready environment.",
       },
     ],
     deliverables: [
@@ -171,7 +171,7 @@ const SERVICES = [
       },
       {
         title: "Admin Panels",
-        desc: "CMS-like interfaces to manage content, users, and workflows without engineering support.",
+        desc: "Internal dashboards to manage content, users, and workflows without engineering support.",
         icon: (
           <svg
             width="20"
@@ -187,8 +187,8 @@ const SERVICES = [
         ),
       },
       {
-        title: "Security Pack",
-        desc: "Auth, permissions, and best-practice hardening baked into the build.",
+        title: "Auth & Security",
+        desc: "Secure authentication flows and role-based access control.",
         icon: (
           <svg
             width="20"
@@ -204,8 +204,8 @@ const SERVICES = [
         ),
       },
       {
-        title: "Figma Files",
-        desc: "Design source files with tokens, components, and responsive layouts for every screen.",
+        title: "Handover Pack",
+        desc: "Docs, walkthrough, and deployment checklist so your team can scale fast.",
         icon: (
           <svg
             width="20"
@@ -215,8 +215,9 @@ const SERVICES = [
             stroke="currentColor"
             strokeWidth="2"
           >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 2v20" />
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
         ),
       },
@@ -227,34 +228,34 @@ const SERVICES = [
     index: "03",
     tabLabel: "Automation",
     title: "Automations",
-    lensGradient: "radial-gradient(circle at 30% 30%, #4DFFB5, #4DD2FF)",
+    lensGradient: "radial-gradient(circle at 30% 30%, #E8F0FF, #FF6B8B)",
     description:
-      "Automate the repetitive stuff. From email flows to internal ops — systems that save hours, reduce mistakes, and keep your business running clean.",
+      "Automations that connect your tools and eliminate repetitive tasks. From onboarding sequences to internal operations — systems that save hours and reduce mistakes.",
     stack: ["Make", "Zapier", "n8n", "Notion", "Airtable", "Slack"],
     phases: [
       {
         num: "01",
         label: "Phase 01",
         title: "Process Audit",
-        body: "We identify bottlenecks and repetitive tasks, then map your workflow end-to-end.",
+        body: "Identify bottlenecks and repetitive tasks. Map the workflow end-to-end.",
       },
       {
         num: "02",
         label: "Phase 02",
         title: "Flow Architecture",
-        body: "We design automations with error handling, logging, and scalable structure — not fragile hacks.",
+        body: "Design automation flows with logging, error handling, and scalability in mind.",
       },
       {
         num: "03",
         label: "Phase 03",
         title: "Build & Test",
-        body: "Automations are built, tested, and iterated in real conditions until they're rock solid.",
+        body: "Build the automation and test it in real conditions until it's reliable.",
       },
       {
         num: "04",
         label: "Phase 04",
         title: "Handover & Monitor",
-        body: "You get full documentation + training. We also set up monitoring so failures never go unseen.",
+        body: "Documentation + training, plus monitoring so failures never go unseen.",
       },
     ],
     deliverables: [
@@ -312,7 +313,7 @@ const SERVICES = [
       },
       {
         title: "Training Session",
-        desc: "Walkthrough training so you can confidently manage everything yourself.",
+        desc: "A walkthrough so you can confidently manage everything yourself.",
         icon: (
           <svg
             width="20"
@@ -329,147 +330,217 @@ const SERVICES = [
       },
     ],
   },
-];
+] as const;
 
+/* ── Inner component (uses useSearchParams — must be inside Suspense) ─────── */
 function ServicesContent() {
+  const locale = useLocale();
+  const prefix = `/${locale}`;
   const searchParams = useSearchParams();
-  const initial = searchParams.get("service") || "websites";
-  const [activeId, setActiveId] = useState(initial);
-  const active = SERVICES.find((s) => s.id === activeId) || SERVICES[0];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [animKey, setAnimKey] = useState(0);
 
+  /* sync active tab with ?tab= URL param on mount */
   useEffect(() => {
-    setActiveId(initial);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initial]);
+    const tab = searchParams.get("tab");
+    if (!tab) return;
+    const idx = SERVICES.findIndex((s) => s.id === tab);
+    if (idx >= 0) {
+      setActiveIndex(idx);
+      setAnimKey((k) => k + 1);
+    }
+  }, [searchParams]);
+
+  const service = SERVICES[activeIndex];
+
+  function selectTab(i: number) {
+    if (i === activeIndex) return;
+    setActiveIndex(i);
+    setAnimKey((k) => k + 1);
+  }
 
   return (
     <div className={styles.page}>
       <SiteNav />
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <div className={styles.eyebrow}>
-            <div className={styles.eyebrowLine} />
-            <span className={styles.eyebrowText}>Services</span>
+
+      {/* ambient background */}
+      <div className={styles.ambientBg}>
+        <div className={`${styles.glowShape} ${styles.glow1}`} />
+        <div className={`${styles.glowShape} ${styles.glow2}`} />
+        <div className={`${styles.glowShape} ${styles.glow3}`} />
+        <div className={`${styles.glowShape} ${styles.glow4}`} />
+      </div>
+
+      {/* Mobile: same ambient stack as /work (orbs + grid, no spin ring) */}
+      <div className={styles.workAmbientMobile} aria-hidden>
+        <div className={styles.workOrb1} />
+        <div className={styles.workOrb2} />
+        <div className={styles.workGrid} />
+      </div>
+
+      <div className={styles.noiseOverlay} />
+
+      {/* main glass card */}
+      <div className={styles.card}>
+        {/* ── Left accordion tabs ─────────────────────────────────────── */}
+        <div className={styles.tabsRail}>
+          {SERVICES.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              className={`${styles.stepPanel} ${
+                i === activeIndex ? styles.active : ""
+              }`}
+              onClick={() => selectTab(i)}
+              aria-selected={i === activeIndex}
+            >
+              <span className={styles.stepNum}>{s.index}</span>
+              <span className={styles.stepLabel}>{s.tabLabel}</span>
+              <span className={styles.stepNum}>/</span>
+            </button>
+          ))}
+        </div>
+
+        {/* ── Middle info panel ───────────────────────────────────────── */}
+        <div className={styles.infoPanel}>
+          <div
+            key={`tag-${animKey}`}
+            className={`${styles.serviceTag} ${styles.contentEnter}`}
+          >
+            <div className={styles.tagLens}>
+              <div
+                className={styles.tagLensCore}
+                style={{ background: service.lensGradient }}
+              />
+              <div className={styles.tagLensNoise} aria-hidden="true" />
+            </div>
+            <span className={styles.tagText}>Service: {service.index}</span>
           </div>
 
-          <h1 className={styles.title}>What I build</h1>
-          <p className={styles.lead}>
-            One person. Full-stack. Designed and shipped fast — with strategy,
-            clarity, and polish.
+          <h1
+            key={`title-${animKey}`}
+            className={`${styles.serviceTitle} ${styles.contentEnter}`}
+          >
+            {service.title}
+            <span className={styles.serviceTitleGhost} aria-hidden="true">
+              {service.index}
+            </span>
+          </h1>
+
+          <p
+            key={`desc-${animKey}`}
+            className={`${styles.serviceDesc} ${styles.contentEnter}`}
+          >
+            {service.description}
           </p>
-        </div>
 
-        <div className={styles.tabsRow}>
-          <div className={styles.tabs}>
-            {SERVICES.map((s) => (
-              <button
-                key={s.id}
-                className={`${styles.tab} ${
-                  activeId === s.id ? styles.tabActive : ""
-                }`}
-                onClick={() => setActiveId(s.id)}
-              >
-                <span className={styles.tabIdx}>{s.index}</span>
-                <span className={styles.tabLabel}>{s.tabLabel}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <section className={styles.panel}>
-          <div className={styles.panelTop}>
-            <div
-              className={styles.panelLens}
-              style={{ background: active.lensGradient }}
-            />
-            <div className={styles.panelInfo}>
-              <h2 className={styles.panelTitle}>{active.title}</h2>
-              <p className={styles.panelDesc}>{active.description}</p>
-              <div className={styles.stackRow}>
-                {active.stack.map((t) => (
-                  <span key={t} className={styles.stackPill}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.phaseGrid}>
-            {active.phases.map((p) => (
-              <article key={p.num} className={styles.phaseCard}>
-                <div className={styles.phaseTop}>
-                  <span className={styles.phaseNum}>{p.num}</span>
-                  <span className={styles.phaseLabel}>{p.label}</span>
-                </div>
-                <h3 className={styles.phaseTitle}>{p.title}</h3>
-                <p className={styles.phaseBody}>{p.body}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className={styles.deliverables}>
-            <div className={styles.deliverablesTop}>
-              <h3 className={styles.deliverablesTitle}>Deliverables</h3>
-              <Link href="/#contact" className={styles.cta}>
-                Start a project
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </Link>
-            </div>
-            <div className={styles.deliverablesGrid}>
-              {active.deliverables.map((d) => (
-                <div key={d.title} className={styles.deliverableCard}>
-                  <div className={styles.deliverableIcon}>{d.icon}</div>
-                  <div className={styles.deliverableText}>
-                    <div className={styles.deliverableName}>{d.title}</div>
-                    <div className={styles.deliverableDesc}>{d.desc}</div>
-                  </div>
-                </div>
+          <div key={`stack-${animKey}`} className={styles.contentEnter}>
+            <h3 className={styles.stackLabel}>
+              Tech Stack
+              <span className={styles.stackLabelLine} />
+            </h3>
+            <div className={styles.stackPills}>
+              {service.stack.map((pill) => (
+                <span key={pill} className={styles.stackPill}>
+                  {pill}
+                </span>
               ))}
             </div>
           </div>
 
-          <div className={styles.bottomCta}>
-            <Link href="/#contact" className={styles.bottomBtn}>
-              Contact me
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </Link>
-            <p className={styles.bottomNote}>
-              Prefer email?{" "}
-              <a href="mailto:hello@joanna.dev" className={styles.inlineLink}>
-                hello@joanna.dev
-              </a>
-            </p>
-          </div>
-        </section>
-      </main>
+          <a
+            href={`${prefix}#contact`}
+            className={`${styles.startBtn} ${styles.startBtnPanel}`}
+          >
+            Start Project
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+        </div>
+
+        {/* ── Right detail panel ─────────────────────────────────────── */}
+        <div className={styles.detailPanel}>
+          {/* process phases */}
+          <section style={{ marginBottom: "3.5rem" }}>
+            <div key={`phase-heading-${animKey}`} className={styles.contentEnter}>
+              <p className={styles.sectionHeading}>The Build Process</p>
+            </div>
+            <div className={styles.phaseGrid}>
+              {service.phases.map((phase) => (
+                <div
+                  key={`${service.id}-${phase.num}-${animKey}`}
+                  className={`${styles.phaseCard} ${styles.contentEnter}`}
+                >
+                  <div className={styles.phaseNum} aria-hidden="true">
+                    {phase.num}
+                  </div>
+                  <p className={styles.phaseLabel}>{phase.label}</p>
+                  <h4 className={styles.phaseTitle}>{phase.title}</h4>
+                  <p className={styles.phaseBody}>{phase.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* deliverables */}
+          <section>
+            <div key={`deliv-heading-${animKey}`} className={styles.contentEnter}>
+              <p className={styles.sectionHeading}>Deliverables</p>
+            </div>
+            <div className={styles.deliverablesList}>
+              {service.deliverables.map((d) => (
+                <div
+                  key={`${service.id}-${d.title}-${animKey}`}
+                  className={`${styles.deliverableItem} ${styles.contentEnter}`}
+                >
+                  <div className={styles.deliverableIcon}>{d.icon}</div>
+                  <div>
+                    <p className={styles.deliverableTitle}>{d.title}</p>
+                    <p className={styles.deliverableDesc}>{d.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* Mobile: outside .card so position:fixed isn’t trapped by backdrop-filter; desktop hidden */}
+      <a
+        href={`${prefix}#contact`}
+        className={`${styles.startBtn} ${styles.startBtnDock}`}
+      >
+        Start Project
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          aria-hidden="true"
+        >
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </a>
     </div>
   );
 }
 
 export function ServicesPageClient() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <ServicesContent />
     </Suspense>
   );
