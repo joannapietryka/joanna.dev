@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import {useTranslations} from 'next-intl';
+import {Link} from '@/i18n/navigation';
 import { useEffect, useRef, useState } from "react";
 import styles from "./Projects.module.css";
 
@@ -12,39 +13,40 @@ function clamp01(v: number) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Gsap = any;
 
-/* ── Annotation card data ────────────────────────────────────────────────── */
-const ANNOTATIONS = [
-  {
-    index: "01",
-    title: "Brief Received",
-    desc: "Every build starts with listening. Goals, users, constraints — all mapped before a single line of code.",
-    stat: "Discovery first",
-    side: "left" as const,
-    show: 0.0,
-    hide: 0.32,
-  },
-  {
-    index: "02",
-    title: "Design & Build",
-    desc: "One person. No agency bloat. Tight feedback loops, rapid iterations, pixel-perfect delivery.",
-    stat: "2–4 wk sprint",
-    side: "right" as const,
-    show: 0.37,
-    hide: 0.67,
-  },
-  {
-    index: "03",
-    title: "Shipped & Live",
-    desc: "Optimised, tested, handed over. Ready to scale from day one — zero hand-holding required.",
-    stat: "> 90 Lighthouse",
-    side: "left" as const,
-    show: 0.72,
-    hide: 1.0,
-  },
-] as const;
-
 /* ── Projects component ──────────────────────────────────────────────────── */
 export function Projects() {
+  const t = useTranslations('Projects');
+
+  const annotations = [
+    {
+      index: '01',
+      title: t('annotations.brief.title'),
+      desc: t('annotations.brief.desc'),
+      stat: t('annotations.brief.stat'),
+      side: 'left' as const,
+      show: 0.0,
+      hide: 0.32
+    },
+    {
+      index: '02',
+      title: t('annotations.design.title'),
+      desc: t('annotations.design.desc'),
+      stat: t('annotations.design.stat'),
+      side: 'right' as const,
+      show: 0.37,
+      hide: 0.67
+    },
+    {
+      index: '03',
+      title: t('annotations.shipped.title'),
+      desc: t('annotations.shipped.desc'),
+      stat: t('annotations.shipped.stat'),
+      side: 'left' as const,
+      show: 0.72,
+      hide: 1.0
+    }
+  ] as const;
+
   const sectionRef     = useRef<HTMLElement>(null);
   const scrollSpaceRef = useRef<HTMLDivElement>(null);
   const canvasRef      = useRef<HTMLCanvasElement>(null);
@@ -198,9 +200,31 @@ export function Projects() {
       const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
 
       gsapCtx = gsap.context(() => {
+        const revealInView = (el: HTMLElement | null, delay = 0) => {
+          if (!el) return;
+          gsap.set(el, { y: 22, opacity: 0 });
+          gsap.to(el, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out",
+            delay,
+            scrollTrigger: {
+              trigger: el,
+              scroller,
+              start: "top 85%",
+              once: true,
+            },
+          });
+        };
 
         /* ── heading word-split stagger (hero-style) ─────────────────── */
         if (heading) {
+          if (isMobile) {
+            const tags = heading.querySelectorAll<HTMLElement>(`.${styles.tag}`);
+            tags.forEach((tag, i) => revealInView(tag, i * 0.06));
+          }
+
           const h2 = heading.querySelector("h2") ?? heading;
           const words = (h2.textContent || "").trim().split(/\s+/);
           h2.innerHTML = words
@@ -222,6 +246,12 @@ export function Projects() {
               once: true,
             },
           });
+        }
+
+        // Mobile reveal for the CTA button inside the sticky canvas group (requested: Projects_viewBtn).
+        if (isMobile) {
+          const viewBtn = section.querySelector<HTMLElement>(`.${styles.viewBtn}`);
+          revealInView(viewBtn, 0.06);
         }
 
         /* ── annotation cards – desktop only (mobile renders below the scrub) */
@@ -246,7 +276,7 @@ export function Projects() {
             if (!isMobile) {
               /* update annotation card visibility */
               const p = proxy.value;
-              ANNOTATIONS.forEach((ann, i) => {
+              annotations.forEach((ann, i) => {
                 const el      = cardRefs.current[i];
                 if (!el) return;
                 const visible = p >= ann.show && p < ann.hide;
@@ -269,7 +299,7 @@ export function Projects() {
            * finish before it slides under the fixed menu.
            */
           start: isMobile ? "top 85%" : "top top",
-          end:   isMobile ? "bottom 35%" : "bottom bottom",
+          end:   isMobile ? "bottom 20%" : "bottom bottom",
           scrub: 1,
         });
 
@@ -292,10 +322,10 @@ export function Projects() {
       {/* ── Section heading (scrolls normally, then disappears) ─────────── */}
       <div ref={headingRef} className={styles.headerArea}>
         <div className={styles.tags}>
-          <span className={styles.tag}>Craft: Shipped</span>
-          <span className={styles.tag}>Medium: Digital Products</span>
+          <span className={styles.tag}>{t('tags.craft')}</span>
+          <span className={styles.tag}>{t('tags.medium')}</span>
         </div>
-        <h2 className={styles.heading}>In Action</h2>
+        <h2 className={styles.heading}>{t('heading')}</h2>
       </div>
       {/* ── Scroll travel wrapper ───────────────────────────────────────── */}
       <div ref={scrollSpaceRef} className={styles.scrollSpace}>
@@ -308,12 +338,12 @@ export function Projects() {
               {!videoReady && (
                 <div className={styles.loadingOverlay}>
                   <div className={styles.loadingBar} />
-                  <span className={styles.loadingText}>Loading</span>
+                  <span className={styles.loadingText}>{t('loading')}</span>
                 </div>
               )}
             </div>
             <Link href="/work" className={styles.viewBtn}>
-              View Portfolio
+              {t('viewPortfolio')}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
@@ -323,7 +353,7 @@ export function Projects() {
 
           {/* ── Annotation cards ────────────────────────────────────── */}
           <div className={styles.cardsInSticky}>
-            {ANNOTATIONS.map((ann, i) => (
+            {annotations.map((ann, i) => (
               <div
                 key={ann.index}
                 ref={(el) => { cardRefs.current[i] = el; }}
@@ -342,7 +372,7 @@ export function Projects() {
 
       {/* Mobile: cards appear after the scroll-scrub video section */}
       <div className={styles.cardsAfter}>
-        {ANNOTATIONS.map((ann) => (
+        {annotations.map((ann) => (
           <div
             key={`after-${ann.index}`}
             className={styles.annotationCard}

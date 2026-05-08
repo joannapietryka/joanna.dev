@@ -321,6 +321,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .pinWrap {
+    padding: 0 0.875rem;
+  }
+}
+
 @media (max-width: 480px) {
   .section {
     padding: 7vh 0 8vh;

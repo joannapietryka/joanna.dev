@@ -1,0 +1,138 @@
+{
+  "Nav": {
+    "services": "Services",
+    "work": "Projets",
+    "about": "À propos",
+    "contact": "Contact",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "languageLabel": "Langue",
+    "langEn": "EN",
+    "langFr": "FR"
+  },
+  "Projects": {
+    "tags": {
+      "craft": "Savoir-faire : livré",
+      "medium": "Support : produits numériques"
+    },
+    "heading": "En action",
+    "loading": "Chargement",
+    "viewPortfolio": "Voir le portfolio",
+    "annotations": {
+      "brief": {
+        "title": "Brief reçu",
+        "desc": "Chaque projet commence par l’écoute. Objectifs, utilisateurs, contraintes — tout est cadré avant la moindre ligne de code.",
+        "stat": "D’abord la découverte"
+      },
+      "design": {
+        "title": "Design & build",
+        "desc": "Une seule personne. Pas de lourdeur d’agence. Boucles de feedback courtes, itérations rapides, livraison pixel-perfect.",
+        "stat": "Sprint 2–4 sem."
+      },
+      "shipped": {
+        "title": "Livré & en ligne",
+        "desc": "Optimisé, testé, livré. Prêt à scaler dès le premier jour — sans accompagnement interminable.",
+        "stat": "> 90 Lighthouse"
+      }
+    }
+  },
+  "Contact": {
+    "metaStatus": "Ouverte aux projets",
+    "heading": {
+      "write": "Écris",
+      "me": "moi",
+      "message": "un message"
+    },
+    "body": "Tu as un projet, une question, ou simplement envie de dire bonjour ? Je serais ravie d’en discuter.",
+    "fields": {
+      "name": "Prénom",
+      "surname": "Nom",
+      "email": "E-mail",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Ton prénom",
+      "surname": "Ton nom",
+      "email": "ton@email.com",
+      "message": "Parle-moi de ton projet…"
+    },
+    "submit": "Envoyer",
+    "sending": "Envoi…",
+    "success": {
+      "title": "Message envoyé",
+      "body": "Merci pour ton message — je reviens vers toi rapidement.",
+      "sendAnother": "En envoyer un autre"
+    },
+    "errors": {
+      "nameRequired": "Le prénom est requis.",
+      "surnameRequired": "Le nom est requis.",
+      "emailRequired": "L’e-mail est requis.",
+      "emailInvalid": "Entre une adresse e-mail valide.",
+      "messageRequired": "Le message est requis.",
+      "messageMin": "Le message doit contenir au moins {min} caractères.",
+      "generic": "Une erreur est survenue.",
+      "network": "Erreur réseau — réessaie."
+    }
+  },
+  "Services": {
+    "tags": {
+      "craft": "Savoir-faire : digital",
+      "scope": "Scope : de A à Z"
+    },
+    "heading": "Construire\u00a0pour\u00a0des\u00a0résultats",
+    "status": "Des solutions digitales performantes, pensées pour des résultats concrets",
+    "cta": "Découvrir les services",
+    "cardAria": "Voir les services « {title} »",
+    "cards": {
+      "websites": {
+        "title": "Sites web",
+        "tag": "Web",
+        "body": "Des sites rapides et sur-mesure, conçus pour convertir. Design soigné, message clair et performance au rendez-vous."
+      },
+      "apps": {
+        "title": "Apps",
+        "tag": "App",
+        "body": "De l’idée au produit : des apps intuitives et scalables pour de vrais utilisateurs. UX propre, performance solide, prêtes à grandir."
+      },
+      "automations": {
+        "title": "Automatisations",
+        "tag": "Auto",
+        "body": "Des workflows qui connectent tes outils et éliminent les tâches répétitives — pour gagner du temps, réduire les erreurs et te concentrer sur l’essentiel."
+      }
+    }
+  },
+  "Home": {
+    "scrub": {
+      "ariaLoadingVideo": "Chargement de la vidéo",
+      "loading": "Chargement"
+    },
+    "scrollHint": "Fais défiler pour explorer",
+    "meta": {
+      "statusCreating": "Statut : création"
+    },
+    "circleText": "DESIGN • DÉVELOPPEMENT FRONTEND • ARCHITECTURE •",
+    "title": {
+      "w0": "Des\u00a0idées\u00a0aux",
+      "w1": "produits",
+      "w2": "Vite"
+    },
+    "subtitle": {
+      "websites": "Sites web",
+      "apps": "Apps",
+      "automations": "Automatisations"
+    },
+    "cta": "Démarrer un projet"
+  },
+  "About": {
+    "portraitAlt": "Joanna Pietryka – Créatrice de produits digitaux",
+    "building": "En cours…",
+    "systemStatus": {
+      "label": "Statut système",
+      "value": "En ligne & prête"
+    },
+    "eyebrow": "Pourquoi travailler avec moi",
+    "title": "Créatrice de produits \ndigitaux",
+    "lead": "Je construis des produits digitaux depuis 2015. Je transforme des idées complexes en expériences rapides, tactiles et interactives — qui semblent évidentes."
+  }
+}
+

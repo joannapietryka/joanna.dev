@@ -458,7 +458,7 @@
 /* ── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .about {
-    padding: 8vh 2.5rem 10vh;
+    padding: 8vh 0.875rem 10vh;
   }
 
   .inner {
@@ -478,7 +478,7 @@
 
 @media (max-width: 768px) {
   .about {
-    padding: 7vh 2rem 9vh;
+    padding: 7vh 0.875rem 9vh;
   }
 
   .photoCol { height: 440px; }
@@ -489,7 +489,7 @@
 }
 
 @media (max-width: 640px) {
-  .about { padding: 6vh 1.5rem 8vh; }
+  .about { padding: 6vh 0.875rem 8vh; }
 
   .cardGrid { grid-template-columns: 1fr; }
 
@@ -521,7 +521,7 @@
 }
 
 @media (max-width: 390px) {
-  .about { padding: 5vh 1rem 7vh; }
+  .about { padding: 5vh 0.875rem 7vh; }
 
   .photoCol { height: 340px; }
 

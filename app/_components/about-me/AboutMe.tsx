@@ -1,5 +1,6 @@
 "use client";
 
+import {useTranslations} from 'next-intl';
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import styles from "./AboutMe.module.css";
@@ -8,6 +9,7 @@ import styles from "./AboutMe.module.css";
 type Gsap = any;
 
 export function AboutMe() {
+  const t = useTranslations('About');
   const sectionRef   = useRef<HTMLElement>(null);
   const photoColRef  = useRef<HTMLDivElement>(null);
   const eyebrowRef   = useRef<HTMLDivElement>(null);
@@ -34,6 +36,7 @@ export function AboutMe() {
       if (!section) return;
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
+      const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
 
       gsapCtx = gsap.context(() => {
         const photo    = photoColRef.current;
@@ -45,6 +48,24 @@ export function AboutMe() {
         const aiCard        = aiCardRef.current;
         const lens          = lensRef.current;
         const cards    = cardGrid ? Array.from(cardGrid.children) as HTMLElement[] : [];
+
+        const revealInView = (el: HTMLElement | null, delay = 0) => {
+          if (!el) return;
+          gsap.set(el, { y: 22, opacity: 0 });
+          gsap.to(el, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out",
+            delay,
+            scrollTrigger: {
+              trigger: el,
+              scroller,
+              start: "top 85%",
+              once: true,
+            },
+          });
+        };
 
         /* ── set initial hidden states ─────────────────────────────────── */
         if (photo)   gsap.set(photo,   { x: -70, opacity: 0 });
@@ -72,12 +93,60 @@ export function AboutMe() {
         }
         if (aiCard)  gsap.set(aiCard,  { y: 28,  opacity: 0 });
 
+        // Mobile: scroll-into-view reveals (pattern from AITools subheading).
+        if (isMobile) {
+          // Portrait column (fix: it was left at opacity:0 from initial gsap.set)
+          if (photo) {
+            gsap.to(photo, {
+              x: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: photo,
+                scroller,
+                start: "top 85%",
+                once: true,
+              },
+            });
+          }
+
+          // Title (fix: word-split spans were left hidden on mobile).
+          if (titleWords.length && title) {
+            gsap.to(titleWords, {
+              y: 0,
+              opacity: 1,
+              rotation: 0,
+              stagger: 0.1,
+              duration: 0.65,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: title,
+                scroller,
+                start: "top 85%",
+                once: true,
+              },
+            });
+          }
+
+          const eyebrowText = eyebrow?.querySelector<HTMLElement>(`.${styles.eyebrowText}`) ?? null;
+          revealInView(eyebrowText, 0.02);
+          revealInView(lead, 0.06);
+
+          // Requested: AboutMe_glassCard_ (all cards).
+          cards.forEach((c, i) => revealInView(c, 0.08 + i * 0.06));
+
+          // Requested: AboutMe_aiCard_
+          revealInView(aiCard, 0.06);
+          return;
+        }
+
         /* ── timeline fires once when section enters viewport ──────────── */
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             scroller,
-            start: "top 72%",
+            start: isMobile ? "top 80%" : "top 72%",
             once: true,
           },
         });
@@ -182,7 +251,7 @@ export function AboutMe() {
           <div className={styles.portraitMask}>
             <Image
               src="/assets/profile.png"
-              alt="Joanna Pietryka – Digital Product Builder"
+              alt={t('portraitAlt')}
               fill
               className={styles.portraitImg}
               sizes="(max-width: 768px) 85vw, 400px"
@@ -194,7 +263,7 @@ export function AboutMe() {
 
           <div className={styles.buildingCapsule} aria-hidden="true">
             <div className={styles.refOrb} />
-            <span className={styles.buildingText}>Building...</span>
+            <span className={styles.buildingText}>{t('building')}</span>
           </div>
 
           <div className={styles.statusBadge} aria-hidden="true">
@@ -202,8 +271,8 @@ export function AboutMe() {
               <div className={styles.statusDot} />
             </div>
             <div className={styles.statusInfo}>
-              <span className={styles.statusLabel}>System Status</span>
-              <span className={styles.statusValue}>Online &amp; Ready</span>
+              <span className={styles.statusLabel}>{t('systemStatus.label')}</span>
+              <span className={styles.statusValue}>{t('systemStatus.value')}</span>
             </div>
           </div>
         </div>
@@ -213,14 +282,13 @@ export function AboutMe() {
           <div className={styles.headingBlock}>
             <div ref={eyebrowRef} className={styles.eyebrow}>
               <span className={styles.eyebrowDot} />
-              <span className={styles.eyebrowText}>Why work with me</span>
+              <span className={styles.eyebrowText}>{t('eyebrow')}</span>
             </div>
             <h2 ref={titleRef} className={styles.title}>
-              Digital Product <br />Builder
+              {t('title')}
             </h2>
             <p ref={leadRef} className={styles.lead}>
-              Building digital products since 2015. I turn complex ideas into
-              fast, tactile, and interactive experiences that feel inevitable.
+              {t('lead')}
             </p>
           </div>
 

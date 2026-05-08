@@ -1,10 +1,27 @@
-import { SiteNav } from "../_components/site-nav/SiteNav";
-import styles from "./Work.module.css";
+import type {Metadata} from 'next';
+import {SiteNav} from '../../_components/site-nav/SiteNav';
+import styles from '../../work/Work.module.css';
+
+export function generateMetadata({
+  params
+}: {
+  params: {locale: string};
+}): Metadata {
+  const isFr = params.locale === 'fr';
+  const path = '/work';
+  return {
+    title: isFr ? 'Projets — joanna.dev' : 'Work — joanna.dev',
+    description: isFr ? 'Projets sélectionnés.' : 'Selected projects.',
+    alternates: {
+      canonical: isFr ? `/fr${path}` : path,
+      languages: {en: path, fr: `/fr${path}`}
+    }
+  };
+}
 
 export default function WorkPage() {
   return (
     <div className={styles.page}>
-
       {/* ── Ambient background ─────────────────────────────────────────── */}
       <div className={styles.bg} aria-hidden>
         <div className={styles.orb1} />
@@ -12,13 +29,45 @@ export default function WorkPage() {
         <div className={styles.grid} />
         <div className={styles.spinRing}>
           <svg viewBox="0 0 100 100" width="100%" height="100%">
-            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="0.2" />
-            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="0.1" strokeDasharray="1,1" />
-            <circle cx="50" cy="50" r="32" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="0.3" />
-            <path d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" id="textPath" fill="none" />
-            <text fontSize="1.4" fontFamily="'JetBrains Mono', monospace" letterSpacing="2" opacity="0.4" fontWeight="bold">
+            <circle
+              cx="50"
+              cy="50"
+              r="48"
+              fill="none"
+              stroke="rgba(0,0,0,0.04)"
+              strokeWidth="0.2"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="42"
+              fill="none"
+              stroke="rgba(0,0,0,0.06)"
+              strokeWidth="0.1"
+              strokeDasharray="1,1"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="32"
+              fill="none"
+              stroke="rgba(0,0,0,0.08)"
+              strokeWidth="0.3"
+            />
+            <path
+              d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+              id="textPath"
+              fill="none"
+            />
+            <text
+              fontSize="1.4"
+              fontFamily="'JetBrains Mono', monospace"
+              letterSpacing="2"
+              opacity="0.4"
+              fontWeight="bold"
+            >
               <textPath href="#textPath" startOffset="0%">
-                BUILT FOR RESULTS • SHIPPED & LIVE • DIGITAL PRODUCTS •{" "}
+                BUILT FOR RESULTS • SHIPPED & LIVE • DIGITAL PRODUCTS •{' '}
               </textPath>
             </text>
           </svg>
@@ -30,7 +79,6 @@ export default function WorkPage() {
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
       <main className={styles.main}>
-
         <div className={styles.eyebrow}>
           <div className={styles.eyebrowLine} />
           <span className={styles.eyebrowText}>Selected Projects</span>
@@ -42,7 +90,6 @@ export default function WorkPage() {
 
         {/* ── Projects list ──────────────────────────────────────────── */}
         <div className={styles.projectsList}>
-
           {/* Featured — video showcase */}
           <article className={styles.featured}>
             <div className={styles.featuredImgWrap}>
@@ -62,26 +109,41 @@ export default function WorkPage() {
               </div>
               <h2 className={styles.cardTitle}>Psychologist — Brand & Web</h2>
               <p className={styles.cardDesc}>
-                Psychologist website designed and built in Webflow, featuring smooth on-scroll animations, a custom logo, and an integrated blog for content publishing.
+                Psychologist website designed and built in Webflow, featuring
+                smooth on-scroll animations, a custom logo, and an integrated
+                blog for content publishing.
               </p>
               <div className={styles.cardTechRow}>
-                {["Webflow", "GSAP", "CSS Animations", "Logo Design"].map((t) => (
-                  <span key={t} className={styles.techPill}>{t}</span>
+                {['Webflow', 'GSAP', 'CSS Animations', 'Logo Design'].map((t) => (
+                  <span key={t} className={styles.techPill}>
+                    {t}
+                  </span>
                 ))}
               </div>
-              <a href="https://www.katarzynapietryka.com/fr-fr" target="_blank" rel="noopener noreferrer" className={styles.cardLink}>
-                  Visit Site
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </a>
+              <a
+                href="https://www.katarzynapietryka.com/fr-fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.cardLink}
+              >
+                Visit Site
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
             </div>
           </article>
 
           {/* Grid */}
           <div className={styles.grid2}>
-
             {/* Card 1 — Avamex */}
             <article className={styles.gridCard}>
               <div className={styles.gridImgWrap}>
@@ -100,11 +162,25 @@ export default function WorkPage() {
               </div>
               <h2 className={styles.gridCardTitle}>Avamex — IT Outsourcing</h2>
               <p className={styles.gridCardDesc}>
-                Webflow website for an outsourcing company, featuring custom branding, smooth animations, and AI-generated graphics tailored to the brand.
+                Webflow website for an outsourcing company, featuring custom
+                branding, smooth animations, and AI-generated graphics tailored
+                to the brand.
               </p>
-              <a href="https://avamex.krakow.pl/" target="_blank" rel="noopener noreferrer" className={styles.gridCardLink}>
+              <a
+                href="https://avamex.krakow.pl/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.gridCardLink}
+              >
                 Visit Site
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
@@ -127,28 +203,35 @@ export default function WorkPage() {
                 <span className={styles.cardTag}>Web Design & Development</span>
                 <span className={styles.cardDate}>2025</span>
               </div>
-              <h2 className={styles.gridCardTitle}>Lido Agency</h2>
+              <h2 className={styles.gridCardTitle}>Lido — Creative Studio</h2>
               <p className={styles.gridCardDesc}>
-                High-performance Next.js website for a flat rental company with a bespoke logo, custom visuals, and a seamless browsing experience.
+                Branding and Webflow build for a creative agency, with
+                interactive hover states and a modular CMS for case studies.
               </p>
-              <a href="https://lido-agency.vercel.app/" target="_blank" rel="noopener noreferrer" className={styles.gridCardLink}>
+              <a
+                href="https://lido-agency.pl/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.gridCardLink}
+              >
                 Visit Site
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </a>
             </article>
-
           </div>
-
         </div>
       </main>
-
-      {/* ── Footer labels ───────────────────────────────────────────────── */}
-      <div className={styles.footerLeft}>Index // Chronological</div>
-      <div className={styles.footerRight}>Records: 03 // Sync: Active</div>
-
     </div>
   );
 }
+

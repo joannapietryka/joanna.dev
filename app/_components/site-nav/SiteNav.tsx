@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import {useLocale, useTranslations} from 'next-intl';
+import {usePathname, useRouter} from 'next/navigation';
+import {useEffect, useState} from 'react';
+import {Link} from '@/i18n/navigation';
 import styles from "./SiteNav.module.css";
 
 interface Props {
@@ -11,8 +12,12 @@ interface Props {
 }
 
 export function SiteNav({ onScrollTo }: Props) {
+  const t = useTranslations('Nav');
+  const locale = useLocale();
+  const router = useRouter();
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const prefix = `/${locale}`;
+  const isHome = pathname === prefix;
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [nearTop, setNearTop] = useState(false);
@@ -48,7 +53,7 @@ export function SiteNav({ onScrollTo }: Props) {
      * On every other page: enable immediately. */
     let observer: IntersectionObserver | null = null;
 
-    if (pathname === "/") {
+    if (isHome) {
       const servicesEl = document.getElementById("services");
       if (servicesEl) {
         observer = new IntersectionObserver(
@@ -88,6 +93,23 @@ export function SiteNav({ onScrollTo }: Props) {
     setOpen(false);
   };
 
+  const switchLocale = (nextLocale: 'en' | 'fr') => {
+    try {
+      const url = new URL(window.location.href);
+      let path = url.pathname;
+
+      // Replace the leading locale segment: /en/* <-> /fr/*
+      path = path.replace(/^\/(en|fr)(?=\/|$)/, `/${nextLocale}`);
+
+      router.push(`${path}${url.search}${url.hash}`);
+      setOpen(false);
+    } catch {
+      // If URL parsing fails for any reason, fall back to home.
+      router.push(`/${nextLocale}`);
+      setOpen(false);
+    }
+  };
+
   const close = () => setOpen(false);
 
   return (
@@ -106,26 +128,34 @@ export function SiteNav({ onScrollTo }: Props) {
         <nav className={styles.navLinks} aria-label="Primary">
           <Link
             href="/services"
-            className={pathname === "/services" ? styles.navActive : ""}
+            className={pathname === `${prefix}/services` ? styles.navActive : ""}
             onClick={close}
           >
-            Services
+            {t('services')}
           </Link>
           <Link
             href="/work"
-            className={pathname === "/work" ? styles.navActive : ""}
+            className={pathname === `${prefix}/work` ? styles.navActive : ""}
             onClick={close}
           >
-            Work
+            {t('work')}
           </Link>
-          <a href="/#about" onClick={(e) => handle("about", e)}>About me</a>
-          <a href="/#contact" onClick={(e) => handle("contact", e)}>Contact</a>
+          <a href={`${prefix}/#about`} onClick={(e) => handle("about", e)}>{t('about')}</a>
+          <a href={`${prefix}/#contact`} onClick={(e) => handle("contact", e)}>{t('contact')}</a>
+          <button
+            type="button"
+            aria-label={t('languageLabel')}
+            onClick={() => switchLocale(locale === 'fr' ? 'en' : 'fr')}
+            className={locale === 'fr' ? styles.navActive : ''}
+          >
+            {locale === 'fr' ? t('langFr') : t('langEn')}
+          </button>
         </nav>
 
         <button
           className={`${styles.menuToggle} ${open ? styles.isOpen : ""}`}
           type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t('closeMenu') : t('openMenu')}
           onClick={() => setOpen((v) => !v)}
         >
           <span />
@@ -139,16 +169,16 @@ export function SiteNav({ onScrollTo }: Props) {
       >
         <nav className={styles.mobileNav} aria-label="Mobile primary">
           <Link href="/services" className={styles.mobileLink} onClick={close}>
-            <span className={styles.mobileLinkIdx}>01</span>Services
+            <span className={styles.mobileLinkIdx}>01</span>{t('services')}
           </Link>
           <Link href="/work" className={styles.mobileLink} onClick={close}>
-            <span className={styles.mobileLinkIdx}>02</span>Work
+            <span className={styles.mobileLinkIdx}>02</span>{t('work')}
           </Link>
-          <a href="/#about" className={styles.mobileLink} onClick={(e) => handle("about", e)}>
-            <span className={styles.mobileLinkIdx}>03</span>About me
+          <a href={`${prefix}/#about`} className={styles.mobileLink} onClick={(e) => handle("about", e)}>
+            <span className={styles.mobileLinkIdx}>03</span>{t('about')}
           </a>
-          <a href="/#contact" className={styles.mobileLink} onClick={(e) => handle("contact", e)}>
-            <span className={styles.mobileLinkIdx}>04</span>Contact
+          <a href={`${prefix}/#contact`} className={styles.mobileLink} onClick={(e) => handle("contact", e)}>
+            <span className={styles.mobileLinkIdx}>04</span>{t('contact')}
           </a>
         </nav>
 

@@ -236,6 +236,63 @@
   pointer-events: auto;
 }
 
+/* Boot state: show a small loader immediately */
+.heroBooting .heroContent,
+.heroBooting .photoContainer,
+.heroBooting .actionBtn,
+.heroBooting .metaLabel,
+.heroBooting .circleText {
+  opacity: 0;
+}
+
+.heroLoader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.heroBooting .heroLoader {
+  opacity: 1;
+}
+
+/* During boot we want only the loader visible (no glass card behind) */
+.heroBooting .heroCard {
+  opacity: 0;
+}
+
+.hypnotic {
+  width: 96px;
+  height: 40px;
+  border: 3px solid #677be6;
+  border-radius: 50%;
+  display: grid;
+  animation: hypnotic-ds34hk 2s infinite linear;
+}
+
+.hypnotic::before,
+.hypnotic::after {
+  content: "";
+  grid-area: 1 / 1;
+  border: inherit;
+  border-radius: 50%;
+  animation: inherit;
+  animation-duration: 3s;
+}
+
+.hypnotic::after {
+  --s: -1;
+}
+
+@keyframes hypnotic-ds34hk {
+  100% {
+    transform: rotate(calc(var(--s, 1) * 1turn));
+  }
+}
+
 .afterHero {
   width: 100%;
   max-width: 1100px;
@@ -303,6 +360,9 @@
   animation: fluidShapeSmall 20s infinite alternate ease-in-out;
   transition: transform 0.5s ease;
   will-change: border-radius, transform;
+  /* iOS (Safari/Chrome) can ignore border-radius clipping for canvas unless
+     the child also has a radius + we force a composited layer. */
+  transform: translateZ(0);
 }
 
 .heroCard:hover .fluidMask {
@@ -329,12 +389,15 @@
   width: 100%;
   height: 100%;
   position: relative;
+  border-radius: inherit;
+  overflow: hidden;
 }
 
 .scrubCanvas {
   width: 100%;
   height: 100%;
   display: block;
+  border-radius: inherit;
 }
 
 .scrubLoader {
@@ -715,7 +778,7 @@
   .menuToggle { display: flex; align-items: center; }
 
   /* ── layout ── */
-  .main { padding: 0.75rem; }
+  .main { padding: 0.875rem; }
 
   /* Sit hero block lower under the fixed SiteNav */
   .heroScrollSpace { padding-top: 3.25vh; }
@@ -744,8 +807,8 @@
     right: auto;
     top: auto;
     width: 100%;
-    /* Keep scrub canvas height stable even when hero container is auto-height */
-    height: min(42vh, 420px);
+    /* Keep scrub canvas height stable without stretching blob */
+    height: min(36vh, 380px);
     min-height: 300px;
     flex-shrink: 0;
     order: -1;

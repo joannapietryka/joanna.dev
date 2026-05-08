@@ -172,6 +172,27 @@ export function AITools() {
           x: 0, opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.1,
         }, 0.65);
 
+        // Mobile: ensure tags scroll-into-view (requested: AITools_tag) using the same subheading pattern.
+        const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+        if (isMobile && tagsEl) {
+          const tags = Array.from(tagsEl.querySelectorAll<HTMLElement>(`.${styles.tag}`));
+          tags.forEach((tag) => {
+            gsap.set(tag, { y: 22, opacity: 0 });
+            gsap.to(tag, {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: tag,
+                scroller,
+                start: "top 85%",
+                once: true,
+              },
+            });
+          });
+        }
+
         ST.refresh();
       }, section);
     };

@@ -1,5 +1,6 @@
 "use client";
 
+import {useTranslations} from 'next-intl';
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Contact.module.css";
@@ -23,28 +24,29 @@ interface Errors {
   message?: string;
 }
 
-function validate(form: FormState): Errors {
-  const errors: Errors = {};
-  if (!form.name.trim()) errors.name = "Name is required.";
-  if (!form.surname.trim()) errors.surname = "Surname is required.";
-  if (!form.email.trim()) {
-    errors.email = "Email is required.";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    errors.email = "Enter a valid email address.";
-  }
-  if (!form.message.trim()) errors.message = "Message is required.";
-  else if (form.message.trim().length < 10)
-    errors.message = "Message must be at least 10 characters.";
-  return errors;
-}
-
 export function Contact() {
+  const t = useTranslations('Contact');
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [form, setForm] = useState<FormState>({ name: "", surname: "", email: "", message: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [serverError, setServerError] = useState("");
+
+  const validate = (nextForm: FormState): Errors => {
+    const nextErrors: Errors = {};
+    if (!nextForm.name.trim()) nextErrors.name = t('errors.nameRequired');
+    if (!nextForm.surname.trim()) nextErrors.surname = t('errors.surnameRequired');
+    if (!nextForm.email.trim()) {
+      nextErrors.email = t('errors.emailRequired');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextForm.email)) {
+      nextErrors.email = t('errors.emailInvalid');
+    }
+    if (!nextForm.message.trim()) nextErrors.message = t('errors.messageRequired');
+    else if (nextForm.message.trim().length < 10)
+      nextErrors.message = t('errors.messageMin', {min: 10});
+    return nextErrors;
+  };
 
   useEffect(() => {
     let retryTimer: ReturnType<typeof setTimeout>;
@@ -57,8 +59,27 @@ export function Contact() {
       const h2 = headingRef.current;
       if (!h2) return;
       const scroller = document.getElementById("scroll-root") ?? undefined;
+      const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
       const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
       if (wordEls.length === 0) return;
+
+      const revealInView = (el: HTMLElement | null, delay = 0) => {
+        if (!el) return;
+        gsap.set(el, { y: 22, opacity: 0 });
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          delay,
+          scrollTrigger: {
+            trigger: el,
+            scroller,
+            start: "top 85%",
+            once: true,
+          },
+        });
+      };
 
       gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
       gsap.to(wordEls, {
@@ -66,6 +87,26 @@ export function Contact() {
         stagger: 0.1, duration: 0.65, ease: "power3.out",
         scrollTrigger: { trigger: h2, scroller, start: "top 85%", once: true },
       });
+
+      // Mobile: scroll-into-view reveals (requested list).
+      if (isMobile) {
+        const section = document.getElementById("contact")?.closest("section");
+        if (!section) return;
+
+        const metaPill = section.querySelector<HTMLElement>(`.${styles.metaPill}`);
+        const metaStatus = section.querySelector<HTMLElement>(`.${styles.metaStatus}`);
+        const body = section.querySelector<HTMLElement>(`.${styles.body}`);
+        const emailLink = section.querySelector<HTMLElement>(`.${styles.emailLink}`);
+        const rightCol = section.querySelector<HTMLElement>(`.${styles.right}`);
+
+        // Contact_heading is already animated per-word; add a subtle container reveal.
+        revealInView(h2, 0.02);
+        revealInView(metaPill, 0);
+        revealInView(metaStatus, 0.04);
+        revealInView(body, 0.06);
+        revealInView(emailLink, 0.08);
+        revealInView(rightCol, 0.1);
+      }
     };
     tryInit();
     return () => { cancelled = true; clearTimeout(retryTimer); };
@@ -101,7 +142,7 @@ export function Contact() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setServerError(data.error ?? "Something went wrong.");
+        setServerError(data.error ?? t('errors.generic'));
         setStatus("error");
       } else {
         setStatus("success");
@@ -110,7 +151,7 @@ export function Contact() {
         setErrors({});
       }
     } catch {
-      setServerError("Network error — please try again.");
+      setServerError(t('errors.network'));
       setStatus("error");
     }
   };
@@ -130,18 +171,17 @@ export function Contact() {
           <div className={styles.meta}>
             <span className={styles.metaPill}>SYS.MSG // OPEN</span>
             <span className={styles.metaDot} />
-            <span className={styles.metaStatus}>Accepting projects</span>
+            <span className={styles.metaStatus}>{t('metaStatus')}</span>
           </div>
 
           <h2 ref={headingRef} className={styles.heading}>
-            <span className={styles.headingPart}>Write</span>{" "}
-            <span className={styles.headingPart}>me</span>{" "}
-            <span className={`${styles.headingPart} ${styles.headingPhrase}`}>a message</span>
+            <span className={styles.headingPart}>{t('heading.write')}</span>{' '}
+            <span className={styles.headingPart}>{t('heading.me')}</span>{' '}
+            <span className={`${styles.headingPart} ${styles.headingPhrase}`}>{t('heading.message')}</span>
           </h2>
 
           <p className={styles.body}>
-            Have a project in mind, a question, or just want to
-            say&nbsp;hello? I&rsquo;d love to hear from you.
+            {t('body')}
           </p>
 
           <a href="mailto:pietrykajoanna@gmail.com" className={styles.emailLink}>
@@ -181,22 +221,22 @@ export function Contact() {
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </div>
-                <p className={styles.successTitle}>Message&nbsp;sent</p>
+                <p className={styles.successTitle}>{t('success.title')}</p>
                 <p className={styles.successBody}>
-                  Thanks for reaching out — I&rsquo;ll be in touch soon.
+                  {t('success.body')}
                 </p>
                 <button type="button" className={styles.resetBtn} onClick={() => setStatus("idle")}>
-                  Send another
+                  {t('success.sendAnother')}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className={styles.form}>
                 <div className={styles.fieldRow}>
                   <div className={styles.field}>
-                    <label htmlFor="c-name" className={styles.label}>Name</label>
+                    <label htmlFor="c-name" className={styles.label}>{t('fields.name')}</label>
                     <input
                       id="c-name" name="name" type="text" autoComplete="given-name"
-                      placeholder="Your name"
+                      placeholder={t('placeholders.name')}
                       value={form.name} onChange={handleChange} onBlur={handleBlur}
                       className={`${styles.input}${errors.name && touched.name ? ` ${styles.inputErr}` : ""}`}
                     />
@@ -204,10 +244,10 @@ export function Contact() {
                   </div>
 
                   <div className={styles.field}>
-                    <label htmlFor="c-surname" className={styles.label}>Surname</label>
+                    <label htmlFor="c-surname" className={styles.label}>{t('fields.surname')}</label>
                     <input
                       id="c-surname" name="surname" type="text" autoComplete="family-name"
-                      placeholder="Your surname"
+                      placeholder={t('placeholders.surname')}
                       value={form.surname} onChange={handleChange} onBlur={handleBlur}
                       className={`${styles.input}${errors.surname && touched.surname ? ` ${styles.inputErr}` : ""}`}
                     />
@@ -216,10 +256,10 @@ export function Contact() {
                 </div>
 
                 <div className={styles.field}>
-                  <label htmlFor="c-email" className={styles.label}>Email</label>
+                  <label htmlFor="c-email" className={styles.label}>{t('fields.email')}</label>
                   <input
                     id="c-email" name="email" type="email" autoComplete="email"
-                    placeholder="your@email.com"
+                    placeholder={t('placeholders.email')}
                     value={form.email} onChange={handleChange} onBlur={handleBlur}
                     className={`${styles.input}${errors.email && touched.email ? ` ${styles.inputErr}` : ""}`}
                   />
@@ -227,10 +267,10 @@ export function Contact() {
                 </div>
 
                 <div className={styles.field}>
-                  <label htmlFor="c-msg" className={styles.label}>Message</label>
+                  <label htmlFor="c-msg" className={styles.label}>{t('fields.message')}</label>
                   <textarea
                     id="c-msg" name="message" rows={5}
-                    placeholder="Tell me about your project…"
+                    placeholder={t('placeholders.message')}
                     value={form.message} onChange={handleChange} onBlur={handleBlur}
                     className={`${styles.textarea}${errors.message && touched.message ? ` ${styles.inputErr}` : ""}`}
                   />
@@ -241,10 +281,10 @@ export function Contact() {
 
                 <button type="submit" className={styles.submitBtn} disabled={status === "sending"}>
                   {status === "sending" ? (
-                    <><span className={styles.spinner} />Sending…</>
+                    <><span className={styles.spinner} />{t('sending')}</>
                   ) : (
                     <>
-                      Send message
+                      {t('submit')}
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                         <line x1="5" y1="12" x2="19" y2="12"/>
                         <polyline points="12 5 19 12 12 19"/>

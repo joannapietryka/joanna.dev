@@ -1,43 +1,45 @@
 "use client";
 
-import Link from "next/link";
+import {useTranslations} from 'next-intl';
+import {Link} from '@/i18n/navigation';
 import { useEffect, useRef } from "react";
 import styles from "./Services.module.css";
-
-/* ── card data ─────────────────────────────────────────────────────────── */
-const CARDS = [
-  {
-    id: "websites",
-    index: "01",
-    title: "Websites",
-    tag: "Web",
-    body: "Fast, custom-built sites designed to turn visitors into clients. Clean design, strong messaging, and performance that drives results.",
-    lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
-  },
-  {
-    id: "apps",
-    index: "02",
-    title: "Apps",
-    tag: "App",
-    body: "From idea to product — intuitive, scalable apps built for real users. Clean UX, solid performance, ready to grow.",
-    featured: true,
-    lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
-  },
-  {
-    id: "automations",
-    index: "03",
-    title: "Automations",
-    tag: "Auto",
-    body: "Custom workflows that connect your tools and eliminate repetitive tasks — saving hours and reducing errors so you can focus on what matters.",
-    lensGradient: "radial-gradient(circle at 30% 30%, #E8F0FF, #FF6B8B)",
-  },
-] as const;
 
 /* ── helpers ───────────────────────────────────────────────────────────── */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Gsap = any;
 
 export function Services() {
+  const t = useTranslations('Services');
+
+  const cards = [
+    {
+      id: 'websites',
+      index: '01',
+      title: t('cards.websites.title'),
+      tag: t('cards.websites.tag'),
+      body: t('cards.websites.body'),
+      lensGradient: 'radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)'
+    },
+    {
+      id: 'apps',
+      index: '02',
+      title: t('cards.apps.title'),
+      tag: t('cards.apps.tag'),
+      body: t('cards.apps.body'),
+      featured: true,
+      lensGradient: 'radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)'
+    },
+    {
+      id: 'automations',
+      index: '03',
+      title: t('cards.automations.title'),
+      tag: t('cards.automations.tag'),
+      body: t('cards.automations.body'),
+      lensGradient: 'radial-gradient(circle at 30% 30%, #E8F0FF, #FF6B8B)'
+    }
+  ] as const;
+
   const sectionRef      = useRef<HTMLElement>(null);
   const pinRef          = useRef<HTMLDivElement>(null);
   const headingRef      = useRef<HTMLDivElement>(null);
@@ -71,6 +73,41 @@ export function Services() {
       if (!section || !heading || !c0 || !c1 || !c2) return;
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
+
+      const revealInView = (el: HTMLElement | null, delay = 0) => {
+        if (!el) return;
+        gsap.set(el, { y: 22, opacity: 0 });
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power2.out",
+          delay,
+          scrollTrigger: {
+            trigger: el,
+            scroller,
+            start: "top 85%",
+            once: true,
+          },
+        });
+      };
+
+      const wireMobileReveals = () => {
+        const tags = heading.querySelectorAll<HTMLElement>(`.${styles.tag}`);
+        tags.forEach((tag, i) => revealInView(tag, i * 0.06));
+
+        const statusEl = heading.querySelector<HTMLElement>(`.${styles.status}`);
+        revealInView(statusEl, 0.08);
+
+        // Full-card overlay links (requested: Services_cardLink).
+        const cardLinks = Array.from(
+          section.querySelectorAll<HTMLElement>(`.${styles.cardLink}`)
+        );
+        cardLinks.forEach((l, i) => revealInView(l, 0.04 + i * 0.05));
+
+        // Bottom CTA (requested: Services_cta).
+        revealInView(cta, 0.06);
+      };
 
       const wireHeadingWords = () => {
         const h2 = h2Ref.current;
@@ -140,6 +177,7 @@ export function Services() {
 
           const ctx = gsap.context(() => {
             wireHeadingWords();
+            wireMobileReveals();
           }, section);
 
           ST.refresh();
@@ -245,20 +283,20 @@ export function Services() {
         {/* heading area */}
         <div ref={headingRef} className={styles.headerArea}>
           <div className={styles.tags}>
-            <span className={styles.tag}>Craft: Digital</span>
-            <span className={styles.tag}>Scope: End-to-End</span>
+            <span className={styles.tag}>{t('tags.craft')}</span>
+            <span className={styles.tag}>{t('tags.scope')}</span>
           </div>
 
-          <h2 ref={h2Ref} className={styles.heading}>Build&nbsp;for&nbsp;Results</h2>
+          <h2 ref={h2Ref} className={styles.heading}>{t('heading')}</h2>
 
           <p className={styles.status}>
-          High-performance digital solutions, built for real results
+          {t('status')}
           </p>
         </div>
 
         {/* card stack / spread */}
         <div ref={stackRef} className={styles.stackWrap}>
-          {CARDS.map((card, i) => (
+          {cards.map((card, i) => (
             <div
               key={card.id}
               ref={(el) => { cardRefs.current[i] = el; }}
@@ -268,7 +306,7 @@ export function Services() {
               <Link
                 href={`/services?tab=${card.id}`}
                 className={styles.cardLink}
-                aria-label={`View ${card.title} services`}
+                aria-label={t('cardAria', {title: card.title})}
               />
 
               {/* ghost background number */}
@@ -297,7 +335,7 @@ export function Services() {
 
         {/* CTA */}
         <Link ref={ctaRef} href="/services" className={styles.cta}>
-          Explore Services
+          {t('cta')}
           <svg
             width="14"
             height="14"

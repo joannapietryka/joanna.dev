@@ -1,0 +1,138 @@
+{
+  "Nav": {
+    "services": "Services",
+    "work": "Work",
+    "about": "About me",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "languageLabel": "Language",
+    "langEn": "EN",
+    "langFr": "FR"
+  },
+  "Projects": {
+    "tags": {
+      "craft": "Craft: Shipped",
+      "medium": "Medium: Digital Products"
+    },
+    "heading": "In Action",
+    "loading": "Loading",
+    "viewPortfolio": "View Portfolio",
+    "annotations": {
+      "brief": {
+        "title": "Brief Received",
+        "desc": "Every build starts with listening. Goals, users, constraints — all mapped before a single line of code.",
+        "stat": "Discovery first"
+      },
+      "design": {
+        "title": "Design & Build",
+        "desc": "One person. No agency bloat. Tight feedback loops, rapid iterations, pixel-perfect delivery.",
+        "stat": "2–4 wk sprint"
+      },
+      "shipped": {
+        "title": "Shipped & Live",
+        "desc": "Optimised, tested, handed over. Ready to scale from day one — zero hand-holding required.",
+        "stat": "> 90 Lighthouse"
+      }
+    }
+  },
+  "Contact": {
+    "metaStatus": "Accepting projects",
+    "heading": {
+      "write": "Write",
+      "me": "me",
+      "message": "a message"
+    },
+    "body": "Have a project in mind, a question, or just want to say hello? I’d love to hear from you.",
+    "fields": {
+      "name": "Name",
+      "surname": "Surname",
+      "email": "Email",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "surname": "Your surname",
+      "email": "your@email.com",
+      "message": "Tell me about your project…"
+    },
+    "submit": "Send message",
+    "sending": "Sending…",
+    "success": {
+      "title": "Message sent",
+      "body": "Thanks for reaching out — I’ll be in touch soon.",
+      "sendAnother": "Send another"
+    },
+    "errors": {
+      "nameRequired": "Name is required.",
+      "surnameRequired": "Surname is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "messageRequired": "Message is required.",
+      "messageMin": "Message must be at least {min} characters.",
+      "generic": "Something went wrong.",
+      "network": "Network error — please try again."
+    }
+  },
+  "Services": {
+    "tags": {
+      "craft": "Craft: Digital",
+      "scope": "Scope: End-to-End"
+    },
+    "heading": "Build\u00a0for\u00a0Results",
+    "status": "High-performance digital solutions, built for real results",
+    "cta": "Explore Services",
+    "cardAria": "View {title} services",
+    "cards": {
+      "websites": {
+        "title": "Websites",
+        "tag": "Web",
+        "body": "Fast, custom-built sites designed to turn visitors into clients. Clean design, strong messaging, and performance that drives results."
+      },
+      "apps": {
+        "title": "Apps",
+        "tag": "App",
+        "body": "From idea to product — intuitive, scalable apps built for real users. Clean UX, solid performance, ready to grow."
+      },
+      "automations": {
+        "title": "Automations",
+        "tag": "Auto",
+        "body": "Custom workflows that connect your tools and eliminate repetitive tasks — saving hours and reducing errors so you can focus on what matters."
+      }
+    }
+  },
+  "Home": {
+    "scrub": {
+      "ariaLoadingVideo": "Loading video",
+      "loading": "Loading"
+    },
+    "scrollHint": "Scroll to explore",
+    "meta": {
+      "statusCreating": "Status: Creating"
+    },
+    "circleText": "DESIGN • FRONTEND DEVELOPMENT • ARCHITECTURE •",
+    "title": {
+      "w0": "Ideas\u00a0to",
+      "w1": "products",
+      "w2": "Fast"
+    },
+    "subtitle": {
+      "websites": "Websites",
+      "apps": "Apps",
+      "automations": "Automations"
+    },
+    "cta": "Start project"
+  },
+  "About": {
+    "portraitAlt": "Joanna Pietryka – Digital Product Builder",
+    "building": "Building...",
+    "systemStatus": {
+      "label": "System Status",
+      "value": "Online & Ready"
+    },
+    "eyebrow": "Why work with me",
+    "title": "Digital Product \nBuilder",
+    "lead": "Building digital products since 2015. I turn complex ideas into fast, tactile, and interactive experiences that feel inevitable."
+  }
+}
+

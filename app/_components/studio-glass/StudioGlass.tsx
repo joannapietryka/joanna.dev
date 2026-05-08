@@ -1,5 +1,6 @@
 "use client";
 
+import {useTranslations} from 'next-intl';
 import { useEffect, useRef, useState } from "react";
 import { AboutMe } from "../about-me/AboutMe";
 import { AITools } from "../ai-tools/AITools";
@@ -103,6 +104,7 @@ function ScrollScrubCanvas({
   src: string;
   progressRef: React.RefObject<number>;
 }) {
+  const t = useTranslations('Home');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -224,9 +226,9 @@ function ScrollScrubCanvas({
     <div className={styles.scrubRoot}>
       <canvas ref={canvasRef} className={styles.scrubCanvas} />
       {!ready && (
-        <div className={styles.scrubLoader} aria-label="Loading video">
+        <div className={styles.scrubLoader} aria-label={t('scrub.ariaLoadingVideo')}>
           <div className={styles.scrubLoaderBar} />
-          <div className={styles.scrubLoaderText}>Loading</div>
+          <div className={styles.scrubLoaderText}>{t('scrub.loading')}</div>
         </div>
       )}
     </div>
@@ -241,6 +243,7 @@ let heroSubtitleRevealProgress = 0;
 
 /* ── Main component ──────────────────────────────────────────────────────── */
 export function StudioGlass() {
+  const t = useTranslations('Home');
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<InstanceType<Window["Lenis"]> | null>(null);
@@ -250,7 +253,8 @@ export function StudioGlass() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const scrubProgressRef = useRef(0);
-  const glowRingRef = useRef<HTMLDivElement>(null);
+  const heroLoaderRef = useRef<HTMLDivElement>(null);
+  const [heroBooting, setHeroBooting] = useState(true);
 
   /* scroll to a section id within the custom scroll container */
   const scrollToSection = (id: string) => {
@@ -337,6 +341,7 @@ export function StudioGlass() {
     const title = titleRef.current;
     const hint = scrollHintRef.current;
     const subtitle = subtitleRef.current;
+    const loader = heroLoaderRef.current;
     if (!el || !card || !space || !title || !hint) return;
 
     let cancelled = false;
@@ -370,6 +375,7 @@ export function StudioGlass() {
         hint.style.transform = "none";
         el.style.overflowY = "auto";
         el.style.paddingRight = "";
+        setHeroBooting(false);
       } catch {
         // no-op; worst case we keep current styles
       }
@@ -451,6 +457,7 @@ export function StudioGlass() {
 
       gsapCtx = gsap.context(() => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
+        if (loader) gsap.set(loader, { opacity: 1, scale: 1, y: 0, display: "grid" });
         /* ── collect per-word char elements ──────────────────────────── */
         const wordEls = Array.from(
           title.querySelectorAll("[data-word]")
@@ -474,7 +481,7 @@ export function StudioGlass() {
         if (!heroEntrancePlayed) {
           heroEntrancePlayed = true;
 
-          /* lock scroll while the bubble is landing.
+          /* lock scroll while the loader is landing.
            * Measure scrollbar width BEFORE hiding so we can compensate
            * with padding-right → prevents layout shift when the scrollbar
            * disappears (content-area expands) and reappears on complete.
@@ -483,7 +490,29 @@ export function StudioGlass() {
           el.style.overflowY = "hidden";
           if (sbWidth > 0) el.style.paddingRight = `${sbWidth}px`;
 
-          /* set initial char states (CSS opacity:0 already prevents FOUC) */
+          // Keep the entire card hidden until the reveal starts (loader only).
+          gsap.set(card, { opacity: 0 });
+
+          // Hide hero content while loader is visible.
+          const hideEls = Array.from(
+            card.querySelectorAll<HTMLElement>(
+              `.${styles.heroContent}, .${styles.photoContainer}, .${styles.actionBtn}, .${styles.metaLabel}, .${styles.circleText}`
+            )
+          );
+          gsap.set(hideEls, { opacity: 0, y: 10 });
+
+          /*
+           * Fluid reveal (brings back the “bubble expands to show content” feel)
+           * but without the old circle/glow visuals — loader fades out first.
+           */
+          const isMobile = window.innerWidth <= 640;
+          const circle = { cx: isMobile ? 50 : 18, cy: 100, r: 4 };
+          const applyClip = () => {
+            card.style.clipPath = `circle(${circle.r.toFixed(2)}% at ${circle.cx.toFixed(2)}% ${circle.cy.toFixed(2)}%)`;
+          };
+          applyClip();
+
+          /* set initial char states */
           /* w0 "Ideas to"  – slides in from the left */
           gsap.set(w0, { x: -28, rotation: -12, opacity: 0, transformOrigin: "50% 100%" });
           /* w1 "products." – 3-D flip down */
@@ -491,52 +520,6 @@ export function StudioGlass() {
           /* w2 "Fast." – scale-pop from centre */
           gsap.set(w2, { scale: 0.3, y: 18, opacity: 0, transformOrigin: "50% 50%" });
           gsap.set(hint, { opacity: 0, y: 14 });
-
-          /*
-           * On mobile (≤640 px) the card stacks vertically so the bubble
-           * should emerge from the bottom-centre rather than bottom-left.
-           */
-          const isMobile = window.innerWidth <= 640;
-          /*
-           * Proxy drives the clip-path so we can animate radius and
-           * Y-centre independently with different easings:
-           *   cx – horizontal centre (18% desktop / 50% mobile)
-           *   cy – vertical centre (starts at 100% = card bottom edge, rises to 50%)
-           *   r  – radius (starts as a visible bubble, bounces, then fills the card)
-           */
-          const circle = { cx: isMobile ? 50 : 18, cy: 100, r: 4 };
-
-          /*
-           * glowRing is a sibling of heroCard (not inside it), so it is NOT
-           * clipped by heroCard's clip-path.  We size + position it in pixel
-           * space to trace the exact clip-path circle boundary, giving the
-           * bubble bright white edges without breaking backdrop-filter.
-           */
-          const glowEl = glowRingRef.current;
-
-          const applyClip = () => {
-            card.style.clipPath = `circle(${circle.r.toFixed(2)}% at ${circle.cx.toFixed(2)}% ${circle.cy.toFixed(2)}%)`;
-
-            if (glowEl) {
-              const cw = card.offsetWidth  || 1;
-              const ch = card.offsetHeight || 1;
-              /* clip-path % radius is relative to sqrt(w²+h²)/√2 */
-              const refDim = Math.sqrt(cw * cw + ch * ch) / Math.SQRT2;
-              const rPx   = (circle.r  / 100) * refDim;
-              const cxPx  = (circle.cx / 100) * cw;
-              const cyPx  = (circle.cy / 100) * ch;
-              /* fade out as the circle grows beyond the "bubble" phase */
-              const opacity = circle.r < 12
-                ? 1
-                : Math.max(0, 1 - (circle.r - 12) / 20);
-
-              glowEl.style.width   = `${rPx * 2}px`;
-              glowEl.style.height  = `${rPx * 2}px`;
-              glowEl.style.transform = `translate(${(cxPx - rPx).toFixed(1)}px, ${(cyPx - rPx).toFixed(1)}px)`;
-              glowEl.style.opacity = String(opacity);
-            }
-          };
-          applyClip();
 
           const entranceTl = gsap.timeline({
             onComplete: () => {
@@ -557,52 +540,71 @@ export function StudioGlass() {
               });
               /* hint: clear transform only (opacity handled by CSS/GSAP) */
               gsap.set(hint, { clearProps: "transform" });
-
-              /* glowRing: GSAP leaves width≈3000px / height≈3000px /
-               * transform:translate(-1248px,…) as direct inline styles
-               * (set via el.style.x = …, not via GSAP props, so
-               * clearProps won't touch them).  Strip them manually so
-               * the element collapses back to its CSS-defined state. */
-              if (glowEl) {
-                glowEl.style.width     = "";
-                glowEl.style.height    = "";
-                glowEl.style.transform = "";
-                glowEl.style.opacity   = "0"; // keep it invisible
-              }
+              if (loader) loader.style.display = "none";
+              setHeroBooting(false);
             },
           });
 
-          /* ── 0–1.3s : bubble rises from bottom with liquid bounce
-           *   Both cy and r use elastic.out so the circle visibly oscillates
-           *   in size as it rises — a clear "bouncing bubble" read.
-           *   elastic.out(1.4, 0.38) gives 3–4 oscillations with good decay.
-           *   Source: MY_GSAP_ANIMATIONS.md §"Animation Timing & Easing Reference"
-           */
+          /* Loader bounce-in (replaces the old bubble/circle entrance) */
+          if (loader) {
+            gsap.set(loader, { display: "grid", opacity: 1, scale: 0.9, y: 40 });
+            entranceTl.to(
+              loader,
+              {
+                y: 0,
+                scale: 1,
+                duration: 1.1,
+                ease: "elastic.out(1.2, 0.5)",
+              },
+              0
+            );
+            entranceTl.to(
+              loader,
+              {
+                opacity: 0,
+                duration: 0.35,
+                ease: "power2.out",
+              },
+              1.0
+            );
+          }
+
+          /* Hide loader first, then reveal the card + do the fluid reveal */
+          entranceTl.set(card, { opacity: 1 }, 1.02);
           entranceTl.to(
             circle,
             {
-              cy: 50,   // centre rises to mid-card
-              r: 5,     // stays small; glow ring provides the visibility
+              cy: 50,
+              r: 5,
               duration: 1.1,
               ease: "elastic.out(1.2, 0.5)",
               onUpdate: applyClip,
             },
-            0
+            1.05
           );
 
-          /* ── 1.1–2.3s : circle expands to fill the card (power2.inOut)
-           *   Starts just before the bounce fully settles so the transition
-           *   feels continuous. Pattern 3 scale-in style via clip-path.
-           */
           entranceTl.to(
             circle,
             {
               r: 135,
-              duration: 1.2,
+              duration: 1.15,
               ease: "power2.inOut",
               onUpdate: applyClip,
             },
-            0.9
+            1.8
+          );
+
+          /* Reveal hero content during the fluid fill */
+          entranceTl.to(
+            hideEls,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.45,
+              ease: "power2.out",
+              stagger: 0.02,
+            },
+            1.95
           );
 
           /* ── h1 line 1 "Ideas to" – slide chars from left + de-rotate
@@ -618,7 +620,7 @@ export function StudioGlass() {
               duration: 0.45,
               ease: "power3.out",
             },
-            1.05
+            2.05
           );
 
           /* ── h1 line 2 "products." – 3-D flip down into place
@@ -634,7 +636,7 @@ export function StudioGlass() {
               duration: 0.42,
               ease: "power2.out",
             },
-            1.45
+            2.4
           );
 
           /* ── h1 line 3 "Fast." – scale-pop (Pattern 3: back.out) */
@@ -648,7 +650,7 @@ export function StudioGlass() {
               duration: 0.42,
               ease: "back.out(2.5)",
             },
-            1.8
+            2.75
           );
 
           /* ── scroll hint fades in after chars land
@@ -662,17 +664,19 @@ export function StudioGlass() {
               duration: 0.55,
               ease: "power2.out",
             },
-            2.3
+            3.15
           );
         } else {
           /* entrance already played (navigation back) – snap to final state */
-          const snapCx = window.innerWidth <= 640 ? 50 : 18;
-          card.style.clipPath = `circle(135% at ${snapCx}% 50%)`;
+          if (loader) loader.style.display = "none";
+          setHeroBooting(false);
           if (w0.length) gsap.set(w0, { x: 0, rotation: 0, opacity: 1 });
           if (w1.length) gsap.set(w1, { y: 0, rotationX: 0, opacity: 1 });
           if (w2.length) gsap.set(w2, { scale: 1, y: 0, opacity: 1 });
           gsap.set(hint, { opacity: 1, y: 0 });
         }
+
+        // Mobile gets the same single reveal as desktop (no extra scroll-in animation).
 
         /* ── Phase B: fade scroll hint on first scroll ───────────────── */
         const onFirstScroll = () => {
@@ -776,7 +780,7 @@ export function StudioGlass() {
   }, []);
 
   return (
-    <div ref={rootRef} className={styles.root}>
+    <div ref={rootRef} className={`${styles.root} ${heroBooting ? styles.heroBooting : ""}`}>
       <div className={styles.ambientCanvas} aria-hidden="true">
         <div className={`${styles.orb} ${styles.orb1}`} />
         <div className={`${styles.orb} ${styles.orb2}`} />
@@ -790,7 +794,7 @@ export function StudioGlass() {
 
       {/* scroll-to-explore indicator — outside scrollRoot so it doesn't scroll */}
       <div ref={scrollHintRef} className={styles.scrollHint} aria-hidden="true">
-        <span className={styles.scrollHintText}>Scroll to explore</span>
+        <span className={styles.scrollHintText}>{t('scrollHint')}</span>
         <svg
           className={styles.scrollHintIcon}
           viewBox="0 0 24 24"
@@ -809,12 +813,14 @@ export function StudioGlass() {
         <main className={styles.main}>
           <div ref={heroScrollSpaceRef} className={styles.heroScrollSpace}>
             <div className={styles.glassAssembly}>
-              {/* glow ring: sibling of heroCard so it is never clipped */}
-              <div ref={glowRingRef} className={styles.glowRing} aria-hidden="true" />
+              {/* immediate loader (only visible during boot) */}
+              <div ref={heroLoaderRef} className={styles.heroLoader} aria-hidden="true">
+                <div className={styles.hypnotic} />
+              </div>
 
               <section ref={heroCardRef} className={styles.heroCard}>
                 <div className={`${styles.metaLabel} ${styles.posTopLeft}`}>
-                  Status: Creating
+                  {t('meta.statusCreating')}
                 </div>
                 <div className={`${styles.metaLabel} ${styles.posBottomLeft}`}>
                   SYS.VER: 4.0.1 // LQD-GLS
@@ -832,7 +838,7 @@ export function StudioGlass() {
                     />
                     <text fontSize="8" fontFamily="var(--font-jetbrains-mono)">
                       <textPath href="#circle">
-                         DESIGN • FRONTEND DEVELOPMENT • ARCHITECTURE • 
+                         {t('circleText')}
                       </textPath>
                     </text>
                   </svg>
@@ -840,20 +846,20 @@ export function StudioGlass() {
 
                 <div className={styles.heroContent}>
                   <h1 ref={titleRef} className={styles.heroTitle}>
-                    <TitleWord word="Ideas&nbsp;to" wordIndex="0" />
+                    <TitleWord word={t('title.w0')} wordIndex="0" />
                     <TitleWord
-                      word="products"
+                      word={t('title.w1')}
                       wordIndex="1"
                       className={styles.titleOverlap}
                     />
                     <TitleWord
-                      word="Fast"
+                      word={t('title.w2')}
                       wordIndex="2"
                       className={styles.titleAccent}
                     />
                   </h1>
                   <p ref={subtitleRef} className={styles.heroSubtitle}>
-                    {["Websites", "\u00a0•\u00a0", "Apps", "\u00a0•\u00a0", "Automations"].map((word, i) => (
+                    {[t('subtitle.websites'), "\u00a0•\u00a0", t('subtitle.apps'), "\u00a0•\u00a0", t('subtitle.automations')].map((word, i) => (
                       <span key={i} data-subtitle-word="" className={styles.subtitleWord}>{word}</span>
                     ))}
                   </p>
@@ -873,7 +879,7 @@ export function StudioGlass() {
                   className={styles.actionBtn}
                   onClick={() => scrollToSection("contact")}
                 >
-                  Start project
+                  {t('cta')}
                   <svg
                     width="16"
                     height="16"
