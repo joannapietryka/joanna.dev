@@ -344,6 +344,35 @@ export function StudioGlass() {
     let gsapCtx: any = null;
     let lenisTicker: ((time: number) => void) | null = null;
 
+    const revealStaticHero = () => {
+      // If GSAP/CDN fails (common in in-app iOS webviews), the hero defaults to:
+      // - heroCard clip-path: 0%
+      // - title chars opacity: 0
+      // which looks like a blank page. Snap to a visible, non-animated state.
+      try {
+        const snapCx = window.innerWidth <= 640 ? 50 : 18;
+        card.style.clipPath = `circle(135% at ${snapCx}% 50%)`;
+        const chars = Array.from(title.querySelectorAll<HTMLElement>("[data-char]"));
+        chars.forEach((c) => {
+          c.style.opacity = "1";
+          c.style.transform = "none";
+        });
+        const subWords = subtitle
+          ? Array.from(subtitle.querySelectorAll<HTMLElement>("[data-subtitle-word]"))
+          : [];
+        subWords.forEach((w) => {
+          w.style.opacity = "1";
+          w.style.transform = "none";
+        });
+        hint.style.opacity = "1";
+        hint.style.transform = "none";
+        el.style.overflowY = "auto";
+        el.style.paddingRight = "";
+      } catch {
+        // no-op; worst case we keep current styles
+      }
+    };
+
     const init = async () => {
       await loadScript(
         "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
@@ -704,7 +733,10 @@ export function StudioGlass() {
       });
     };
 
-    init().catch(console.error);
+    init().catch((err) => {
+      console.error(err);
+      if (!cancelled) revealStaticHero();
+    });
 
     return () => {
       cancelled = true;
