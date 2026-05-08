@@ -231,8 +231,8 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /* initial state – GSAP drives clip-path during entrance; invisible until then */
-  clip-path: circle(0% at 18% 100%);
+  /* Visible by default (progressive enhancement: GSAP animates when ready) */
+  clip-path: circle(135% at 18% 50%);
   pointer-events: auto;
 }
 
@@ -405,10 +405,10 @@
   white-space: nowrap;
 }
 
-/* each character – hidden by default, GSAP reveals them */
+/* each character – visible by default (avoid blank hero if JS/GSAP is delayed) */
 .titleChar {
   display: inline-block;
-  opacity: 0;
+  opacity: 1;
   will-change: transform, opacity;
 }
 
@@ -435,10 +435,10 @@
   pointer-events: none;
 }
 
-/* individual animated words — GSAP controls opacity/y */
+/* individual animated words — visible by default (GSAP can still animate from/to) */
 .subtitleWord {
   display: inline-block;
-  opacity: 0;
+  opacity: 1;
 }
 
 .titleOverlap {

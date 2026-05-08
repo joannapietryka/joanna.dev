@@ -344,6 +344,7 @@ export function StudioGlass() {
     let gsapCtx: any = null;
     let lenisTicker: ((time: number) => void) | null = null;
     let gsapApi: { ticker: { add: (fn: (t: number) => void) => void; remove: (fn: (t: number) => void) => void; lagSmoothing: (v: number) => void }; set: (...args: any[]) => void } | null = null;
+    let fallbackTimer: number | null = null;
 
     const revealStaticHero = () => {
       // If GSAP/CDN fails (common in in-app iOS webviews), the hero defaults to:
@@ -375,28 +376,39 @@ export function StudioGlass() {
     };
 
     const init = async () => {
+      // Start the “show something ASAP” watchdog immediately (before any awaits).
+      // iOS Chrome can delay loading split chunks; we don’t want a blank hero.
+      fallbackTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        heroEntrancePlayed = true;
+        revealStaticHero();
+      }, 700);
+
       /*
        * iOS (and in-app webviews) can be slow or flaky with 3rd-party CDNs.
        * Prefer bundling GSAP via npm (dynamic import = split chunk, same origin).
        */
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+      const [gsapMod, stMod] = await Promise.all([
         import("gsap"),
         import("gsap/ScrollTrigger"),
       ]);
       if (cancelled) return;
+      const gsap = (gsapMod as unknown as { gsap?: any; default?: any }).gsap
+        ?? (gsapMod as unknown as { default?: any }).default
+        ?? gsapMod;
+      const ScrollTrigger = (stMod as unknown as { ScrollTrigger?: any; default?: any }).ScrollTrigger
+        ?? (stMod as unknown as { default?: any }).default
+        ?? stMod;
+
+      // Other sections rely on globals (AboutMe, Projects, etc.).
+      window.gsap = gsap;
+      window.ScrollTrigger = ScrollTrigger;
+
       gsapApi = gsap;
       gsap.registerPlugin(ScrollTrigger);
 
       const content = el.querySelector("main");
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      // If animation setup takes too long (slow iPhone), reveal something ASAP.
-      // If/when GSAP finishes loading, we’ll snap to final state via heroEntrancePlayed.
-      const fallbackTimer = window.setTimeout(() => {
-        if (cancelled) return;
-        heroEntrancePlayed = true;
-        revealStaticHero();
-      }, 700);
 
       if (
         !cancelled &&
@@ -438,7 +450,7 @@ export function StudioGlass() {
       if (cancelled) return;
 
       gsapCtx = gsap.context(() => {
-        window.clearTimeout(fallbackTimer);
+        if (fallbackTimer) window.clearTimeout(fallbackTimer);
         /* ── collect per-word char elements ──────────────────────────── */
         const wordEls = Array.from(
           title.querySelectorAll("[data-word]")
@@ -751,6 +763,7 @@ export function StudioGlass() {
 
     return () => {
       cancelled = true;
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
       if (lenisTicker) {
         gsapApi?.ticker.remove(lenisTicker);
       }
