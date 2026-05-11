@@ -4,7 +4,6 @@ import {useLocale, useTranslations} from "next-intl";
 import {usePathname} from "next/navigation";
 import {useEffect, useRef} from "react";
 import {Link} from "@/i18n/navigation";
-import {getSiteLenis} from "../../_lib/lenis-bridge";
 import {MALT_PROFILE_URL} from "../../_lib/site";
 import {PaperPlaneIcon} from "../icons/PaperPlaneIcon";
 import {LocaleSwitch} from "../locale-switch/LocaleSwitch";
@@ -13,40 +12,6 @@ import styles from "./SiteFooter.module.css";
 export interface SiteFooterProps {
   /** Home only — same in-page scroll as `SiteNav` for #about / #contact */
   onScrollTo?: (id: string) => void;
-}
-
-function wireScrollerProxy(scrollRoot: HTMLElement) {
-  const ST = window.ScrollTrigger as typeof import("gsap/ScrollTrigger").ScrollTrigger | undefined;
-  if (!ST?.scrollerProxy) return;
-
-  ST.scrollerProxy(scrollRoot, {
-    scrollTop(value) {
-      const lenis = getSiteLenis();
-      // Lenis v1+ exposes animatedScroll (current position), not `.scroll`.
-      // Without this, ScrollTrigger reads native wrapper.scrollTop — often wrong on touch
-      // while Lenis drives motion — so scrub / on-scroll animations stall on iOS.
-      if (lenis && typeof lenis.animatedScroll === "number") {
-        if (arguments.length) {
-          lenis.scrollTo(value as number, {immediate: true});
-        }
-        return lenis.animatedScroll;
-      }
-      if (arguments.length) {
-        scrollRoot.scrollTop = value as number;
-      }
-      return scrollRoot.scrollTop;
-    },
-    getBoundingClientRect() {
-      return scrollRoot.getBoundingClientRect();
-    },
-    pinType: scrollRoot.style.transform ? "transform" : "fixed",
-  });
-}
-
-function clearScrollerProxy(scrollRoot: HTMLElement | null) {
-  if (!scrollRoot) return;
-  const ST = window.ScrollTrigger as {scrollerProxy?: (el: Element, conf: false) => void} | undefined;
-  ST?.scrollerProxy?.(scrollRoot, false);
 }
 
 export function SiteFooter({onScrollTo}: SiteFooterProps) {
@@ -80,9 +45,6 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
     const homeScrollRoot = document.getElementById("scroll-root") as HTMLElement | null;
     const pageScrollRoot = document.getElementById("page-scroll-root") as HTMLElement | null;
     const stScrollRoot = homeScrollRoot ?? pageScrollRoot;
-    /* scrollerProxy is for Lenis + #scroll-root; proxying a plain overflow div breaks scrub. */
-    let proxyWired = false;
-    let proxyElement: HTMLElement | null = null;
 
     const init = async () => {
       const gsapMod = await import("gsap");
@@ -95,9 +57,6 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
       window.ScrollTrigger = ScrollTrigger;
 
       if (homeScrollRoot) {
-        wireScrollerProxy(homeScrollRoot);
-        proxyWired = true;
-        proxyElement = homeScrollRoot;
         ScrollTrigger.refresh();
       }
 
@@ -188,7 +147,6 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
     return () => {
       cancelled = true;
       gsapCtx?.revert();
-      if (proxyWired) clearScrollerProxy(proxyElement);
     };
   }, [pathname]);
 

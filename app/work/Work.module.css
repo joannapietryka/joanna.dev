@@ -9,12 +9,8 @@
   color: #0a0a0a;
   position: relative;
   box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .page {
-    padding-bottom: 50px;
-  }
+  /* Space below SiteFooter — keep in sync with app/services/ServicesPage.module.css .page */
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
 }
 
 /* ── Ambient background ────────────────────────────────────────────────────── */

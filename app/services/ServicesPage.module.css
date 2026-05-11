@@ -11,7 +11,8 @@
   max-height: 100dvh;
   /* Match hero inset: .main padding-top + .heroScrollSpace padding-top */
   padding-top: calc(3rem + 4vh);
-  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  /* Space below SiteFooter — keep in sync with app/work/Work.module.css .page */
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   background-color: #ffffff;
   position: relative;
@@ -19,89 +20,6 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   font-family: var(--font-jetbrains-mono), monospace;
-}
-
-/* ── Ambient background — mirrors main page orbs (fixed like /work .bg so it
-   stays behind the full scroll, including the footer; absolute + inset:0 only
-   matched the 100vh scrollport and left a flat white band below). ─────────── */
-.ambientBg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: #ffffff;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.glowShape {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.45;
-  mix-blend-mode: multiply;
-  animation: slowMorph 35s infinite alternate ease-in-out;
-  will-change: transform;
-}
-
-.glow1 {
-  width: 16vw;
-  height: 16vw;
-  background: var(--color-1);
-  top: -5%;
-  left: 5%;
-  animation-delay: 0s;
-}
-
-.glow2 {
-  width: 13vw;
-  height: 13vw;
-  background: var(--color-2);
-  bottom: -10%;
-  right: 5%;
-  animation-delay: -7s;
-}
-
-.glow3 {
-  width: 11vw;
-  height: 11vw;
-  background: var(--color-3);
-  top: 20%;
-  right: 15%;
-  animation-delay: -14s;
-}
-
-.glow4 {
-  width: 14vw;
-  height: 14vw;
-  background: var(--color-4);
-  bottom: 15%;
-  left: 10%;
-  animation-delay: -21s;
-  opacity: 0.35;
-}
-
-@keyframes slowMorph {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(40px, -30px) scale(1.08); }
-  66%  { transform: translate(-20px, 20px) scale(0.95); }
-  100% { transform: translate(60px, 40px) scale(1.1); }
-}
-
-/* grid overlay — matches main page (fixed with ambient so it covers scroll) */
-.noiseOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background-image:
-    linear-gradient(to right,  rgba(0, 0, 0, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-}
-
-/* Hidden on desktop — shown under @media (max-width: 900px), mirrors app/work/Work.module.css .bg */
-.workAmbientMobile {
-  display: none;
 }
 
 /* ── Main glass card ──────────────────────────────────────────────────────── */
@@ -589,80 +507,11 @@
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
     padding-top: calc(2rem + 4vh + env(safe-area-inset-top, 0px));
-    padding-bottom: calc(6.25rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(
+      6.25rem + max(1.25rem, env(safe-area-inset-bottom, 0px))
+    );
     box-sizing: border-box;
     background-color: #ffffff;
-  }
-
-  /* Same ambient as /work — fixed viewport layer while .page scrolls */
-  .ambientBg {
-    display: none;
-  }
-
-  .noiseOverlay {
-    display: none;
-  }
-
-  .workAmbientMobile {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .workOrb1 {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: var(--color-1);
-    opacity: 0.18;
-    filter: blur(100px);
-    top: -10%;
-    left: 30%;
-    animation: servicesWorkFloat1 25s ease-in-out infinite alternate;
-  }
-
-  .workOrb2 {
-    position: absolute;
-    width: 800px;
-    height: 800px;
-    border-radius: 50%;
-    background: var(--color-3);
-    opacity: 0.12;
-    filter: blur(120px);
-    bottom: 10%;
-    right: -10%;
-    animation: servicesWorkFloat2 30s ease-in-out infinite alternate-reverse;
-  }
-
-  .workGrid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  @keyframes servicesWorkFloat1 {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    100% {
-      transform: translate(10%, 15%) scale(1.1);
-    }
-  }
-
-  @keyframes servicesWorkFloat2 {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
-    100% {
-      transform: translate(-10%, -10%) scale(1.15);
-    }
   }
 
   .card {

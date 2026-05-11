@@ -50,6 +50,8 @@
     );
   pointer-events: none;
   z-index: 0;
+  width: 100vw;
+  left: -4%;
 }
 
 /* ── Header area ─────────────────────────────────────────────────────────── */

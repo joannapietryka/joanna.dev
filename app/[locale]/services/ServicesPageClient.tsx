@@ -9,6 +9,7 @@ import {SiteNav} from "../../_components/site-nav/SiteNav";
 import {PaperPlaneIcon} from "../../_components/icons/PaperPlaneIcon";
 import {MALT_PROFILE_URL} from "../../_lib/site";
 import styles from "../../services/ServicesPage.module.css";
+import workBg from "../../work/Work.module.css";
 
 /* ── Service data ─────────────────────────────────────────────────────────── */
 const SERVICES_EN = [
@@ -545,22 +546,12 @@ function ServicesContent() {
     <div id="page-scroll-root" className={styles.page}>
       <SiteNav />
 
-      {/* ambient background */}
-      <div className={styles.ambientBg}>
-        <div className={`${styles.glowShape} ${styles.glow1}`} />
-        <div className={`${styles.glowShape} ${styles.glow2}`} />
-        <div className={`${styles.glowShape} ${styles.glow3}`} />
-        <div className={`${styles.glowShape} ${styles.glow4}`} />
+      {/* Same ambient as /work: orbs + line grid (no spin ring) */}
+      <div className={workBg.bg} aria-hidden>
+        <div className={workBg.orb1} />
+        <div className={workBg.orb2} />
+        <div className={workBg.grid} />
       </div>
-
-      {/* Mobile: same ambient stack as /work (orbs + grid, no spin ring) */}
-      <div className={styles.workAmbientMobile} aria-hidden>
-        <div className={styles.workOrb1} />
-        <div className={styles.workOrb2} />
-        <div className={styles.workGrid} />
-      </div>
-
-      <div className={styles.noiseOverlay} />
 
       {/* main glass card */}
       <div className={styles.card}>
