@@ -105,7 +105,6 @@ function ScrollScrubCanvas({
   progressRef: React.RefObject<number>;
 }) {
   const t = useTranslations('Home');
-  const [simpleVideo, setSimpleVideo] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -114,18 +113,6 @@ function ScrollScrubCanvas({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // iOS Chrome can choke on heavy hydration + canvas + seeking.
-    // Prefer a simple inline video on coarse pointers / reduced-motion devices.
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    setSimpleVideo(reduceMotion || coarse);
-  }, []);
-
-  useEffect(() => {
-    if (simpleVideo) {
-      setReady(true);
-      return;
-    }
     const video = document.createElement("video");
     video.src = src;
     video.muted = true;
@@ -168,7 +155,6 @@ function ScrollScrubCanvas({
   }, [src]);
 
   useEffect(() => {
-    if (simpleVideo) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -186,13 +172,20 @@ function ScrollScrubCanvas({
   }, []);
 
   useEffect(() => {
-    if (simpleVideo) return;
     if (!ready) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    const isIOS =
+      /iP(hone|od|ad)/.test(navigator.userAgent) ||
+      // iPadOS reports as Mac but has touch points
+      (navigator.userAgent.includes("Mac") && navigator.maxTouchPoints > 1);
+
+    const minSeekIntervalMs = isIOS ? 1000 / 24 : 1000 / 60;
+    let lastSeekAt = 0;
 
     const draw = () => {
       const w = canvas.clientWidth;
@@ -211,7 +204,10 @@ function ScrollScrubCanvas({
       const dur = Number.isFinite(video.duration) ? video.duration : 0;
       if (dur && !pendingSeekRef.current) {
         const t = clamp01(smoothedRef.current) * Math.max(0, dur - 0.001);
-        if (Math.abs(video.currentTime - t) > 1 / 90) {
+        const now = performance.now();
+        const shouldSeekNow = now - lastSeekAt >= minSeekIntervalMs;
+        if (shouldSeekNow && Math.abs(video.currentTime - t) > 1 / 60) {
+          lastSeekAt = now;
           pendingSeekRef.current = true;
           const onSeeked = () => {
             pendingSeekRef.current = false;
@@ -236,22 +232,6 @@ function ScrollScrubCanvas({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [ready, progressRef, src]);
-
-  if (simpleVideo) {
-    return (
-      <div className={styles.scrubRoot}>
-        <video
-          src={src}
-          className={styles.photoVideo}
-          muted
-          playsInline
-          autoPlay
-          loop
-          preload="metadata"
-        />
-      </div>
-    );
-  }
 
   return (
     <div className={styles.scrubRoot}>
@@ -290,8 +270,7 @@ export function StudioGlass() {
   const shouldAnimate = useMemo(() => {
     if (typeof window === "undefined") return true;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    return !(reduceMotion || coarse);
+    return !reduceMotion;
   }, []);
 
   /* scroll to a section id within the custom scroll container */
