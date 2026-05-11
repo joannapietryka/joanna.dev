@@ -1,4 +1,6 @@
 import type {Metadata} from 'next';
+import {getTranslations} from 'next-intl/server';
+import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
 import styles from '../../work/Work.module.css';
 import {absUrl} from '../../_lib/site';
@@ -25,7 +27,14 @@ export async function generateMetadata({
   };
 }
 
-export default function WorkPage() {
+export default async function WorkPage({
+  params
+}: {
+  params: Promise<{locale: string}>;
+}) {
+  const {locale} = await params;
+  const t = await getTranslations({locale, namespace: 'Work'});
+
   return (
     <div className={styles.page}>
       {/* ── Ambient background ─────────────────────────────────────────── */}
@@ -73,7 +82,7 @@ export default function WorkPage() {
               fontWeight="bold"
             >
               <textPath href="#textPath" startOffset="0%">
-                BUILT FOR RESULTS • SHIPPED & LIVE • DIGITAL PRODUCTS •{' '}
+                {t('ringText')}{' '}
               </textPath>
             </text>
           </svg>
@@ -85,13 +94,10 @@ export default function WorkPage() {
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
       <main className={styles.main}>
-        <div className={styles.eyebrow}>
-          <div className={styles.eyebrowLine} />
-          <span className={styles.eyebrowText}>Selected Projects</span>
-        </div>
+       
 
         <div className={styles.titleRow}>
-          <h1 className={styles.title}>Portfolio</h1>
+          <h1 className={styles.title}>{t('title')}</h1>
         </div>
 
         {/* ── Projects list ──────────────────────────────────────────── */}
@@ -110,14 +116,12 @@ export default function WorkPage() {
             </div>
             <div className={styles.featuredCard}>
               <div className={styles.cardMeta}>
-                <span className={styles.cardTag}>Web Design & Development</span>
-                <span className={styles.cardDate}>2025</span>
+                <span className={styles.cardTag}>{t('tags.web')}</span>
+
               </div>
-              <h2 className={styles.cardTitle}>Psychologist — Brand & Web</h2>
+              <h2 className={styles.cardTitle}>{t('cards.psychologistTitle')}</h2>
               <p className={styles.cardDesc}>
-                Psychologist website designed and built in Webflow, featuring
-                smooth on-scroll animations, a custom logo, and an integrated
-                blog for content publishing.
+                {t('cards.psychologistDesc')}
               </p>
               <div className={styles.cardTechRow}>
                 {['Webflow', 'GSAP', 'CSS Animations', 'Logo Design'].map((t) => (
@@ -132,7 +136,7 @@ export default function WorkPage() {
                 rel="noopener noreferrer"
                 className={styles.cardLink}
               >
-                Visit Site
+                {t('visitSite')}
                 <svg
                   width="14"
                   height="14"
@@ -163,14 +167,12 @@ export default function WorkPage() {
                 />
               </div>
               <div className={styles.gridCardMeta}>
-                <span className={styles.cardTag}>Web Design & Development</span>
-                <span className={styles.cardDate}>2025</span>
+                <span className={styles.cardTag}>{t('tags.web')}</span>
+         
               </div>
-              <h2 className={styles.gridCardTitle}>Avamex — IT Outsourcing</h2>
+              <h2 className={styles.gridCardTitle}>{t('cards.avamexTitle')}</h2>
               <p className={styles.gridCardDesc}>
-                Webflow website for an outsourcing company, featuring custom
-                branding, smooth animations, and AI-generated graphics tailored
-                to the brand.
+                {t('cards.avamexDesc')}
               </p>
               <a
                 href="https://avamex.krakow.pl/"
@@ -178,7 +180,7 @@ export default function WorkPage() {
                 rel="noopener noreferrer"
                 className={styles.gridCardLink}
               >
-                Visit Site
+                {t('visitSite')}
                 <svg
                   width="12"
                   height="12"
@@ -206,13 +208,11 @@ export default function WorkPage() {
                 />
               </div>
               <div className={styles.gridCardMeta}>
-                <span className={styles.cardTag}>Web Design & Development</span>
-                <span className={styles.cardDate}>2025</span>
+                <span className={styles.cardTag}>{t('tags.web')}</span>
               </div>
-              <h2 className={styles.gridCardTitle}>Lido — Creative Studio</h2>
+              <h2 className={styles.gridCardTitle}>{t('cards.lidoTitle')}</h2>
               <p className={styles.gridCardDesc}>
-                Branding and Webflow build for a creative agency, with
-                interactive hover states and a modular CMS for case studies.
+                {t('cards.lidoDesc')}
               </p>
               <a
                 href="https://lido-agency.pl/"
@@ -220,7 +220,7 @@ export default function WorkPage() {
                 rel="noopener noreferrer"
                 className={styles.gridCardLink}
               >
-                Visit Site
+                {t('visitSite')}
                 <svg
                   width="12"
                   height="12"
@@ -237,6 +237,8 @@ export default function WorkPage() {
           </div>
         </div>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

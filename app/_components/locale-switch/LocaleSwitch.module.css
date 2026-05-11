@@ -1,0 +1,80 @@
+.group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem 0.45rem;
+  margin: 0;
+  color: inherit;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btnActive {
+  opacity: 1;
+  position: relative;
+}
+
+.btnActive::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0.35rem;
+  right: 0.35rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.sep {
+  opacity: 0.25;
+  font-weight: 600;
+  user-select: none;
+}
+
+/* Mobile menu overlay — light controls on dark */
+.inverse .btn {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.inverse .btn:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.inverse .btnActive {
+  color: #fff;
+}
+
+.inverse .sep {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Glass footer — slate palette */
+.glass .btn {
+  color: rgb(71 85 105);
+}
+
+.glass .btn:hover {
+  color: rgb(15 23 42);
+}
+
+.glass .btnActive {
+  color: rgb(15 23 42);
+}
+
+.glass .sep {
+  color: rgb(148 163 184 / 0.55);
+}

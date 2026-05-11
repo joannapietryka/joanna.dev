@@ -159,11 +159,6 @@
   margin-bottom: 4rem;
 }
 
-.eyebrowLine {
-  height: 1px;
-  width: 2rem;
-  background: #0a0a0a;
-}
 
 .eyebrowText {
   font-family: var(--font-jetbrains-mono), monospace;
@@ -268,13 +263,6 @@
   color: rgba(10, 10, 10, 0.4);
 }
 
-.cardDate {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: rgba(10, 10, 10, 0.4);
-}
-
 .cardTitle {
   font-family: var(--font-sora), system-ui, sans-serif;
   font-size: clamp(1.5rem, 2.5vw, 2.2rem);
@@ -296,7 +284,6 @@
   line-height: 1.8;
   color: #0a0a0a99;
   margin-bottom: 2rem;
-  max-width: 36ch;
 }
 
 .cardTechRow {
@@ -489,6 +476,10 @@
 }
 
 @media (max-width: 640px) {
+  .cardDesc {
+    max-width: 36ch;
+  }
+
   .titleRow {
     flex-direction: column;
     align-items: flex-start;

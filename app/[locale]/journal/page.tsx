@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
 import {absUrl} from '../../_lib/site';
 
@@ -57,6 +58,7 @@ export default function JournalPage() {
           Coming soon
         </h1>
       </div>
+      <SiteFooter />
     </>
   );
 }

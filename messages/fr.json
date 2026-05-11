@@ -10,6 +10,17 @@
     "langEn": "EN",
     "langFr": "FR"
   },
+  "Footer": {
+    "sysLabel": "SYS.FOOTER // FIN",
+    "online": "EN LIGNE",
+    "brandMark": "joanna.dev",
+    "lead": "Créateur de produits digitaux concevant des sites web, des applications et des automatisations qui génèrent de vrais résultats.",
+    "index": "INDEX",
+    "indexNavAria": "Navigation du pied de page",
+    "startProject": "DÉMARRER UN PROJET",
+    "copyrightLegal": "© {year} JOANNA PIETRYKA. TOUS DROITS RÉSERVÉS.",
+    "axis": "AXIS_X: 1440.0 // AXIS_Y: 320.0"
+  },
   "Projects": {
     "tags": {
       "craft": "Savoir-faire : livré",
@@ -132,7 +143,78 @@
     },
     "eyebrow": "Pourquoi travailler avec moi",
     "title": "Créatrice de produits \ndigitaux",
-    "lead": "Je construis des produits digitaux depuis 2015. Je transforme des idées complexes en expériences rapides, tactiles et interactives — qui semblent évidentes."
+    "lead": "Je construis des produits digitaux depuis 2015. Je transforme des idées complexes en expériences rapides, tactiles et interactives — qui semblent évidentes.",
+    "cards": {
+      "background": {
+        "label": "// Parcours",
+        "body": "La majeure partie de ma carrière s’est déroulée en agences, avec une exigence pixel‑perfect et des délais serrés pour des marques internationales."
+      },
+      "stack": {
+        "label": "// Stack",
+        "body": "Spécialisée en frontend moderne — React et Tailwind CSS — avec un focus sur une architecture propre, scalable, et une excellente expérience utilisateur.",
+        "progressLabel": "Maîtrise frontend"
+      }
+    },
+    "aiCard": {
+      "title": "Workflow accéléré par l’IA",
+      "body": "En combinant mon expertise code avec des outils IA avancés, je livre des produits digitaux complets — design, copy et visuels inclus — plus vite et plus efficacement qu’un workflow traditionnel."
+    }
+  },
+  "AITools": {
+    "tags": {
+      "ai": "IA : optimisée",
+      "stack": "Stack : augmentée"
+    },
+    "heading": {
+      "line1": "Exécution plus rapide",
+      "line2": "Meilleurs résultats"
+    },
+    "subheading": "Je combine développement et outils IA avancés pour livrer des solutions complètes — du code et du design jusqu’au copy et aux visuels. Plus d’itérations, plus vite, sans les délais habituels.",
+    "steps": {
+      "development": {
+        "title": "Développement plus intelligent",
+        "body": "Coder plus vite et plus précisément grâce à des workflows modernes assistés par IA."
+      },
+      "design": {
+        "title": "Design scalable",
+        "body": "Explorer et itérer rapidement sans ralentir le process."
+      },
+      "visuals": {
+        "title": "Contenu visuel",
+        "body": "Créer des visuels et graphiques sur‑mesure rapidement, alignés à ton produit."
+      },
+      "copy": {
+        "title": "Copy & stratégie",
+        "body": "Un message clair, une structure solide, et un contenu aligné à tes objectifs."
+      }
+    },
+    "orbit": {
+      "ringText": "IA AVANCÉE • CODE • DESIGN • COPY • VISUELS • WORKFLOWS PLUS INTELLIGENTS • ",
+      "centerAi": "IA",
+      "centerTools": "outils"
+    }
+  },
+  "ServicesPage": {
+    "techStack": "Stack",
+    "startProject": "Démarrer un projet",
+    "buildProcess": "Process",
+    "deliverables": "Livrables"
+  },
+  "Work": {
+    "ringText": "CONÇU POUR PERFORMER • LIVRÉ & EN LIGNE • PRODUITS DIGITAUX •",
+    "title": "Projets sélectionnés",
+    "visitSite": "Voir le site",
+    "tags": {
+      "web": "Design & développement web"
+    },
+    "cards": {
+      "psychologistTitle": "Psychologue — marque & site",
+      "psychologistDesc": "Site de psychologue conçu et développé sur Webflow, avec animations au scroll, logo sur‑mesure et blog intégré pour publier du contenu.",
+      "avamexTitle": "Avamex — outsourcing IT",
+      "avamexDesc": "Site Webflow pour une société d’outsourcing IT, avec branding sur‑mesure, animations fluides et visuels générés par IA adaptés à la marque.",
+      "lidoTitle": "Lido — agence de location",
+      "lidoDesc": "Site web en Next.js pour une entreprise de location immobilière, avec une identité visuelle sur mesure, des graphismes personnalisés et une expérience utilisateur rapide et moderne."
+    }
   }
 }
 

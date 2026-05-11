@@ -3,9 +3,10 @@ import {routing} from './routing';
 
 export default getRequestConfig(async ({requestLocale}) => {
   const candidate = await requestLocale;
+  const normalized = candidate?.split('-')[0];
   const locale =
-    candidate && routing.locales.includes(candidate as (typeof routing.locales)[number])
-      ? (candidate as (typeof routing.locales)[number])
+    normalized && routing.locales.includes(normalized as (typeof routing.locales)[number])
+      ? (normalized as (typeof routing.locales)[number])
       : routing.defaultLocale;
 
   return {

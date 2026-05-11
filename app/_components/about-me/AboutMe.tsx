@@ -306,7 +306,7 @@ export function AboutMe() {
           <div ref={cardGridRef} className={styles.cardGrid}>
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardLabel}>// Background</span>
+                <span className={styles.cardLabel}>{t('cards.background.label')}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#b28dff" }} aria-hidden="true">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                   <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
@@ -314,8 +314,7 @@ export function AboutMe() {
                 </svg>
               </div>
               <p className={styles.cardBody}>
-                Most of my career was spent in advertising agencies, delivering
-                pixel-perfect quality under tight deadlines for global brands.
+                {t('cards.background.body')}
               </p>
               <div className={styles.pills}>
                 <span className={styles.pill}>Ferrero Rocher</span>
@@ -326,7 +325,7 @@ export function AboutMe() {
 
             <div className={styles.glassCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.cardLabel}>// Stack</span>
+                <span className={styles.cardLabel}>{t('cards.stack.label')}</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.cardIcon} style={{ color: "#4a6bff" }} aria-hidden="true">
                   <polygon points="12 2 2 7 12 12 22 7 12 2" />
                   <polyline points="2 17 12 22 22 17" />
@@ -334,16 +333,14 @@ export function AboutMe() {
                 </svg>
               </div>
               <p className={styles.cardBody}>
-                Specialized in modern frontend development — React and Tailwind
-                CSS — with a strong focus on clean architecture, scalability,
-                and user experience.
+                {t('cards.stack.body')}
               </p>
               <div className={styles.progressWrap}>
                 <div className={styles.progressBar}>
                   <div ref={progressFillRef} className={styles.progressFill} />
                 </div>
                 <div className={styles.progressLabels}>
-                  <span>Frontend Mastery</span>
+                  <span>{t('cards.stack.progressLabel')}</span>
                   <span>100%</span>
                 </div>
               </div>
@@ -359,12 +356,9 @@ export function AboutMe() {
                 </svg>
               </div>
               <div>
-                <h3 className={styles.aiCardTitle}>AI-Accelerated Workflow</h3>
+                <h3 className={styles.aiCardTitle}>{t('aiCard.title')}</h3>
                 <p className={styles.aiCardBody}>
-                  By combining my coding expertise with advanced AI tools, I
-                  deliver complete digital products — including design, copy,
-                  and visuals — faster and more efficiently than traditional
-                  workflows.
+                  {t('aiCard.body')}
                 </p>
               </div>
             </div>

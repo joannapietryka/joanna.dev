@@ -1,14 +1,17 @@
 "use client";
 
-import {useLocale} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 import Link from "next/link";
 import {useSearchParams} from "next/navigation";
 import {Suspense, useEffect, useState} from "react";
+import {SiteFooter} from "../../_components/site-footer/SiteFooter";
 import {SiteNav} from "../../_components/site-nav/SiteNav";
+import {PaperPlaneIcon} from "../../_components/icons/PaperPlaneIcon";
+import {MALT_PROFILE_URL} from "../../_lib/site";
 import styles from "../../services/ServicesPage.module.css";
 
 /* ── Service data ─────────────────────────────────────────────────────────── */
-const SERVICES = [
+const SERVICES_EN = [
   {
     id: "websites",
     index: "01",
@@ -332,10 +335,189 @@ const SERVICES = [
   },
 ] as const;
 
+const SERVICES_FR = [
+  {
+    id: "websites",
+    index: "01",
+    tabLabel: "Design web",
+    title: "Sites web",
+    lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
+    description:
+      "Des sites rapides et sur-mesure conçus pour convertir. Design propre, message clair, performance intégrée — chaque pixel est intentionnel, chaque interaction fluide.",
+    stack: ["Next.js", "Tailwind", "Figma", "Framer", "GSAP", "Vercel"],
+    phases: [
+      {
+        num: "01",
+        label: "Phase 01",
+        title: "Découverte & stratégie",
+        body: "Définir objectifs, audience et contexte concurrentiel. On structure l’arborescence, le contenu et les parcours de conversion avant de designer.",
+      },
+      {
+        num: "02",
+        label: "Phase 02",
+        title: "Design visuel",
+        body: "Maquettes Figma haute fidélité + bibliothèque de composants. Tout est conçu avant d’écrire du code.",
+      },
+      {
+        num: "03",
+        label: "Phase 03",
+        title: "Développement",
+        body: "Build Next.js pixel-perfect avec animations fluides, SEO clean et scores Lighthouse au-dessus de 95.",
+      },
+      {
+        num: "04",
+        label: "Phase 04",
+        title: "Lancement & passation",
+        body: "Déployé sur CDN, CMS configuré, fichier Figma livré. Tu possèdes tout.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Site en ligne",
+        desc: "Déployé sur ton domaine avec CI/CD et URLs de prévisualisation automatiques.",
+        icon: SERVICES_EN[0].deliverables[0].icon,
+      },
+      {
+        title: "Intégration CMS",
+        desc: "Modifie ton contenu sans toucher au code — blog, études de cas, pages équipe, etc.",
+        icon: SERVICES_EN[0].deliverables[1].icon,
+      },
+      {
+        title: "Fichiers Figma",
+        desc: "Le système de design complet (composants, styles et prototypes).",
+        icon: SERVICES_EN[0].deliverables[2].icon,
+      },
+      {
+        title: "Rapport performance",
+        desc: "Audit Lighthouse, base Core Web Vitals et recommandations d’optimisation.",
+        icon: SERVICES_EN[0].deliverables[3].icon,
+      },
+    ],
+  },
+  {
+    id: "apps",
+    index: "02",
+    tabLabel: "Apps",
+    title: "Apps",
+    lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
+    description:
+      "Des applications web full‑stack claires et rapides. De la découverte au déploiement, je gère tout le cycle de vie du produit.",
+    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Figma"],
+    phases: [
+      {
+        num: "01",
+        label: "Phase 01",
+        title: "Découverte & logique",
+        body: "Cartographier les parcours, le modèle de données et les exigences techniques. On définit le “pourquoi” avant le “comment”.",
+      },
+      {
+        num: "02",
+        label: "Phase 02",
+        title: "Systèmes d’interface",
+        body: "UI kit scalable + prototypes haute fidélité. Accessible, cohérent et aligné à la marque.",
+      },
+      {
+        num: "03",
+        label: "Phase 03",
+        title: "Build production",
+        body: "Code propre et performant. Frontend, backend et intégrations API — pensés pour évoluer.",
+      },
+      {
+        num: "04",
+        label: "Phase 04",
+        title: "QA & passation",
+        body: "Tests multi‑devices, optimisation vitesse et mise en prod. Tu repars avec tout ce qu’il faut pour scaler.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Codebase complète",
+        desc: "Repo maintenable, architecture modulaire et docs claires.",
+        icon: SERVICES_EN[1].deliverables[0].icon,
+      },
+      {
+        title: "Dashboards admin",
+        desc: "Interfaces internes pour gérer contenus, utilisateurs et workflows sans support technique.",
+        icon: SERVICES_EN[1].deliverables[1].icon,
+      },
+      {
+        title: "Auth & sécurité",
+        desc: "Authentification robuste et contrôle d’accès par rôles.",
+        icon: SERVICES_EN[1].deliverables[2].icon,
+      },
+      {
+        title: "Pack passation",
+        desc: "Docs, walkthrough et checklist de déploiement pour aller vite.",
+        icon: SERVICES_EN[1].deliverables[3].icon,
+      },
+    ],
+  },
+  {
+    id: "automations",
+    index: "03",
+    tabLabel: "Automatisation",
+    title: "Automatisations",
+    lensGradient: "radial-gradient(circle at 30% 30%, #E8F0FF, #FF6B8B)",
+    description:
+      "Des automatisations qui connectent tes outils et éliminent les tâches répétitives — pour gagner du temps et réduire les erreurs.",
+    stack: ["Make", "Zapier", "n8n", "Notion", "Airtable", "Slack"],
+    phases: [
+      {
+        num: "01",
+        label: "Phase 01",
+        title: "Audit process",
+        body: "Identifier les goulots d’étranglement et les tâches répétitives. Cartographier le workflow.",
+      },
+      {
+        num: "02",
+        label: "Phase 02",
+        title: "Architecture",
+        body: "Concevoir des flows avec logs, gestion d’erreurs et structure scalable.",
+      },
+      {
+        num: "03",
+        label: "Phase 03",
+        title: "Build & test",
+        body: "Construire et tester en conditions réelles jusqu’à obtenir un système fiable.",
+      },
+      {
+        num: "04",
+        label: "Phase 04",
+        title: "Passation & monitoring",
+        body: "Documentation + formation, et monitoring pour ne jamais rater une panne.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Workflows live",
+        desc: "Automatisations déployées et actives, gain de temps immédiat.",
+        icon: SERVICES_EN[2].deliverables[0].icon,
+      },
+      {
+        title: "Documentation",
+        desc: "Guides clairs pour maintenir et étendre les automatisations.",
+        icon: SERVICES_EN[2].deliverables[1].icon,
+      },
+      {
+        title: "Monitoring d’erreurs",
+        desc: "Alertes + dashboards pour être prévenu dès qu’un flow casse.",
+        icon: SERVICES_EN[2].deliverables[2].icon,
+      },
+      {
+        title: "Session de formation",
+        desc: "Walkthrough pour gérer tout en autonomie.",
+        icon: SERVICES_EN[2].deliverables[3].icon,
+      },
+    ],
+  },
+] as const;
+
 /* ── Inner component (uses useSearchParams — must be inside Suspense) ─────── */
 function ServicesContent() {
   const locale = useLocale();
-  const prefix = `/${locale}`;
+  const t = useTranslations("ServicesPage");
+  const baseLocale = (locale ?? "en").split("-")[0];
+  const services = baseLocale === "fr" ? SERVICES_FR : SERVICES_EN;
   const searchParams = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animKey, setAnimKey] = useState(0);
@@ -344,14 +526,14 @@ function ServicesContent() {
   useEffect(() => {
     const tab = searchParams.get("tab");
     if (!tab) return;
-    const idx = SERVICES.findIndex((s) => s.id === tab);
+    const idx = services.findIndex((s) => s.id === tab);
     if (idx >= 0) {
       setActiveIndex(idx);
       setAnimKey((k) => k + 1);
     }
   }, [searchParams]);
 
-  const service = SERVICES[activeIndex];
+  const service = services[activeIndex];
 
   function selectTab(i: number) {
     if (i === activeIndex) return;
@@ -384,7 +566,7 @@ function ServicesContent() {
       <div className={styles.card}>
         {/* ── Left accordion tabs ─────────────────────────────────────── */}
         <div className={styles.tabsRail}>
-          {SERVICES.map((s, i) => (
+          {services.map((s, i) => (
             <button
               key={s.id}
               type="button"
@@ -436,7 +618,7 @@ function ServicesContent() {
 
           <div key={`stack-${animKey}`} className={styles.contentEnter}>
             <h3 className={styles.stackLabel}>
-              Tech Stack
+              {t("techStack")}
               <span className={styles.stackLabelLine} />
             </h3>
             <div className={styles.stackPills}>
@@ -449,22 +631,13 @@ function ServicesContent() {
           </div>
 
           <a
-            href={`${prefix}#contact`}
+            href={MALT_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className={`${styles.startBtn} ${styles.startBtnPanel}`}
           >
-            Start Project
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              aria-hidden="true"
-            >
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
+            {t("startProject")}
+            <PaperPlaneIcon size={14} strokeWidth={2} />
           </a>
         </div>
 
@@ -473,7 +646,7 @@ function ServicesContent() {
           {/* process phases */}
           <section style={{ marginBottom: "3.5rem" }}>
             <div key={`phase-heading-${animKey}`} className={styles.contentEnter}>
-              <p className={styles.sectionHeading}>The Build Process</p>
+              <p className={styles.sectionHeading}>{t("buildProcess")}</p>
             </div>
             <div className={styles.phaseGrid}>
               {service.phases.map((phase) => (
@@ -495,7 +668,7 @@ function ServicesContent() {
           {/* deliverables */}
           <section>
             <div key={`deliv-heading-${animKey}`} className={styles.contentEnter}>
-              <p className={styles.sectionHeading}>Deliverables</p>
+              <p className={styles.sectionHeading}>{t("deliverables")}</p>
             </div>
             <div className={styles.deliverablesList}>
               {service.deliverables.map((d) => (
@@ -517,23 +690,15 @@ function ServicesContent() {
 
       {/* Mobile: outside .card so position:fixed isn’t trapped by backdrop-filter; desktop hidden */}
       <a
-        href={`${prefix}#contact`}
+        href={MALT_PROFILE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         className={`${styles.startBtn} ${styles.startBtnDock}`}
       >
-        Start Project
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          aria-hidden="true"
-        >
-          <line x1="5" y1="12" x2="19" y2="12" />
-          <polyline points="12 5 19 12 12 19" />
-        </svg>
+        {t("startProject")}
+        <PaperPlaneIcon size={14} strokeWidth={2} />
       </a>
+      <SiteFooter />
     </div>
   );
 }

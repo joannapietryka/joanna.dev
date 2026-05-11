@@ -12,6 +12,14 @@
   overflow-x: hidden;
   z-index: 10;
   -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 768px) {
+  .scrollRoot {
+    padding-bottom: max(50px, env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .ambientCanvas {
@@ -675,6 +683,7 @@
   right: 8%;
   background: var(--text-primary);
   color: #fff;
+  text-decoration: none;
   border: none;
   padding: 1.2rem 3rem;
   border-radius: 100px;

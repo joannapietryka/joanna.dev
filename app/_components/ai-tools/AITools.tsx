@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import {useTranslations} from "next-intl";
 import { useEffect, useRef } from "react";
 import styles from "./AITools.module.css";
 
@@ -82,6 +83,7 @@ function orbitPosition(angle: number) {
 }
 
 export function AITools() {
+  const t = useTranslations("AITools");
   const sectionRef  = useRef<HTMLElement>(null);
   const leftColRef  = useRef<HTMLDivElement>(null);
   const headingRef  = useRef<HTMLHeadingElement>(null);
@@ -214,21 +216,18 @@ export function AITools() {
         <div ref={leftColRef} className={styles.leftCol}>
 
           <div className={styles.tags}>
-            <span className={styles.tag}>AI: Enhanced</span>
-            <span className={styles.tag}>Stack: Powered</span>
+            <span className={styles.tag}>{t("tags.ai")}</span>
+            <span className={styles.tag}>{t("tags.stack")}</span>
           </div>
 
           {/* no <br /> between spans — display:block handles the line break */}
           <h2 ref={headingRef} className={styles.heading}>
-            <span className={styles.headingLine}>Faster execution</span>
-            <span className={styles.headingLine}>Better&nbsp;results</span>
+            <span className={styles.headingLine}>{t("heading.line1")}</span>
+            <span className={styles.headingLine}>{t("heading.line2")}</span>
           </h2>
 
           <p className={styles.subheading}>
-            I combine development with advanced AI tools to deliver complete
-            solutions — from code and design to copy and visuals. Faster
-            execution, more iterations, and better results without the usual
-            delays.
+            {t("subheading")}
           </p>
 
           <div className={styles.stepList}>
@@ -240,7 +239,7 @@ export function AITools() {
               >
                 <div className={styles.stepRow}>
                   <span className={styles.stepIndex}>{tool.index}</span>
-                  <h3 className={styles.stepTitle}>{tool.title}</h3>
+                  <h3 className={styles.stepTitle}>{t(`steps.${tool.id}.title`)}</h3>
                   <div className={styles.toolChip}>
                     <Image src={tool.logo} alt={tool.logoAlt} width={14} height={14} className={styles.chipLogo} />
                     {tool.secondaryLogo && (
@@ -249,7 +248,7 @@ export function AITools() {
                     <span className={styles.chipLabel}>{tool.toolName}</span>
                   </div>
                 </div>
-                <p className={styles.stepBody}>{tool.body}</p>
+                <p className={styles.stepBody}>{t(`steps.${tool.id}.body`)}</p>
               </div>
             ))}
           </div>
@@ -287,7 +286,7 @@ export function AITools() {
               />
               <text fontSize="1.65" fontFamily="var(--font-jetbrains-mono)" letterSpacing="1.1" opacity="0.22">
                 <textPath href="#aiToolsTextPath">
-                  {"AI-POWERED • CODE • DESIGN • COPY • VISUALS • SMARTER WORKFLOWS • "}
+                  {t("orbit.ringText")}
                 </textPath>
               </text>
             </svg>
@@ -320,8 +319,8 @@ export function AITools() {
 
             {/* center label */}
             <div ref={centerRef} className={styles.centerText}>
-              <span className={styles.centerAi}>AI</span>
-              <span className={styles.centerTools}>tools</span>
+              <span className={styles.centerAi}>{t("orbit.centerAi")}</span>
+              <span className={styles.centerTools}>{t("orbit.centerTools")}</span>
             </div>
 
           </div>

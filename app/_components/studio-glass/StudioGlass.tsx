@@ -7,7 +7,11 @@ import { AITools } from "../ai-tools/AITools";
 import { Contact } from "../contact/Contact";
 import { Projects } from "../projects/Projects";
 import { Services } from "../services/Services";
+import { PaperPlaneIcon } from "../icons/PaperPlaneIcon";
+import { SiteFooter } from "../site-footer/SiteFooter";
 import { SiteNav } from "../site-nav/SiteNav";
+import { MALT_PROFILE_URL } from "../../_lib/site";
+import { registerSiteLenis, unregisterSiteLenis } from "../../_lib/lenis-bridge";
 import styles from "./StudioGlass.module.css";
 
 /* ── global types (optional CDN / in-app webview safety) ─────────────────── */
@@ -467,6 +471,7 @@ export function StudioGlass() {
             lenis.destroy();
           } else {
             lenisRef.current = lenis;
+            registerSiteLenis(lenis);
             lenis.on("scroll", ScrollTrigger.update);
             lenisTicker = (time: number) => {
               lenis.raf(time * 1000);
@@ -795,6 +800,7 @@ export function StudioGlass() {
       if (lenisTicker) {
         gsapApi?.ticker.remove(lenisTicker);
       }
+      unregisterSiteLenis();
       lenisRef.current?.destroy();
       lenisRef.current = null;
       gsapCtx?.revert();
@@ -898,25 +904,15 @@ export function StudioGlass() {
                   </div>
                 </div>
 
-                <button
-                  type="button"
+                <a
+                  href={MALT_PROFILE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={styles.actionBtn}
-                  onClick={() => scrollToSection("contact")}
                 >
                   {t('cta')}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    aria-hidden="true"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
+                  <PaperPlaneIcon size={16} strokeWidth={2} />
+                </a>
               </section>
             </div>
           </div>
@@ -926,6 +922,7 @@ export function StudioGlass() {
           <Projects />
           <AboutMe />
           <Contact />
+          <SiteFooter onScrollTo={scrollToSection} />
         </main>
       </div>
     </div>

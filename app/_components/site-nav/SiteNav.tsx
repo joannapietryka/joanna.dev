@@ -1,9 +1,10 @@
 "use client";
 
 import {useLocale, useTranslations} from 'next-intl';
-import {usePathname, useRouter} from 'next/navigation';
+import {usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {Link} from '@/i18n/navigation';
+import {LocaleSwitch} from '../locale-switch/LocaleSwitch';
 import styles from "./SiteNav.module.css";
 
 interface Props {
@@ -14,7 +15,6 @@ interface Props {
 export function SiteNav({ onScrollTo }: Props) {
   const t = useTranslations('Nav');
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
   const prefix = `/${locale}`;
   const isHome = pathname === prefix;
@@ -93,23 +93,6 @@ export function SiteNav({ onScrollTo }: Props) {
     setOpen(false);
   };
 
-  const switchLocale = (nextLocale: 'en' | 'fr') => {
-    try {
-      const url = new URL(window.location.href);
-      let path = url.pathname;
-
-      // Replace the leading locale segment: /en/* <-> /fr/*
-      path = path.replace(/^\/(en|fr)(?=\/|$)/, `/${nextLocale}`);
-
-      router.push(`${path}${url.search}${url.hash}`);
-      setOpen(false);
-    } catch {
-      // If URL parsing fails for any reason, fall back to home.
-      router.push(`/${nextLocale}`);
-      setOpen(false);
-    }
-  };
-
   const close = () => setOpen(false);
 
   return (
@@ -142,14 +125,6 @@ export function SiteNav({ onScrollTo }: Props) {
           </Link>
           <a href={`${prefix}/#about`} onClick={(e) => handle("about", e)}>{t('about')}</a>
           <a href={`${prefix}/#contact`} onClick={(e) => handle("contact", e)}>{t('contact')}</a>
-          <button
-            type="button"
-            aria-label={t('languageLabel')}
-            onClick={() => switchLocale(locale === 'fr' ? 'en' : 'fr')}
-            className={locale === 'fr' ? styles.navActive : ''}
-          >
-            {locale === 'fr' ? t('langFr') : t('langEn')}
-          </button>
         </nav>
 
         <button
@@ -182,7 +157,10 @@ export function SiteNav({ onScrollTo }: Props) {
           </a>
         </nav>
 
-        <div className={styles.overlayFooter}>joanna.dev</div>
+        <div className={styles.overlayFooter}>
+          <span className={styles.overlayBrand}>joanna.dev</span>
+          <LocaleSwitch variant="inverse" onAfterSelect={close} />
+        </div>
       </div>
     </>
   );

@@ -45,7 +45,6 @@
 
 .logo,
 .navLinks a,
-.navLinks button,
 .menuToggle {
   pointer-events: auto; /* re-enable on interactive elements */
 }
@@ -207,11 +206,20 @@
   align-self: center;
 }
 
-/* ── Overlay footer label ──────────────────────────────────────────────────── */
+/* ── Overlay footer row ──────────────────────────────────────────────────── */
 .overlayFooter {
   position: absolute;
   bottom: 2.5rem;
   left: 3rem;
+  right: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.overlayBrand {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.6rem;
   font-weight: 700;

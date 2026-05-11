@@ -10,6 +10,17 @@
     "langEn": "EN",
     "langFr": "FR"
   },
+  "Footer": {
+    "sysLabel": "SYS.FOOTER // END",
+    "online": "ONLINE",
+    "brandMark": "joanna.dev",
+    "lead": "Digital Product Builder crafting websites, apps, and automations that deliver real results.",
+    "index": "INDEX",
+    "indexNavAria": "Footer navigation",
+    "startProject": "START A PROJECT",
+    "copyrightLegal": "© {year} JOANNA PIETRYKA. ALL RIGHTS RESERVED.",
+    "axis": "AXIS_X: 1440.0 // AXIS_Y: 320.0"
+  },
   "Projects": {
     "tags": {
       "craft": "Craft: Shipped",
@@ -132,7 +143,78 @@
     },
     "eyebrow": "Why work with me",
     "title": "Digital Product \nBuilder",
-    "lead": "Building digital products since 2015. I turn complex ideas into fast, tactile, and interactive experiences that feel inevitable."
+    "lead": "Building digital products since 2015. I turn complex ideas into fast, tactile, and interactive experiences that feel inevitable.",
+    "cards": {
+      "background": {
+        "label": "// Background",
+        "body": "Most of my career was spent in advertising agencies, delivering pixel-perfect quality under tight deadlines for global brands."
+      },
+      "stack": {
+        "label": "// Stack",
+        "body": "Specialized in modern frontend development — React and Tailwind CSS — with a strong focus on clean architecture, scalability, and user experience.",
+        "progressLabel": "Frontend Mastery"
+      }
+    },
+    "aiCard": {
+      "title": "AI-Accelerated Workflow",
+      "body": "By combining my coding expertise with advanced AI tools, I deliver complete digital products — including design, copy, and visuals — faster and more efficiently than traditional workflows."
+    }
+  },
+  "AITools": {
+    "tags": {
+      "ai": "AI: Enhanced",
+      "stack": "Stack: Powered"
+    },
+    "heading": {
+      "line1": "Faster execution",
+      "line2": "Better results"
+    },
+    "subheading": "I combine development with advanced AI tools to deliver complete solutions — from code and design to copy and visuals. Faster execution, more iterations, and better results without the usual delays.",
+    "steps": {
+      "development": {
+        "title": "Smarter development",
+        "body": "Faster, more precise coding with modern AI-assisted workflows."
+      },
+      "design": {
+        "title": "Scalable design",
+        "body": "Rapid design exploration and iteration without slowing down the process."
+      },
+      "visuals": {
+        "title": "Visual content",
+        "body": "Custom graphics and visuals created quickly to match your product."
+      },
+      "copy": {
+        "title": "Copy & strategy",
+        "body": "Clear messaging, structure, and content aligned with your goals."
+      }
+    },
+    "orbit": {
+      "ringText": "AI-POWERED • CODE • DESIGN • COPY • VISUALS • SMARTER WORKFLOWS • ",
+      "centerAi": "AI",
+      "centerTools": "tools"
+    }
+  },
+  "ServicesPage": {
+    "techStack": "Tech Stack",
+    "startProject": "Start Project",
+    "buildProcess": "The Build Process",
+    "deliverables": "Deliverables"
+  },
+  "Work": {
+    "ringText": "BUILT FOR RESULTS • SHIPPED & LIVE • DIGITAL PRODUCTS •",
+    "title": "Selected Projects",
+    "visitSite": "Visit Site",
+    "tags": {
+      "web": "Web Design & Development"
+    },
+    "cards": {
+      "psychologistTitle": "Psychologist — Brand & Web",
+      "psychologistDesc": "Psychologist website designed and built in Webflow, featuring smooth on-scroll animations, a custom logo, and an integrated blog for content publishing.",
+      "avamexTitle": "Avamex — IT Outsourcing",
+      "avamexDesc": "Webflow website for an outsourcing company, featuring custom branding, smooth animations, and AI-generated graphics tailored to the brand.",
+      "lidoTitle": "Lido — Creative Studio",
+      "lidoDesc": "Next.js website for a property rental company, featuring custom branding, tailored graphics, and a fast, modern user experience."
+    }
   }
 }
 
