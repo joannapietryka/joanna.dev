@@ -105,7 +105,10 @@ export function AITools() {
       if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
 
       const section = sectionRef.current;
-      if (!section) return;
+      if (!section) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
 

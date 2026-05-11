@@ -33,7 +33,10 @@ export function AboutMe() {
       if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
 
       const section  = sectionRef.current;
-      if (!section) return;
+      if (!section) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
       const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;

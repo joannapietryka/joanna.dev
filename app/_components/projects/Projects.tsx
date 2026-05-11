@@ -194,7 +194,10 @@ export function Projects() {
       const section     = sectionRef.current;
       const scrollSpace = scrollSpaceRef.current;
       const heading     = headingRef.current;
-      if (!section || !scrollSpace) return;
+      if (!section || !scrollSpace) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
       const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;

@@ -22,11 +22,14 @@ function wireScrollerProxy(scrollRoot: HTMLElement) {
   ST.scrollerProxy(scrollRoot, {
     scrollTop(value) {
       const lenis = getSiteLenis();
-      if (lenis && typeof lenis.scroll === "number") {
+      // Lenis v1+ exposes animatedScroll (current position), not `.scroll`.
+      // Without this, ScrollTrigger reads native wrapper.scrollTop — often wrong on touch
+      // while Lenis drives motion — so scrub / on-scroll animations stall on iOS.
+      if (lenis && typeof lenis.animatedScroll === "number") {
         if (arguments.length) {
-          lenis.scrollTo(value, {immediate: true});
+          lenis.scrollTo(value as number, {immediate: true});
         }
-        return lenis.scroll;
+        return lenis.animatedScroll;
       }
       if (arguments.length) {
         scrollRoot.scrollTop = value as number;
@@ -90,6 +93,7 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
       if (scrollRoot) {
         wireScrollerProxy(scrollRoot);
         proxyWired = true;
+        ScrollTrigger.refresh();
       }
 
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

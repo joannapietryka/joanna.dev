@@ -70,7 +70,10 @@ export function Services() {
       const heading = headingRef.current;
       const cta     = ctaRef.current;
       const [c0, c1, c2] = cardRefs.current;
-      if (!section || !heading || !c0 || !c1 || !c2) return;
+      if (!section || !heading || !c0 || !c1 || !c2) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
 

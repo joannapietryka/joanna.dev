@@ -57,11 +57,17 @@ export function Contact() {
       const ST: Gsap   = (window as Gsap).ScrollTrigger;
       if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
       const h2 = headingRef.current;
-      if (!h2) return;
+      if (!h2) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
       const scroller = document.getElementById("scroll-root") ?? undefined;
       const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
       const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
-      if (wordEls.length === 0) return;
+      if (wordEls.length === 0) {
+        retryTimer = setTimeout(tryInit, 80);
+        return;
+      }
 
       const revealInView = (el: HTMLElement | null, delay = 0) => {
         if (!el) return;
@@ -91,7 +97,10 @@ export function Contact() {
       // Mobile: scroll-into-view reveals (requested list).
       if (isMobile) {
         const section = document.getElementById("contact")?.closest("section");
-        if (!section) return;
+        if (!section) {
+          retryTimer = setTimeout(tryInit, 80);
+          return;
+        }
 
         const metaPill = section.querySelector<HTMLElement>(`.${styles.metaPill}`);
         const metaStatus = section.querySelector<HTMLElement>(`.${styles.metaStatus}`);

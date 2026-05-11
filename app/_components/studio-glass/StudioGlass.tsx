@@ -457,6 +457,9 @@ export function StudioGlass() {
         }
         await loadScript(LENIS_JS);
         if (!cancelled && typeof window.Lenis === "function") {
+          const coarsePointer =
+            typeof window !== "undefined" &&
+            window.matchMedia("(pointer: coarse)").matches;
           const lenis = new window.Lenis({
             wrapper: el,
             content,
@@ -465,6 +468,9 @@ export function StudioGlass() {
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
+            // Touch devices: keep Lenis in sync with real finger scroll so ScrollTrigger + scrub work.
+            syncTouch: coarsePointer,
+            syncTouchLerp: 0.075,
           });
 
           if (cancelled) {
