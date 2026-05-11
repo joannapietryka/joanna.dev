@@ -83,18 +83,8 @@
 }
 
 .navActive {
+  /* current route: full opacity only (no underline) */
   opacity: 1 !important;
-  position: relative;
-}
-
-.navActive::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
 }
 
 /* ── Hamburger button ──────────────────────────────────────────────────────── */
@@ -194,6 +184,15 @@
 
 .mobileLink:hover {
   color: #ffffff;
+}
+
+.mobileLinkActive,
+.mobileLinkActive:hover {
+  color: #ffffff;
+}
+
+.mobileLinkActive .mobileLinkIdx {
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .mobileLinkIdx {

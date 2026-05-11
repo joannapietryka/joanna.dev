@@ -17,7 +17,7 @@ export function SiteNav({ onScrollTo }: Props) {
   const locale = useLocale();
   const pathname = usePathname();
   const prefix = `/${locale}`;
-  const isHome = pathname === prefix;
+  const isHome = pathname === prefix || pathname === `${prefix}/`;
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [nearTop, setNearTop] = useState(false);
@@ -29,8 +29,10 @@ export function SiteNav({ onScrollTo }: Props) {
     setHideEnabled(false);
     setScrolled(false);
 
-    /* pick the right scroll container: custom #scroll-root on home, window elsewhere */
-    const scroller = document.getElementById("scroll-root");
+    /* Same scroll sources as footer: home #scroll-root, /services + /work #page-scroll-root; body is overflow:hidden so window is wrong there. */
+    const scroller =
+      (document.getElementById("scroll-root") as HTMLElement | null) ??
+      (document.getElementById("page-scroll-root") as HTMLElement | null);
 
     const onScroll = () => {
       const top = scroller ? scroller.scrollTop : window.scrollY;
@@ -113,6 +115,7 @@ export function SiteNav({ onScrollTo }: Props) {
             href="/services"
             className={pathname === `${prefix}/services` ? styles.navActive : ""}
             onClick={close}
+            aria-current={pathname === `${prefix}/services` ? "page" : undefined}
           >
             {t('services')}
           </Link>
@@ -120,6 +123,7 @@ export function SiteNav({ onScrollTo }: Props) {
             href="/work"
             className={pathname === `${prefix}/work` ? styles.navActive : ""}
             onClick={close}
+            aria-current={pathname === `${prefix}/work` ? "page" : undefined}
           >
             {t('work')}
           </Link>
@@ -143,10 +147,20 @@ export function SiteNav({ onScrollTo }: Props) {
         aria-hidden={!open}
       >
         <nav className={styles.mobileNav} aria-label="Mobile primary">
-          <Link href="/services" className={styles.mobileLink} onClick={close}>
+          <Link
+            href="/services"
+            className={`${styles.mobileLink} ${pathname === `${prefix}/services` ? styles.mobileLinkActive : ""}`}
+            onClick={close}
+            aria-current={pathname === `${prefix}/services` ? "page" : undefined}
+          >
             <span className={styles.mobileLinkIdx}>01</span>{t('services')}
           </Link>
-          <Link href="/work" className={styles.mobileLink} onClick={close}>
+          <Link
+            href="/work"
+            className={`${styles.mobileLink} ${pathname === `${prefix}/work` ? styles.mobileLinkActive : ""}`}
+            onClick={close}
+            aria-current={pathname === `${prefix}/work` ? "page" : undefined}
+          >
             <span className={styles.mobileLinkIdx}>02</span>{t('work')}
           </Link>
           <a href={`${prefix}/#about`} className={styles.mobileLink} onClick={(e) => handle("about", e)}>

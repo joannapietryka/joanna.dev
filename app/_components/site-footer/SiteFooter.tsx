@@ -77,8 +77,12 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
 
     let gsapCtx: {revert: () => void} | null = null;
     let cancelled = false;
-    const scrollRoot = document.getElementById("scroll-root") as HTMLElement | null;
+    const homeScrollRoot = document.getElementById("scroll-root") as HTMLElement | null;
+    const pageScrollRoot = document.getElementById("page-scroll-root") as HTMLElement | null;
+    const stScrollRoot = homeScrollRoot ?? pageScrollRoot;
+    /* scrollerProxy is for Lenis + #scroll-root; proxying a plain overflow div breaks scrub. */
     let proxyWired = false;
+    let proxyElement: HTMLElement | null = null;
 
     const init = async () => {
       const gsapMod = await import("gsap");
@@ -90,9 +94,10 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
       gsap.registerPlugin(ScrollTrigger);
       window.ScrollTrigger = ScrollTrigger;
 
-      if (scrollRoot) {
-        wireScrollerProxy(scrollRoot);
+      if (homeScrollRoot) {
+        wireScrollerProxy(homeScrollRoot);
         proxyWired = true;
+        proxyElement = homeScrollRoot;
         ScrollTrigger.refresh();
       }
 
@@ -122,7 +127,7 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
         gsap.timeline({
           scrollTrigger: {
             trigger: footerEl,
-            scroller: scrollRoot ?? undefined,
+            scroller: stScrollRoot ?? undefined,
             start: "top 96%",
             end: "top 38%",
             scrub: 0.45,
@@ -183,7 +188,7 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
     return () => {
       cancelled = true;
       gsapCtx?.revert();
-      if (proxyWired) clearScrollerProxy(scrollRoot);
+      if (proxyWired) clearScrollerProxy(proxyElement);
     };
   }, [pathname]);
 

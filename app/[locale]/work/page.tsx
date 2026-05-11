@@ -36,7 +36,7 @@ export default async function WorkPage({
   const t = await getTranslations({locale, namespace: 'Work'});
 
   return (
-    <div className={styles.page}>
+    <div id="page-scroll-root" className={styles.page}>
       {/* ── Ambient background ─────────────────────────────────────────── */}
       <div className={styles.bg} aria-hidden>
         <div className={styles.orb1} />

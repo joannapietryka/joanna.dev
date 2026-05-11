@@ -241,11 +241,11 @@
   }
 
   .colBrand {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 5;
   }
 
   .colIndex {
-    grid-column: 7 / span 6;
+    grid-column: 6 / span 7;
   }
 }
 

@@ -542,7 +542,7 @@ function ServicesContent() {
   }
 
   return (
-    <div className={styles.page}>
+    <div id="page-scroll-root" className={styles.page}>
       <SiteNav />
 
       {/* ambient background */}
