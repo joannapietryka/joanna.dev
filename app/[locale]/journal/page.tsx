@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
+import {absUrl} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -13,8 +14,12 @@ export async function generateMetadata({
     title: isFr ? 'Journal — joanna.dev' : 'Journal — joanna.dev',
     description: isFr ? 'Journal (bientôt disponible).' : 'Journal (coming soon).',
     alternates: {
-      canonical: `/${locale}${path}`,
-      languages: {en: `/en${path}`, fr: `/fr${path}`}
+      canonical: absUrl(`/${locale}${path}`),
+      languages: {
+        en: absUrl(`/en${path}`),
+        fr: absUrl(`/fr${path}`),
+        'x-default': absUrl(`/en${path}`)
+      }
     }
   };
 }

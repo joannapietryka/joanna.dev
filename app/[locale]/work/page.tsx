@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
 import styles from '../../work/Work.module.css';
+import {absUrl} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -14,8 +15,12 @@ export async function generateMetadata({
     title: isFr ? 'Projets — joanna.dev' : 'Work — joanna.dev',
     description: isFr ? 'Projets sélectionnés.' : 'Selected projects.',
     alternates: {
-      canonical: `/${locale}${path}`,
-      languages: {en: `/en${path}`, fr: `/fr${path}`}
+      canonical: absUrl(`/${locale}${path}`),
+      languages: {
+        en: absUrl(`/en${path}`),
+        fr: absUrl(`/fr${path}`),
+        'x-default': absUrl(`/en${path}`)
+      }
     }
   };
 }

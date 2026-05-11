@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import {StudioGlass} from '../_components/studio-glass/StudioGlass';
+import {absUrl} from '../_lib/site';
 
 export async function generateMetadata({
   params
@@ -8,14 +9,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {locale} = await params;
   const isFr = locale === 'fr';
+  const canonicalPath = isFr ? '/fr' : '/en';
   return {
     title: 'joanna.dev',
     description: isFr ? 'joanna.dev – Créatrice de produits digitaux' : 'joanna.dev – Digital Product Builder',
     alternates: {
-      canonical: isFr ? '/fr' : '/en',
+      canonical: absUrl(canonicalPath),
       languages: {
-        en: '/en',
-        fr: '/fr'
+        en: absUrl('/en'),
+        fr: absUrl('/fr'),
+        'x-default': absUrl('/en')
       }
     }
   };

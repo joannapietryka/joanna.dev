@@ -4,6 +4,7 @@ import {JetBrains_Mono, Playfair_Display, Sora} from 'next/font/google';
 import type {Metadata} from 'next';
 
 import './globals.css';
+import {SITE_URL} from './_lib/site';
 
 const jetBrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
@@ -21,6 +22,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   icons: {
     /* Prefer small ICO + PNG; public/favicon.svg is multi‑MB and hurts tab icon loads */
     icon: [

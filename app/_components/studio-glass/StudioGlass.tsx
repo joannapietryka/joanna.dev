@@ -1,7 +1,7 @@
 "use client";
 
 import {useTranslations} from 'next-intl';
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import { AboutMe } from "../about-me/AboutMe";
 import { AITools } from "../ai-tools/AITools";
 import { Contact } from "../contact/Contact";
@@ -105,6 +105,7 @@ function ScrollScrubCanvas({
   progressRef: React.RefObject<number>;
 }) {
   const t = useTranslations('Home');
+  const [simpleVideo, setSimpleVideo] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -113,6 +114,18 @@ function ScrollScrubCanvas({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // iOS Chrome can choke on heavy hydration + canvas + seeking.
+    // Prefer a simple inline video on coarse pointers / reduced-motion devices.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    setSimpleVideo(reduceMotion || coarse);
+  }, []);
+
+  useEffect(() => {
+    if (simpleVideo) {
+      setReady(true);
+      return;
+    }
     const video = document.createElement("video");
     video.src = src;
     video.muted = true;
@@ -155,6 +168,7 @@ function ScrollScrubCanvas({
   }, [src]);
 
   useEffect(() => {
+    if (simpleVideo) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -172,6 +186,7 @@ function ScrollScrubCanvas({
   }, []);
 
   useEffect(() => {
+    if (simpleVideo) return;
     if (!ready) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -222,6 +237,22 @@ function ScrollScrubCanvas({
     };
   }, [ready, progressRef, src]);
 
+  if (simpleVideo) {
+    return (
+      <div className={styles.scrubRoot}>
+        <video
+          src={src}
+          className={styles.photoVideo}
+          muted
+          playsInline
+          autoPlay
+          loop
+          preload="metadata"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.scrubRoot}>
       <canvas ref={canvasRef} className={styles.scrubCanvas} />
@@ -254,7 +285,14 @@ export function StudioGlass() {
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const scrubProgressRef = useRef(0);
   const heroLoaderRef = useRef<HTMLDivElement>(null);
-  const [heroBooting, setHeroBooting] = useState(true);
+  // Never default to "blank page behind a loader" (mobile can stall JS).
+  const [heroBooting, setHeroBooting] = useState(false);
+  const shouldAnimate = useMemo(() => {
+    if (typeof window === "undefined") return true;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    return !(reduceMotion || coarse);
+  }, []);
 
   /* scroll to a section id within the custom scroll container */
   const scrollToSection = (id: string) => {
@@ -382,6 +420,13 @@ export function StudioGlass() {
     };
 
     const init = async () => {
+      // Show the loader overlay only when we're actually attempting to animate.
+      setHeroBooting(shouldAnimate);
+      if (!shouldAnimate) {
+        heroEntrancePlayed = true;
+        revealStaticHero();
+        return;
+      }
       // Start the “show something ASAP” watchdog immediately (before any awaits).
       // iOS Chrome can delay loading split chunks; we don’t want a blank hero.
       fallbackTimer = window.setTimeout(() => {

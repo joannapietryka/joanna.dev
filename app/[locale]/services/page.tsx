@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 
 import {ServicesPageClient} from './ServicesPageClient';
+import {absUrl} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -17,10 +18,11 @@ export async function generateMetadata({
       ? 'Services — sites web, apps et automatisations.'
       : 'Services — websites, apps, and automations.',
     alternates: {
-      canonical: `/${locale}${path}`,
+      canonical: absUrl(`/${locale}${path}`),
       languages: {
-        en: `/en${path}`,
-        fr: `/fr${path}`
+        en: absUrl(`/en${path}`),
+        fr: absUrl(`/fr${path}`),
+        'x-default': absUrl(`/en${path}`)
       }
     }
   };

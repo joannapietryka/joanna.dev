@@ -236,15 +236,6 @@
   pointer-events: auto;
 }
 
-/* Boot state: show a small loader immediately */
-.heroBooting .heroContent,
-.heroBooting .photoContainer,
-.heroBooting .actionBtn,
-.heroBooting .metaLabel,
-.heroBooting .circleText {
-  opacity: 0;
-}
-
 .heroLoader {
   position: absolute;
   inset: 0;
@@ -259,9 +250,11 @@
   opacity: 1;
 }
 
-/* During boot we want only the loader visible (no glass card behind) */
-.heroBooting .heroCard {
-  opacity: 0;
+/* Boot state should never hide content completely (mobile can stall JS parsing). */
+.heroBooting .heroLoader {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .hypnotic {

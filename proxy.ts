@@ -11,6 +11,8 @@ export default createMiddleware({
 
 export const config = {
   // Skip /api, Next internals, and static files.
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  // Also skip SEO endpoints that include dots (robots.txt, sitemap.xml) to avoid
+  // treating them as a locale segment.
+  matcher: ['/((?!api|_next|robots\\.txt|sitemap\\.xml|.*\\..*).*)']
 };
 
