@@ -106,13 +106,10 @@ export function Services() {
         const statusEl = heading.querySelector<HTMLElement>(`.${styles.status}`);
         revealInView(statusEl, 0.08);
 
-        // Full-card overlay links (requested: Services_cardLink).
-        const cardLinks = Array.from(
-          section.querySelectorAll<HTMLElement>(`.${styles.cardLink}`)
-        );
-        cardLinks.forEach((l, i) => revealInView(l, 0.04 + i * 0.05));
+        // Animate the actual card divs into view (staggered).
+        [c0, c1, c2].forEach((card, i) => revealInView(card, i * 0.08));
 
-        // Bottom CTA (requested: Services_cta).
+        // Bottom CTA.
         revealInView(cta, 0.06);
       };
 

@@ -505,7 +505,7 @@
     width: 100%;
     max-width: none;
     height: auto;
-    min-height: 0;
+    min-height: 240px;
   }
 
   .cta {
