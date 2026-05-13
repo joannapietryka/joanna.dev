@@ -367,6 +367,13 @@ export function StudioGlass() {
     };
 
     const init = async () => {
+      // #region agent log — H-C/H-F: log shouldAnimate BEFORE early return
+      ;(window as any).__debugLogs = (window as any).__debugLogs || [];
+      const _dbSG0 = {sessionId:'3ce458',hypothesisId:'H-C-H-F',location:'StudioGlass.tsx:init-start',message:'init called',data:{shouldAnimate,reduceMotion:window.matchMedia('(prefers-reduced-motion: reduce)').matches,ua:navigator.userAgent.slice(0,100),innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()};
+      (window as any).__debugLogs.push(_dbSG0);
+      fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbSG0)}).catch(()=>{});
+      // #endregion
+
       // Show the loader overlay only when we're actually attempting to animate.
       setHeroBooting(shouldAnimate);
       if (!shouldAnimate) {
