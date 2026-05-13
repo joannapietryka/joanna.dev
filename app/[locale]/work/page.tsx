@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import {getTranslations} from 'next-intl/server';
 import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
+import {AutoPlayVideo} from '../../_components/work/AutoPlayVideo';
 import styles from '../../work/Work.module.css';
 import {absUrl} from '../../_lib/site';
 
@@ -105,7 +106,7 @@ export default async function WorkPage({
           {/* Featured — video showcase */}
           <article className={styles.featured}>
             <div className={styles.featuredImgWrap}>
-              <video
+              <AutoPlayVideo
                 src="/assets/videos/project-1.mp4"
                 autoPlay
                 muted
@@ -157,7 +158,7 @@ export default async function WorkPage({
             {/* Card 1 — Avamex */}
             <article className={styles.gridCard}>
               <div className={styles.gridImgWrap}>
-                <video
+                <AutoPlayVideo
                   src="/assets/videos/project-2.mp4"
                   autoPlay
                   muted
@@ -198,7 +199,7 @@ export default async function WorkPage({
             {/* Card 2 — Lido Agency */}
             <article className={styles.gridCard}>
               <div className={styles.gridImgWrap}>
-                <video
+                <AutoPlayVideo
                   src="/assets/videos/project-3.mp4"
                   autoPlay
                   muted
