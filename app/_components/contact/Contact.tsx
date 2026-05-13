@@ -85,12 +85,11 @@ export function Contact() {
             start: startPct,
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[Contact] revealInView fired:", el.className || el.tagName),
-          },
+            onEnter: () => {},
+        },
         });
       };
 
-      console.log("[Contact] initializing – mobile:", isMobile);
       gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
       gsap.to(wordEls, {
         y: 0, opacity: 1, rotation: 0,
@@ -101,8 +100,8 @@ export function Contact() {
           start: isMobile ? "top 90%" : "top 85%",
           once: true,
           invalidateOnRefresh: true,
-          onEnter: () => console.log("[Contact] heading words revealed"),
-        },
+          onEnter: () => {},
+      },
       });
 
       // Mobile: scroll-into-view reveals (requested list).

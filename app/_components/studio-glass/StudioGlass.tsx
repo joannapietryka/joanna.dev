@@ -423,9 +423,6 @@ export function StudioGlass() {
       window.addEventListener("orientationchange", viewportHandler, { passive: true });
       window.addEventListener("resize", viewportHandler, { passive: true });
 
-      console.log("[GSAP] Initialized – scroller: #scroll-root, mobile:", /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
-
-
       if (cancelled) return;
 
       if (shouldAnimate) {

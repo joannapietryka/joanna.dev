@@ -71,7 +71,6 @@ export function AboutMe() {
               once: true,
               invalidateOnRefresh: true,
               onEnter: () => {
-                console.log("[AboutMe] revealInView fired:", el.className || el.tagName);
                         },
             },
           });
@@ -106,7 +105,6 @@ export function AboutMe() {
 
         // Mobile: scroll-into-view reveals (pattern from AITools subheading).
         if (isMobile) {
-          console.log("[AboutMe] Mobile branch – setting up scroll-in-view reveals (start: top 90%)");
 
           // Portrait column (fix: it was left at opacity:0 from initial gsap.set)
           if (photo) {
@@ -121,8 +119,8 @@ export function AboutMe() {
                 start: "top 90%",
                 once: true,
                 invalidateOnRefresh: true,
-                onEnter: () => console.log("[AboutMe] photo revealed"),
-              },
+                onEnter: () => {},
+            },
             });
           }
 
@@ -152,8 +150,8 @@ export function AboutMe() {
                 start: "top 90%",
                 once: true,
                 invalidateOnRefresh: true,
-                onEnter: () => console.log("[AboutMe] title words revealed"),
-              },
+                onEnter: () => {},
+            },
             });
           }
 
@@ -177,8 +175,8 @@ export function AboutMe() {
             start: isMobile ? "top 90%" : "top 72%",
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[AboutMe] desktop timeline fired"),
-          },
+            onEnter: () => {},
+        },
         });
 
         /* Pattern 1 – photo slides in from left */
@@ -251,7 +249,6 @@ export function AboutMe() {
     };
 
     tryInit();
-
 
     return () => {
       cancelled = true;

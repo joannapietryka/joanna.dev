@@ -148,7 +148,6 @@ export function AITools() {
 
         // Hoisted before the timeline so it can be used for the scroll start.
         const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
-        console.log("[AITools] initializing – mobile:", isMobile);
 
         /* scroll-triggered timeline */
         const tl = gsap.timeline({
@@ -158,8 +157,8 @@ export function AITools() {
             start: isMobile ? "top 90%" : "top 72%",
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[AITools] main timeline fired"),
-          },
+            onEnter: () => {},
+        },
         });
 
         tl.to(tagsEl, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0);
@@ -199,8 +198,8 @@ export function AITools() {
                 start: "top 90%",
                 once: true,
                 invalidateOnRefresh: true,
-                onEnter: () => console.log("[AITools] tag revealed:", tag.textContent),
-              },
+                onEnter: () => {},
+            },
             });
           });
         }

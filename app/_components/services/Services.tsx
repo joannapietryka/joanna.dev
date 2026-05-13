@@ -94,8 +94,8 @@ export function Services() {
             start: startPct,
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[Services] revealInView fired:", el.className || el.tagName),
-          },
+            onEnter: () => {},
+        },
         });
       };
 
@@ -138,8 +138,8 @@ export function Services() {
             start: isMobile ? "top 90%" : "top 85%",
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[Services] heading words revealed"),
-          },
+            onEnter: () => {},
+        },
         });
       };
 
@@ -159,8 +159,8 @@ export function Services() {
             start: isMobile ? "top 90%" : "top 82%",
             once: true,
             invalidateOnRefresh: true,
-            onEnter: () => console.log("[Services] code snippet typing revealed"),
-          },
+            onEnter: () => {},
+        },
         });
 
         codeLines.forEach((line, i) => {
@@ -182,7 +182,6 @@ export function Services() {
         const mq = gsap.matchMedia();
 
         mq.add("(max-width: 768px)", () => {
-          console.log("[Services] Mobile matchMedia – setting up reveals (start: top 90%)");
           const mobileEls: HTMLElement[] = [c0, c1, c2];
           if (cta) mobileEls.push(cta);
           gsap.set(mobileEls, { clearProps: true });
@@ -213,8 +212,8 @@ export function Services() {
                 start: "top 80%",
                 once: true,
                 invalidateOnRefresh: true,
-                onEnter: () => console.log("[Services] desktop card timeline fired"),
-              },
+                onEnter: () => {},
+            },
             });
 
             tl.to(c0, { y: 0, opacity: 1, duration: 0.85, ease: "power3.out" }, 0);

@@ -219,8 +219,8 @@ export function Projects() {
               start: startPct,
               once: true,
               invalidateOnRefresh: true,
-              onEnter: () => console.log("[Projects] revealInView fired:", el.className || el.tagName),
-            },
+              onEnter: () => {},
+          },
           });
         };
 
@@ -251,8 +251,8 @@ export function Projects() {
               start: isMobile ? "top 90%" : "top 85%",
               once: true,
               invalidateOnRefresh: true,
-              onEnter: () => console.log("[Projects] heading words revealed"),
-            },
+              onEnter: () => {},
+          },
           });
         }
 
@@ -298,7 +298,6 @@ export function Projects() {
           },
         });
 
-        console.log("[Projects] ScrollTrigger scrub – mobile:", isMobile);
         ST.create({
           animation: tl,
           trigger: scrollSpace,
