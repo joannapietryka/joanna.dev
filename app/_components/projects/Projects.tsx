@@ -303,11 +303,13 @@ export function Projects() {
           trigger: scrollSpace,
           scroller,
           /*
-           * Mobile: start earlier (as soon as it enters viewport) and
-           * finish before it slides under the fixed menu.
+           * start: "top top" — scrub begins exactly when the sticky canvas
+           * locks to the top of the viewport (same on both breakpoints).
+           * Mobile end: "bottom 60%" — finish while the panel is still well
+           * in view, before it slides behind the navigation bar.
            */
-          start: isMobile ? "top 90%" : "top top",
-          end:   isMobile ? "bottom 20%" : "bottom bottom",
+          start: "top top",
+          end:   isMobile ? "bottom 60%" : "bottom bottom",
           scrub: 1,
           invalidateOnRefresh: true,
         });

@@ -245,8 +245,9 @@ export function StudioGlass() {
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const scrubProgressRef = useRef(0);
   const heroLoaderRef = useRef<HTMLDivElement>(null);
-  // Never default to "blank page behind a loader" (mobile can stall JS).
-  const [heroBooting, setHeroBooting] = useState(false);
+  // Start as booting so the orbit loader shows on the very first render.
+  // The 700 ms fallback timer in init() ensures content is revealed even if GSAP stalls.
+  const [heroBooting, setHeroBooting] = useState(true);
   const shouldAnimate = useMemo(() => {
     if (typeof window === "undefined") return true;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -343,6 +344,7 @@ export function StudioGlass() {
       // which looks like a blank page. Snap to a visible, non-animated state.
       try {
         const snapCx = window.innerWidth <= 640 ? 50 : 18;
+        card.removeAttribute('data-loading');
         card.style.clipPath = `circle(135% at ${snapCx}% 50%)`;
         const chars = Array.from(title.querySelectorAll<HTMLElement>("[data-char]"));
         chars.forEach((c) => {
@@ -428,7 +430,6 @@ export function StudioGlass() {
       if (shouldAnimate) {
       gsapCtx = gsap.context(() => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
-        if (loader) gsap.set(loader, { opacity: 1, scale: 1, y: 0, display: "grid" });
         /* ── collect per-word char elements ──────────────────────────── */
         const wordEls = Array.from(
           title.querySelectorAll("[data-word]")
@@ -512,23 +513,13 @@ export function StudioGlass() {
               /* hint: clear transform only (opacity handled by CSS/GSAP) */
               gsap.set(hint, { clearProps: "transform" });
               if (loader) loader.style.display = "none";
+              card.removeAttribute('data-loading');
               setHeroBooting(false);
             },
           });
 
-          /* Loader bounce-in (replaces the old bubble/circle entrance) */
+          /* Loader fade-out — orbit is already visible from initial heroBooting state */
           if (loader) {
-            gsap.set(loader, { display: "grid", opacity: 1, scale: 0.9, y: 40 });
-            entranceTl.to(
-              loader,
-              {
-                y: 0,
-                scale: 1,
-                duration: 1.1,
-                ease: "elastic.out(1.2, 0.5)",
-              },
-              0
-            );
             entranceTl.to(
               loader,
               {
@@ -640,6 +631,7 @@ export function StudioGlass() {
         } else {
           /* entrance already played (navigation back) – snap to final state */
           if (loader) loader.style.display = "none";
+          card.removeAttribute('data-loading');
           setHeroBooting(false);
           if (w0.length) gsap.set(w0, { x: 0, rotation: 0, opacity: 1 });
           if (w1.length) gsap.set(w1, { y: 0, rotationX: 0, opacity: 1 });
@@ -790,7 +782,7 @@ export function StudioGlass() {
                 <div className={styles.hypnotic} />
               </div>
 
-              <section ref={heroCardRef} className={styles.heroCard}>
+              <section ref={heroCardRef} className={styles.heroCard} data-loading="">
                 <div className={`${styles.metaLabel} ${styles.posTopLeft}`}>
                   {t('meta.statusCreating')}
                 </div>

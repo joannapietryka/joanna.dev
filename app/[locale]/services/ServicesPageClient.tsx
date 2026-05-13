@@ -21,7 +21,7 @@ const SERVICES_EN = [
     lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
     description:
       "Fast, custom-built sites designed to turn visitors into clients. Clean design, strong messaging, and performance baked in — every pixel intentional, every interaction smooth.",
-    stack: ["Next.js", "Tailwind", "Figma", "Framer", "GSAP", "Vercel"],
+    stack: ["Next.js", "Tailwind", "Variant", "Webflow", "GSAP", "Vercel"],
     phases: [
       {
         num: "01",
@@ -33,7 +33,7 @@ const SERVICES_EN = [
         num: "02",
         label: "Phase 02",
         title: "Visual Design",
-        body: "High-fidelity Figma mockups with a full component library. Every screen is designed before any code is written.",
+        body: "I use Vercel.ai to quickly generate and compare multiple design variations. We choose from a range of possibilities before refining the final direction.",
       },
       {
         num: "03",
@@ -45,7 +45,7 @@ const SERVICES_EN = [
         num: "04",
         label: "Phase 04",
         title: "Launch & Handover",
-        body: "Deployed to a production CDN, CMS configured, and the full Figma file handed over. You own everything.",
+        body: "I handle the final checks, the go-live process, and the transfer of ownership. Once the site is live, you get full access and clear guidance.",
       },
     ],
     deliverables: [
@@ -85,8 +85,25 @@ const SERVICES_EN = [
         ),
       },
       {
-        title: "Figma Source Files",
-        desc: "The complete design system with components, styles, and interactive prototypes.",
+        title: "Performance Report",
+        desc: "Lighthouse audit, Core Web Vitals baseline and SEO — fully optimized and ready.",
+        icon: (
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        ),
+      },
+
+      {
+        title: "Onboarding",
+        desc: "All credentials, useful links, and a simple guide to get you started.",
         icon: (
           <svg
             width="20"
@@ -102,22 +119,6 @@ const SERVICES_EN = [
           </svg>
         ),
       },
-      {
-        title: "Performance Report",
-        desc: "Lighthouse audit, Core Web Vitals baseline, and a list of ongoing optimisation recommendations.",
-        icon: (
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>
-        ),
-      },
     ],
   },
   {
@@ -128,7 +129,7 @@ const SERVICES_EN = [
     lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
     description:
       "Complex problems require simple solutions. I design and build full-stack web applications that are as powerful as they are intuitive. From initial discovery to final deployment, I handle the entire product lifecycle.",
-    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Figma"],
+    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Variant"],
     phases: [
       {
         num: "01",
@@ -345,7 +346,7 @@ const SERVICES_FR = [
     lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
     description:
       "Des sites rapides et sur-mesure conçus pour convertir. Design propre, message clair, performance intégrée — chaque pixel est intentionnel, chaque interaction fluide.",
-    stack: ["Next.js", "Tailwind", "Figma", "Framer", "GSAP", "Vercel"],
+    stack: ["Next.js", "Tailwind", "Variant", "Webflow", "GSAP", "Vercel"],
     phases: [
       {
         num: "01",
@@ -357,7 +358,7 @@ const SERVICES_FR = [
         num: "02",
         label: "Phase 02",
         title: "Design visuel",
-        body: "Maquettes Figma haute fidélité + bibliothèque de composants. Tout est conçu avant d’écrire du code.",
+        body: "J'utilise Vercel.ai pour générer rapidement plusieurs variantes de design. Nous choisissons avant d'affiner.",
       },
       {
         num: "03",
@@ -369,7 +370,7 @@ const SERVICES_FR = [
         num: "04",
         label: "Phase 04",
         title: "Lancement & passation",
-        body: "Déployé sur CDN, CMS configuré, fichier Figma livré. Tu possèdes tout.",
+        body: "Je gère les vérifications finales, la mise en ligne et le transfert. Ensuite : accès complet et conseils clairs.",
       },
     ],
     deliverables: [
@@ -384,14 +385,14 @@ const SERVICES_FR = [
         icon: SERVICES_EN[0].deliverables[1].icon,
       },
       {
-        title: "Fichiers Figma",
-        desc: "Le système de design complet (composants, styles et prototypes).",
-        icon: SERVICES_EN[0].deliverables[2].icon,
+        title: "Rapport performance",
+        desc: " Audit Lighthouse, scores Core Web Vitals et SEO — le tout entièrement optimisé et prêt.",
+        icon: SERVICES_EN[0].deliverables[3].icon,
       },
       {
-        title: "Rapport performance",
-        desc: "Audit Lighthouse, base Core Web Vitals et recommandations d’optimisation.",
-        icon: SERVICES_EN[0].deliverables[3].icon,
+        title: "Prise en main",
+        desc: "Tous les identifiants, liens utiles, et un guide simple pour prendre la main.",
+        icon: SERVICES_EN[0].deliverables[2].icon,
       },
     ],
   },
@@ -403,7 +404,7 @@ const SERVICES_FR = [
     lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
     description:
       "Des applications web full‑stack claires et rapides. De la découverte au déploiement, je gère tout le cycle de vie du produit.",
-    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Figma"],
+    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Variant"],
     phases: [
       {
         num: "01",

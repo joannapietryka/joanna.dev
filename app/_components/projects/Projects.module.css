@@ -333,6 +333,11 @@
     height: auto;
     min-height: 0;
     overflow: visible;
+    /*
+     * Offset the mobile navigation bar (position:absolute, z-index:30,
+     * height ≈ 4.25 rem) so the canvas sticks below it, not behind it.
+     */
+    top: 4.5rem;
   }
 
   .canvasGroup {

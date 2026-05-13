@@ -16,6 +16,26 @@
   background: transparent;
 }
 
+.footer::after {
+  content: "";
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 10rem;
+  background: radial-gradient(ellipse at center top, rgba(103, 123, 230, 0.18) 0%, transparent 70%);
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (max-width: 767px) {
+  .footer {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .wrap {
   width: 100%;
   max-width: 1440px;

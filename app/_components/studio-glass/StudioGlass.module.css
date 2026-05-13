@@ -265,6 +265,14 @@
   -webkit-backdrop-filter: blur(6px);
 }
 
+/* Hide the heroCard until GSAP is ready to start the entrance animation.
+   The [data-loading] attribute is set on the element in JSX and removed
+   imperatively once GSAP reveals the card (or via revealStaticHero fallback). */
+.heroCard[data-loading] {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .hypnotic {
   width: 96px;
   height: 40px;
@@ -278,19 +286,18 @@
 .hypnotic::after {
   content: "";
   grid-area: 1 / 1;
-  border: inherit;
+  border: 3px solid #677be6;
   border-radius: 50%;
-  animation: inherit;
-  animation-duration: 3s;
+  animation: hypnotic-ds34hk 3s infinite linear;
 }
 
 .hypnotic::after {
-  --s: -1;
+  animation-direction: reverse;
 }
 
 @keyframes hypnotic-ds34hk {
   100% {
-    transform: rotate(calc(var(--s, 1) * 1turn));
+    transform: rotate(1turn);
   }
 }
 
