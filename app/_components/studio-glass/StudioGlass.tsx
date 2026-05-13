@@ -367,13 +367,6 @@ export function StudioGlass() {
     };
 
     const init = async () => {
-      // #region agent log — H-C/H-F: log shouldAnimate BEFORE early return
-      ;(window as any).__debugLogs = (window as any).__debugLogs || [];
-      const _dbSG0 = {sessionId:'3ce458',runId:'post-fix',hypothesisId:'H-C-H-F',location:'StudioGlass.tsx:init-start',message:'init called',data:{shouldAnimate,reduceMotion:window.matchMedia('(prefers-reduced-motion: reduce)').matches,ua:navigator.userAgent.slice(0,100),innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()};
-      (window as any).__debugLogs.push(_dbSG0);
-      fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbSG0)}).catch(()=>{});
-      // #endregion
-
       // Show the loader overlay only when we're actually attempting to animate.
       setHeroBooting(shouldAnimate);
       if (!shouldAnimate) {
@@ -418,12 +411,7 @@ export function StudioGlass() {
 
       // Orientation / resize → recalculate all trigger positions (critical on iOS Safari).
       // Uses passive listeners so they never block the browser's scroll thread.
-      let _resizeCount = 0;
       viewportHandler = () => {
-        _resizeCount++;
-        // #region agent log
-        if (_resizeCount <= 5) { const _dbR={sessionId:'3ce458',hypothesisId:'H-D',location:'StudioGlass.tsx:resize-handler',message:'resize/orient fired',data:{count:_resizeCount,innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()}; (window as any).__debugLogs=((window as any).__debugLogs||[]); (window as any).__debugLogs.push(_dbR); fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbR)}).catch(()=>{}); }
-        // #endregion
         window.setTimeout(() => ScrollTrigger.refresh(), 150);
       };
       window.addEventListener("orientationchange", viewportHandler, { passive: true });
@@ -431,12 +419,6 @@ export function StudioGlass() {
 
       console.log("[GSAP] Initialized – scroller: #scroll-root, mobile:", /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
-      // #region agent log
-      ;(window as any).__debugLogs = (window as any).__debugLogs || [];
-      const _dbL1 = {sessionId:'3ce458',hypothesisId:'H-C',location:'StudioGlass.tsx:gsap-loaded',message:'GSAP globals set',data:{ua:navigator.userAgent.slice(0,120),isMobileUA:/iPhone|iPad|iPod|Android/i.test(navigator.userAgent),innerW:window.innerWidth,innerH:window.innerHeight,scrollRootExists:!!document.getElementById('scroll-root'),scrollRootH:document.getElementById('scroll-root')?.clientHeight??-1},timestamp:Date.now()};
-      (window as any).__debugLogs.push(_dbL1);
-      fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbL1)}).catch(()=>{});
-      // #endregion
 
       if (cancelled) return;
 
