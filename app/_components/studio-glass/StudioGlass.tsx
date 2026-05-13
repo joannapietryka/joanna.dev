@@ -410,11 +410,25 @@ export function StudioGlass() {
 
       // Orientation / resize → recalculate all trigger positions (critical on iOS Safari).
       // Uses passive listeners so they never block the browser's scroll thread.
-      viewportHandler = () => { window.setTimeout(() => ScrollTrigger.refresh(), 150); };
+      let _resizeCount = 0;
+      viewportHandler = () => {
+        _resizeCount++;
+        // #region agent log
+        if (_resizeCount <= 5) { const _dbR={sessionId:'3ce458',hypothesisId:'H-D',location:'StudioGlass.tsx:resize-handler',message:'resize/orient fired',data:{count:_resizeCount,innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()}; (window as any).__debugLogs=((window as any).__debugLogs||[]); (window as any).__debugLogs.push(_dbR); fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbR)}).catch(()=>{}); }
+        // #endregion
+        window.setTimeout(() => ScrollTrigger.refresh(), 150);
+      };
       window.addEventListener("orientationchange", viewportHandler, { passive: true });
       window.addEventListener("resize", viewportHandler, { passive: true });
 
       console.log("[GSAP] Initialized – scroller: #scroll-root, mobile:", /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+
+      // #region agent log
+      ;(window as any).__debugLogs = (window as any).__debugLogs || [];
+      const _dbL1 = {sessionId:'3ce458',hypothesisId:'H-C',location:'StudioGlass.tsx:gsap-loaded',message:'GSAP globals set',data:{ua:navigator.userAgent.slice(0,120),isMobileUA:/iPhone|iPad|iPod|Android/i.test(navigator.userAgent),innerW:window.innerWidth,innerH:window.innerHeight,scrollRootExists:!!document.getElementById('scroll-root'),scrollRootH:document.getElementById('scroll-root')?.clientHeight??-1},timestamp:Date.now()};
+      (window as any).__debugLogs.push(_dbL1);
+      fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbL1)}).catch(()=>{});
+      // #endregion
 
       if (cancelled) return;
 

@@ -26,8 +26,10 @@ export function AboutMe() {
     let gsapCtx: any = null;
     let cancelled = false;
 
+    let _tryInitCount = 0;
     const tryInit = () => {
       if (cancelled) return;
+      _tryInitCount++;
       const gsap: Gsap = (window as Gsap).gsap;
       const ST: Gsap   = (window as Gsap).ScrollTrigger;
       if (!gsap || !ST) { retryTimer = setTimeout(tryInit, 80); return; }
@@ -40,6 +42,13 @@ export function AboutMe() {
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
       const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+
+      // #region agent log
+      ;(window as any).__debugLogs = (window as any).__debugLogs || [];
+      const _dbA2 = {sessionId:'3ce458',hypothesisId:'H-A-H-B',location:'AboutMe.tsx:tryInit',message:'AboutMe tryInit resolved',data:{attempt:_tryInitCount,isMobile,scrollerFound:!!scroller,scrollerH:scroller?.clientHeight??-1,scrollerScrollTop:scroller?.scrollTop??-1,innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()};
+      (window as any).__debugLogs.push(_dbA2);
+      fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbA2)}).catch(()=>{});
+      // #endregion
 
       gsapCtx = gsap.context(() => {
         const photo    = photoColRef.current;
@@ -56,6 +65,11 @@ export function AboutMe() {
           if (!el) return;
           const startPct = isMobile ? "top 90%" : "top 85%";
           gsap.set(el, { y: 22, opacity: 0 });
+          // #region agent log
+          const _dbA3={sessionId:'3ce458',hypothesisId:'H-A-H-E',location:'AboutMe.tsx:revealInView',message:'ST trigger created',data:{elClass:el.className.slice(0,60),startPct,scrollerFound:!!scroller,elTop:Math.round(el.getBoundingClientRect().top),scrollerScrollTop:scroller?.scrollTop??-1},timestamp:Date.now()};
+          (window as any).__debugLogs=((window as any).__debugLogs||[]); (window as any).__debugLogs.push(_dbA3);
+          fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbA3)}).catch(()=>{});
+          // #endregion
           gsap.to(el, {
             y: 0,
             opacity: 1,
@@ -68,7 +82,14 @@ export function AboutMe() {
               start: startPct,
               once: true,
               invalidateOnRefresh: true,
-              onEnter: () => console.log("[AboutMe] revealInView fired:", el.className || el.tagName),
+              onEnter: () => {
+                console.log("[AboutMe] revealInView fired:", el.className || el.tagName);
+                // #region agent log
+                const _dbA4={sessionId:'3ce458',hypothesisId:'H-E',location:'AboutMe.tsx:onEnter',message:'ST onEnter fired',data:{elClass:el.className.slice(0,60),scrollTop:scroller?.scrollTop??-1},timestamp:Date.now()};
+                (window as any).__debugLogs=((window as any).__debugLogs||[]); (window as any).__debugLogs.push(_dbA4);
+                fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbA4)}).catch(()=>{});
+                // #endregion
+              },
             },
           });
         };
@@ -248,10 +269,27 @@ export function AboutMe() {
 
     tryInit();
 
+    // #region agent log — H-E: does #scroll-root fire scroll events on iOS?
+    let _scrollEventCount = 0;
+    const _scrollRoot = document.getElementById('scroll-root');
+    const _onScroll = () => {
+      _scrollEventCount++;
+      if (_scrollEventCount === 1 || _scrollEventCount === 5 || _scrollEventCount === 20) {
+        const _dbA5={sessionId:'3ce458',hypothesisId:'H-E',location:'AboutMe.tsx:scroll-event',message:'scroll-root scroll event',data:{count:_scrollEventCount,scrollTop:_scrollRoot?.scrollTop??-1,clientH:_scrollRoot?.clientHeight??-1},timestamp:Date.now()};
+        (window as any).__debugLogs=((window as any).__debugLogs||[]); (window as any).__debugLogs.push(_dbA5);
+        fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbA5)}).catch(()=>{});
+      }
+    };
+    _scrollRoot?.addEventListener('scroll', _onScroll, { passive: true });
+    // #endregion
+
     return () => {
       cancelled = true;
       clearTimeout(retryTimer);
       gsapCtx?.revert();
+      // #region agent log
+      _scrollRoot?.removeEventListener('scroll', _onScroll);
+      // #endregion
     };
   }, []);
 
