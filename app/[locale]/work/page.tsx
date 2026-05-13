@@ -215,7 +215,7 @@ export default async function WorkPage({
                 {t('cards.lidoDesc')}
               </p>
               <a
-                href="https://lido-agency.pl/"
+                href="https://lido-agency.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.gridCardLink}

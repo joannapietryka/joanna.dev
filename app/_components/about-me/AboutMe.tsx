@@ -54,6 +54,7 @@ export function AboutMe() {
 
         const revealInView = (el: HTMLElement | null, delay = 0) => {
           if (!el) return;
+          const startPct = isMobile ? "top 90%" : "top 85%";
           gsap.set(el, { y: 22, opacity: 0 });
           gsap.to(el, {
             y: 0,
@@ -64,8 +65,10 @@ export function AboutMe() {
             scrollTrigger: {
               trigger: el,
               scroller,
-              start: "top 85%",
+              start: startPct,
               once: true,
+              invalidateOnRefresh: true,
+              onEnter: () => console.log("[AboutMe] revealInView fired:", el.className || el.tagName),
             },
           });
         };
@@ -91,13 +94,16 @@ export function AboutMe() {
             scaleX: 0,
             transformOrigin: "left center",
             force3D: true,
-            willChange: "transform",
+            // will-change causes compositing layer overhead on mobile; skip it
+            ...(isMobile ? {} : { willChange: "transform" }),
           });
         }
         if (aiCard)  gsap.set(aiCard,  { y: 28,  opacity: 0 });
 
         // Mobile: scroll-into-view reveals (pattern from AITools subheading).
         if (isMobile) {
+          console.log("[AboutMe] Mobile branch – setting up scroll-in-view reveals (start: top 90%)");
+
           // Portrait column (fix: it was left at opacity:0 from initial gsap.set)
           if (photo) {
             gsap.to(photo, {
@@ -108,8 +114,10 @@ export function AboutMe() {
               scrollTrigger: {
                 trigger: photo,
                 scroller,
-                start: "top 85%",
+                start: "top 90%",
                 once: true,
+                invalidateOnRefresh: true,
+                onEnter: () => console.log("[AboutMe] photo revealed"),
               },
             });
           }
@@ -137,8 +145,10 @@ export function AboutMe() {
               scrollTrigger: {
                 trigger: title,
                 scroller,
-                start: "top 85%",
+                start: "top 90%",
                 once: true,
+                invalidateOnRefresh: true,
+                onEnter: () => console.log("[AboutMe] title words revealed"),
               },
             });
           }
@@ -160,8 +170,10 @@ export function AboutMe() {
           scrollTrigger: {
             trigger: section,
             scroller,
-            start: isMobile ? "top 80%" : "top 72%",
+            start: isMobile ? "top 90%" : "top 72%",
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[AboutMe] desktop timeline fired"),
           },
         });
 

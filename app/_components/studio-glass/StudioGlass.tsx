@@ -334,6 +334,7 @@ export function StudioGlass() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gsapCtx: any = null;
     let fallbackTimer: number | null = null;
+    let viewportHandler: (() => void) | null = null;
 
     const revealStaticHero = () => {
       // If GSAP/CDN fails (common in in-app iOS webviews), the hero defaults to:
@@ -406,6 +407,14 @@ export function StudioGlass() {
       window.ScrollTrigger = ScrollTrigger;
 
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+      // Orientation / resize → recalculate all trigger positions (critical on iOS Safari).
+      // Uses passive listeners so they never block the browser's scroll thread.
+      viewportHandler = () => { window.setTimeout(() => ScrollTrigger.refresh(), 150); };
+      window.addEventListener("orientationchange", viewportHandler, { passive: true });
+      window.addEventListener("resize", viewportHandler, { passive: true });
+
+      console.log("[GSAP] Initialized – scroller: #scroll-root, mobile:", /iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
       if (cancelled) return;
 
@@ -722,6 +731,11 @@ export function StudioGlass() {
     return () => {
       cancelled = true;
       if (fallbackTimer) window.clearTimeout(fallbackTimer);
+      if (viewportHandler) {
+        window.removeEventListener("orientationchange", viewportHandler);
+        window.removeEventListener("resize", viewportHandler);
+        viewportHandler = null;
+      }
       gsapCtx?.revert();
       /* heroEntrancePlayed is intentionally NOT reset here — it is module-level
          so it survives SPA navigation and prevents the entrance from replaying. */

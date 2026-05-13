@@ -71,6 +71,7 @@ export function Contact() {
 
       const revealInView = (el: HTMLElement | null, delay = 0) => {
         if (!el) return;
+        const startPct = isMobile ? "top 90%" : "top 85%";
         gsap.set(el, { y: 22, opacity: 0 });
         gsap.to(el, {
           y: 0,
@@ -81,17 +82,27 @@ export function Contact() {
           scrollTrigger: {
             trigger: el,
             scroller,
-            start: "top 85%",
+            start: startPct,
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[Contact] revealInView fired:", el.className || el.tagName),
           },
         });
       };
 
+      console.log("[Contact] initializing – mobile:", isMobile);
       gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
       gsap.to(wordEls, {
         y: 0, opacity: 1, rotation: 0,
         stagger: 0.1, duration: 0.65, ease: "power3.out",
-        scrollTrigger: { trigger: h2, scroller, start: "top 85%", once: true },
+        scrollTrigger: {
+          trigger: h2,
+          scroller,
+          start: isMobile ? "top 90%" : "top 85%",
+          once: true,
+          invalidateOnRefresh: true,
+          onEnter: () => console.log("[Contact] heading words revealed"),
+        },
       });
 
       // Mobile: scroll-into-view reveals (requested list).

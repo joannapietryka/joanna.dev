@@ -146,13 +146,19 @@ export function AITools() {
         logos.forEach((l) => gsap.set(l, { opacity: 0 }));
         steps.forEach((s) => gsap.set(s, { x: -22, opacity: 0 }));
 
+        // Hoisted before the timeline so it can be used for the scroll start.
+        const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+        console.log("[AITools] initializing – mobile:", isMobile);
+
         /* scroll-triggered timeline */
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
             scroller,
-            start: "top 72%",
+            start: isMobile ? "top 90%" : "top 72%",
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[AITools] main timeline fired"),
           },
         });
 
@@ -177,8 +183,7 @@ export function AITools() {
           x: 0, opacity: 1, duration: 0.5, ease: "power2.out", stagger: 0.1,
         }, 0.65);
 
-        // Mobile: ensure tags scroll-into-view (requested: AITools_tag) using the same subheading pattern.
-        const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
+        // Mobile: ensure tags scroll-into-view using the same subheading pattern.
         if (isMobile && tagsEl) {
           const tags = Array.from(tagsEl.querySelectorAll<HTMLElement>(`.${styles.tag}`));
           tags.forEach((tag) => {
@@ -191,8 +196,10 @@ export function AITools() {
               scrollTrigger: {
                 trigger: tag,
                 scroller,
-                start: "top 85%",
+                start: "top 90%",
                 once: true,
+                invalidateOnRefresh: true,
+                onEnter: () => console.log("[AITools] tag revealed:", tag.textContent),
               },
             });
           });

@@ -205,6 +205,7 @@ export function Projects() {
       gsapCtx = gsap.context(() => {
         const revealInView = (el: HTMLElement | null, delay = 0) => {
           if (!el) return;
+          const startPct = isMobile ? "top 90%" : "top 85%";
           gsap.set(el, { y: 22, opacity: 0 });
           gsap.to(el, {
             y: 0,
@@ -215,8 +216,10 @@ export function Projects() {
             scrollTrigger: {
               trigger: el,
               scroller,
-              start: "top 85%",
+              start: startPct,
               once: true,
+              invalidateOnRefresh: true,
+              onEnter: () => console.log("[Projects] revealInView fired:", el.className || el.tagName),
             },
           });
         };
@@ -245,8 +248,10 @@ export function Projects() {
             scrollTrigger: {
               trigger: heading,
               scroller,
-              start: "top 85%",
+              start: isMobile ? "top 90%" : "top 85%",
               once: true,
+              invalidateOnRefresh: true,
+              onEnter: () => console.log("[Projects] heading words revealed"),
             },
           });
         }
@@ -293,6 +298,7 @@ export function Projects() {
           },
         });
 
+        console.log("[Projects] ScrollTrigger scrub – mobile:", isMobile);
         ST.create({
           animation: tl,
           trigger: scrollSpace,
@@ -301,9 +307,10 @@ export function Projects() {
            * Mobile: start earlier (as soon as it enters viewport) and
            * finish before it slides under the fixed menu.
            */
-          start: isMobile ? "top 85%" : "top top",
+          start: isMobile ? "top 90%" : "top top",
           end:   isMobile ? "bottom 20%" : "bottom bottom",
           scrub: 1,
+          invalidateOnRefresh: true,
         });
 
         ST.refresh();

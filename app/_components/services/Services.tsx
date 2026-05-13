@@ -76,9 +76,11 @@ export function Services() {
       }
 
       const scroller = document.getElementById("scroll-root") ?? undefined;
+      const isMobile = window.matchMedia?.("(max-width: 768px)")?.matches ?? false;
 
       const revealInView = (el: HTMLElement | null, delay = 0) => {
         if (!el) return;
+        const startPct = isMobile ? "top 90%" : "top 85%";
         gsap.set(el, { y: 22, opacity: 0 });
         gsap.to(el, {
           y: 0,
@@ -89,8 +91,10 @@ export function Services() {
           scrollTrigger: {
             trigger: el,
             scroller,
-            start: "top 85%",
+            start: startPct,
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[Services] revealInView fired:", el.className || el.tagName),
           },
         });
       };
@@ -131,8 +135,10 @@ export function Services() {
           scrollTrigger: {
             trigger: h2,
             scroller,
-            start: "top 85%",
+            start: isMobile ? "top 90%" : "top 85%",
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[Services] heading words revealed"),
           },
         });
       };
@@ -150,8 +156,10 @@ export function Services() {
           scrollTrigger: {
             trigger: snippetEl,
             scroller,
-            start: "top 82%",
+            start: isMobile ? "top 90%" : "top 82%",
             once: true,
+            invalidateOnRefresh: true,
+            onEnter: () => console.log("[Services] code snippet typing revealed"),
           },
         });
 
@@ -174,6 +182,7 @@ export function Services() {
         const mq = gsap.matchMedia();
 
         mq.add("(max-width: 768px)", () => {
+          console.log("[Services] Mobile matchMedia – setting up reveals (start: top 90%)");
           const mobileEls: HTMLElement[] = [c0, c1, c2];
           if (cta) mobileEls.push(cta);
           gsap.set(mobileEls, { clearProps: true });
@@ -203,6 +212,8 @@ export function Services() {
                 scroller,
                 start: "top 80%",
                 once: true,
+                invalidateOnRefresh: true,
+                onEnter: () => console.log("[Services] desktop card timeline fired"),
               },
             });
 
