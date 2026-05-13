@@ -409,6 +409,12 @@ export function StudioGlass() {
 
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+      // When the user has opted into reduced motion, make every tween instant so
+      // elements are never stuck invisible, but no animated motion plays.
+      if (!shouldAnimate) {
+        gsap.defaults({ duration: 0, delay: 0 });
+      }
+
       // Orientation / resize → recalculate all trigger positions (critical on iOS Safari).
       // Uses passive listeners so they never block the browser's scroll thread.
       viewportHandler = () => {
