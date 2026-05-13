@@ -369,7 +369,7 @@ export function StudioGlass() {
     const init = async () => {
       // #region agent log — H-C/H-F: log shouldAnimate BEFORE early return
       ;(window as any).__debugLogs = (window as any).__debugLogs || [];
-      const _dbSG0 = {sessionId:'3ce458',hypothesisId:'H-C-H-F',location:'StudioGlass.tsx:init-start',message:'init called',data:{shouldAnimate,reduceMotion:window.matchMedia('(prefers-reduced-motion: reduce)').matches,ua:navigator.userAgent.slice(0,100),innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()};
+      const _dbSG0 = {sessionId:'3ce458',runId:'post-fix',hypothesisId:'H-C-H-F',location:'StudioGlass.tsx:init-start',message:'init called',data:{shouldAnimate,reduceMotion:window.matchMedia('(prefers-reduced-motion: reduce)').matches,ua:navigator.userAgent.slice(0,100),innerW:window.innerWidth,innerH:window.innerHeight},timestamp:Date.now()};
       (window as any).__debugLogs.push(_dbSG0);
       fetch('http://127.0.0.1:7574/ingest/fe155714-7922-434a-ae5d-bc5b3f690196',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'3ce458'},body:JSON.stringify(_dbSG0)}).catch(()=>{});
       // #endregion
@@ -379,15 +379,16 @@ export function StudioGlass() {
       if (!shouldAnimate) {
         heroEntrancePlayed = true;
         revealStaticHero();
-        return;
+        // Do NOT return — always load GSAP so scroll-triggered sections still animate.
+      } else {
+        // Start the “show something ASAP” watchdog immediately (before any awaits).
+        // iOS Chrome can delay loading split chunks; we don’t want a blank hero.
+        fallbackTimer = window.setTimeout(() => {
+          if (cancelled) return;
+          heroEntrancePlayed = true;
+          revealStaticHero();
+        }, 700);
       }
-      // Start the “show something ASAP” watchdog immediately (before any awaits).
-      // iOS Chrome can delay loading split chunks; we don’t want a blank hero.
-      fallbackTimer = window.setTimeout(() => {
-        if (cancelled) return;
-        heroEntrancePlayed = true;
-        revealStaticHero();
-      }, 700);
 
       /*
        * iOS (and in-app webviews) can be slow or flaky with 3rd-party CDNs.
@@ -439,6 +440,7 @@ export function StudioGlass() {
 
       if (cancelled) return;
 
+      if (shouldAnimate) {
       gsapCtx = gsap.context(() => {
         if (fallbackTimer) window.clearTimeout(fallbackTimer);
         if (loader) gsap.set(loader, { opacity: 1, scale: 1, y: 0, display: "grid" });
@@ -742,6 +744,7 @@ export function StudioGlass() {
 
         ScrollTrigger.refresh();
       });
+      } // end if (shouldAnimate)
     };
 
     init().catch((err) => {
