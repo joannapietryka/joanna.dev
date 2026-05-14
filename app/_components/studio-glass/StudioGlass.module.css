@@ -730,11 +730,11 @@
 
 @media (max-width: 1100px) {
   .photoContainer {
-    width: 350px;
+    width: 450px;
   }
 
   .heroTitle {
-    font-size: 6rem;
+    font-size: 4.5rem;
   }
 }
 
@@ -765,6 +765,95 @@
   .photoContainer {
     width: 280px;
     height: 75%;
+  }
+}
+
+/* ── Portrait tablet – column restack (iPads up to 12.9") ───────────────── */
+/*
+ * Triggers on any device ≥641 px AND ≤1280 px wide that is held in portrait.
+ * Covers: iPad mini (768), iPad Air (820), iPad Pro 11" (834),
+ *         iPad Pro 12.9" (1024). Does NOT apply in landscape.
+ */
+@media (orientation: portrait) and (min-width: 641px) and (max-width: 1280px) {
+
+  .glassAssembly {
+    height: auto;
+    top: 5vh;
+  }
+
+  /* column restack — photo on top, copy below */
+  .heroCard {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    border-radius: 40px;
+    height: auto;
+  }
+
+  .photoContainer {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 100%;
+    height: min(44vh, 500px);
+    min-height: 260px;
+    flex-shrink: 0;
+    order: -1;
+    padding: 2rem 2rem 0;
+  }
+
+  .fluidMask {
+    border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
+    animation: fluidShapeSmall 15s infinite alternate ease-in-out;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .heroContent {
+    padding: 1rem 6% 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    line-height: 0.9;
+  }
+
+  .titleOverlap {
+    margin-left: 12%;
+    margin-top: -0.14em;
+  }
+
+  .titleAccent {
+    margin-left: 22%;
+    margin-top: -0.14em;
+  }
+
+  .heroSubtitle {
+    margin-top: 0.6rem;
+    margin-left: 12%;
+  }
+
+  .actionBtn {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: calc(100% - 4rem);
+    margin: 2rem 2rem 2rem;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  /* hide secondary decorative labels that clutter the column layout */
+  .posBottomLeft,
+  .systemCode,
+  .circleText {
+    display: none;
   }
 }
 

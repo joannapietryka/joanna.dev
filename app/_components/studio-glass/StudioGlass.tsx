@@ -343,7 +343,12 @@ export function StudioGlass() {
       // - title chars opacity: 0
       // which looks like a blank page. Snap to a visible, non-animated state.
       try {
-        const snapCx = window.innerWidth <= 640 ? 50 : 18;
+        const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+        const snapCx =
+          window.innerWidth <= 640 ||
+          (window.innerWidth <= 1280 && isPortrait)
+            ? 50
+            : 18;
         card.removeAttribute('data-loading');
         card.style.clipPath = `circle(135% at ${snapCx}% 50%)`;
         const chars = Array.from(title.querySelectorAll<HTMLElement>("[data-char]"));
@@ -477,8 +482,13 @@ export function StudioGlass() {
            * Fluid reveal (brings back the “bubble expands to show content” feel)
            * but without the old circle/glow visuals — loader fades out first.
            */
+          // Portrait tablet (641–1280 px) uses column layout → centre the reveal origin.
+          const isPortraitTablet =
+            window.innerWidth > 640 &&
+            window.innerWidth <= 1280 &&
+            window.matchMedia('(orientation: portrait)').matches;
           const isMobile = window.innerWidth <= 640;
-          const circle = { cx: isMobile ? 50 : 18, cy: 100, r: 4 };
+          const circle = { cx: (isMobile || isPortraitTablet) ? 50 : 18, cy: 100, r: 4 };
           const applyClip = () => {
             card.style.clipPath = `circle(${circle.r.toFixed(2)}% at ${circle.cx.toFixed(2)}% ${circle.cy.toFixed(2)}%)`;
           };
