@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const to = process.env.CONTACT_TO?.trim() || DEFAULT_TO;
     const from =
       process.env.RESEND_FROM?.trim() ||
-      "joannadev.com Contact <onboarding@resend.dev>";
+      "joanna.dev Contact <onboarding@resend.dev>";
 
     const fullName = `${name.trim()} ${surname.trim()}`;
     const safeName = escapeHtml(fullName);
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       subject: `New message from ${fullName}`,
       html: `
         <div style="font-family:ui-monospace,monospace;max-width:600px;margin:0 auto;padding:40px 32px;background:#fafafa;border-radius:16px;">
-          <p style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#666;margin-bottom:32px;">joannadev.com — Contact Form</p>
+          <p style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#666;margin-bottom:32px;">joanna.dev — Contact Form</p>
           <h2 style="font-size:22px;font-weight:800;color:#0a0a0a;margin-bottom:24px;letter-spacing:-0.02em;">New message from ${safeName}</h2>
           <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
             <tr>

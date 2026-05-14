@@ -107,7 +107,7 @@ export function SiteNav({ onScrollTo }: Props) {
         ].join(" ").trim()}
       >
         <Link href="/" className={styles.logo} onClick={close}>
-          joannadev.com
+          joanna.dev
         </Link>
 
         <nav className={styles.navLinks} aria-label="Primary">
@@ -172,7 +172,7 @@ export function SiteNav({ onScrollTo }: Props) {
         </nav>
 
         <div className={styles.overlayFooter}>
-          <span className={styles.overlayBrand}>joannadev.com</span>
+          <span className={styles.overlayBrand}>joanna.dev</span>
           <LocaleSwitch variant="inverse" onAfterSelect={close} />
         </div>
       </div>
