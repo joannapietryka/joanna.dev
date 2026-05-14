@@ -1,0 +1,5 @@
+{"sessionId":"3ce458","hypothesisId":"H-D","location":"StudioGlass.tsx:resize-handler","message":"resize/orient fired","data":{"count":1,"innerW":375,"innerH":667},"timestamp":1778674958988}
+{"sessionId":"3ce458","hypothesisId":"H-D","location":"StudioGlass.tsx:resize-handler","message":"resize/orient fired","data":{"count":2,"innerW":375,"innerH":667},"timestamp":1778674959988}
+{"sessionId":"3ce458","hypothesisId":"H-D","location":"StudioGlass.tsx:resize-handler","message":"resize/orient fired","data":{"count":3,"innerW":375,"innerH":667},"timestamp":1778682083976}
+{"sessionId":"3ce458","hypothesisId":"H-D","location":"StudioGlass.tsx:resize-handler","message":"resize/orient fired","data":{"count":4,"innerW":375,"innerH":667},"timestamp":1778682243300}
+{"sessionId":"3ce458","hypothesisId":"H-D","location":"StudioGlass.tsx:resize-handler","message":"resize/orient fired","data":{"count":5,"innerW":375,"innerH":667},"timestamp":1778682647087}
