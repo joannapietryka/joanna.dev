@@ -103,7 +103,8 @@ export function SiteNav({ onScrollTo }: Props) {
         className={[
           styles.header,
           hidden ? styles.headerHidden : "",
-          glassy ? styles.headerGlassy : "",
+          glassy && !open ? styles.headerGlassy : "",
+          open ? styles.headerMenuOpen : "",
         ].join(" ").trim()}
       >
         <Link href="/" className={styles.logo} onClick={close}>

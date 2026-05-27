@@ -352,13 +352,13 @@ const SERVICES_FR = [
         num: "01",
         label: "Phase 01",
         title: "Découverte & stratégie",
-        body: "Définir objectifs, audience et contexte concurrentiel. On structure l’arborescence, le contenu et les parcours de conversion avant de designer.",
+        body: "Définir des objectifs, audience et contexte concurrentiel. On structure l’arborescence, le contenu et les parcours de conversion avant de concevoir.",
       },
       {
         num: "02",
         label: "Phase 02",
         title: "Design visuel",
-        body: "J'utilise Vercel.ai pour générer rapidement plusieurs variantes de design. Nous choisissons avant d'affiner.",
+        body: "J'utilise Vercel.ai pour générer rapidement plusieurs variantes de design. Nous choisissons ensemble avant d'affiner.",
       },
       {
         num: "03",
@@ -370,7 +370,7 @@ const SERVICES_FR = [
         num: "04",
         label: "Phase 04",
         title: "Lancement & passation",
-        body: "Je gère les vérifications finales, la mise en ligne et le transfert. Ensuite : accès complet et conseils clairs.",
+        body: "Je gère les vérifications finales, la mise en ligne et le transfert. La suite : accès complet et conseils clairs.",
       },
     ],
     deliverables: [
