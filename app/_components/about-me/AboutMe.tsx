@@ -309,7 +309,10 @@ export function AboutMe() {
         <div className={styles.textCol}>
           <div className={styles.headingBlock}>
             <div ref={eyebrowRef} className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} />
+              <span className={styles.pingWrap}>
+                <span className={styles.ping} />
+                <span className={styles.dotSolid} />
+              </span>
               <span className={styles.eyebrowText}>{t('eyebrow')}</span>
             </div>
             <h2 ref={titleRef} className={styles.title}>

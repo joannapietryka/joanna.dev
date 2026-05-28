@@ -118,10 +118,16 @@ export function Services() {
         if (!h2) return;
         if (!headingMarkupRef.current) headingMarkupRef.current = h2.innerHTML;
         h2.innerHTML = headingMarkupRef.current;
-        const words = (h2.textContent || "").trim().split(/\s+/);
-        h2.innerHTML = words
-          .map((w) => `<span style="display:inline-block">${w}</span>`)
-          .join(" ");
+        const raw = (h2.textContent || "").trim();
+        const lines = raw.split(/\n+/).filter(Boolean);
+
+        // Preserve intentional newlines in translations by emitting <br /> between lines.
+        h2.innerHTML = lines
+          .map((line) => {
+            const words = line.trim().split(/\s+/).filter(Boolean);
+            return words.map((w) => `<span style="display:inline-block">${w}</span>`).join(" ");
+          })
+          .join("<br />");
         const wordEls = Array.from(h2.querySelectorAll<HTMLElement>("span"));
         gsap.set(wordEls, { y: 60, opacity: 0, rotation: -6 });
         gsap.to(wordEls, {

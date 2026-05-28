@@ -491,3 +491,9 @@
     height: 200px;
   }
 }
+
+@media (max-width: 375px) {
+  .title {
+    font-size: 3.2rem;
+  }
+} 

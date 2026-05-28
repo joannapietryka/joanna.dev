@@ -1041,3 +1041,15 @@
   }
 }
 
+@media (max-width: 375px) {
+  .heroSubtitle {
+    margin: 0 auto;
+  }
+
+  .scrollHint {
+    text-align: center;
+    bottom: 0;
+  }
+}
+
+

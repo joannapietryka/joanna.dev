@@ -128,7 +128,7 @@
   }
 
   .barRight {
-    grid-column: 10 / span 3;
+    grid-column: 10 / span 5;
     margin-left: 0;
     justify-self: end;
   }
@@ -434,4 +434,10 @@
   text-transform: uppercase;
   color: rgba(148, 163, 184, 0.8);
   white-space: nowrap;
+}
+
+@media (max-width: 375px) {
+  .navLink {
+    font-size: 0.75rem;
+  }
 }
