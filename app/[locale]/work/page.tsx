@@ -200,7 +200,7 @@ export default async function WorkPage({
             <article className={styles.gridCard}>
               <div className={styles.gridImgWrap}>
                 <AutoPlayVideo
-                  src="/assets/videos/project-3.mp4"
+                  src="/assets/videos/project-3en.mp4"
                   autoPlay
                   muted
                   loop
