@@ -15,7 +15,7 @@ export async function generateMetadata({
   const isFr = locale === 'fr';
   const path = '/work';
   return {
-    title: isFr ? 'Projets — joanna.dev' : 'Work — joanna.dev',
+    title: isFr ? 'Projets — Joanna Dev' : 'Work — Joanna Dev',
     description: isFr ? 'Projets sélectionnés.' : 'Selected projects.',
     alternates: {
       canonical: absUrl(`/${locale}${path}`),

@@ -11,8 +11,8 @@ export async function generateMetadata({
   const isFr = locale === 'fr';
   const canonicalPath = isFr ? '/fr' : '/en';
   return {
-    title: 'joanna.dev',
-    description: isFr ? 'joanna.dev – Créatrice de produits digitaux' : 'joanna.dev – Digital Product Builder',
+    title: 'Joanna Dev - Digital Product Builder',
+    description: isFr ? 'Joanna Dev – Créatrice de produits digitaux' : 'Joanna Dev – Digital Product Builder',
     alternates: {
       canonical: absUrl(canonicalPath),
       languages: {

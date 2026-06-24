@@ -12,7 +12,7 @@ export async function generateMetadata({
   const isFr = locale === 'fr';
   const path = '/journal';
   return {
-    title: isFr ? 'Journal — joanna.dev' : 'Journal — joanna.dev',
+    title: isFr ? 'Journal — Joanna Dev' : 'Journal — Joanna Dev',
     description: isFr ? 'Journal (bientôt disponible).' : 'Journal (coming soon).',
     alternates: {
       canonical: absUrl(`/${locale}${path}`),

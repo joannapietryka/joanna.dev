@@ -1,5 +1,5 @@
 export const SITE_URL =
-  (process.env.NEXT_PUBLIC_SITE_URL || 'https://joannadev.com').replace(/\/+$/, '');
+  (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.joannadev.com').replace(/\/+$/, '');
 
 /** Primary outbound CTA for “start project” style buttons */
 export const MALT_PROFILE_URL = 'https://www.malt.fr/profile/joannapietryka';

@@ -13,7 +13,7 @@ export async function generateMetadata({
   const path = '/services';
 
   return {
-    title: isFr ? 'Services — joanna.dev' : 'Services — joanna.dev',
+    title: isFr ? 'Services — Joanna Dev' : 'Services — Joanna Dev',
     description: isFr
       ? 'Services — sites web, apps et automatisations.'
       : 'Services — websites, apps, and automations.',

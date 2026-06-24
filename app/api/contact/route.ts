@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const to = process.env.CONTACT_TO?.trim() || DEFAULT_TO;
     const from =
       process.env.RESEND_FROM?.trim() ||
-      "joanna.dev Contact <onboarding@resend.dev>";
+      "Joanna Dev Contact <onboarding@resend.dev>";
 
     const fullName = `${name.trim()} ${surname.trim()}`;
     const safeName = escapeHtml(fullName);

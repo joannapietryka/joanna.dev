@@ -6,7 +6,10 @@ export default createMiddleware({
   ...routing,
   // Redirect / to the best locale (/en or /fr).
   // This fixes "no redirection from /".
-  localeDetection: true
+  localeDetection: true,
+  // hreflang is set in page metadata (alternates.languages); disable middleware
+  // Link headers to avoid www/non-www mismatch and duplicate x-default entries.
+  alternateLinks: false
 });
 
 export const config = {

@@ -173,7 +173,7 @@ export function SiteNav({ onScrollTo }: Props) {
         </nav>
 
         <div className={styles.overlayFooter}>
-          <span className={styles.overlayBrand}>joanna.dev</span>
+          <span className={styles.overlayBrand}>Joanna Dev</span>
           <LocaleSwitch variant="inverse" onAfterSelect={close} />
         </div>
       </div>
