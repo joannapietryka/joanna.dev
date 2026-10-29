@@ -1,5 +1,5 @@
 export const routing = {
-  locales: ["en", "fr"],
+  locales: ["en", "fr", "pl"],
   defaultLocale: "en",
   // Always prefix locales, e.g. /en/services and /fr/services.
   localePrefix: "always",

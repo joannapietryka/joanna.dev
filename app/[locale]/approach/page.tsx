@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
-import {absUrl} from '../../_lib/site';
+import {absUrl, localeLanguages} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -9,18 +9,23 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const isFr = locale === 'fr';
   const path = '/approach';
+  const titles: Record<string, string> = {
+    en: 'Approach — Building Websites, Web Apps & Automations | Joanna Dev',
+    fr: 'Approche — Sites web, apps web & automatisations | Joanna Dev',
+    pl: 'Podejście — strony internetowe, aplikacje webowe, automatyzacje | Joanna Dev',
+  };
+  const descriptions: Record<string, string> = {
+    en: 'How I build websites, landing pages, web apps, fullstack products, and automations. Coming soon.',
+    fr: 'Comment je construis sites web, landing pages, applications web, produits fullstack et automatisations. Bientôt disponible.',
+    pl: 'Jak buduję strony internetowe, landing page, aplikacje webowe, fullstack development i automatyzacje. Wkrótce.',
+  };
   return {
-    title: isFr ? 'Approche — Joanna Dev' : 'Approach — Joanna Dev',
-    description: isFr ? 'Approche (bientôt disponible).' : 'Approach (coming soon).',
+    title: titles[locale] ?? titles.en,
+    description: descriptions[locale] ?? descriptions.en,
     alternates: {
       canonical: absUrl(`/${locale}${path}`),
-      languages: {
-        en: absUrl(`/en${path}`),
-        fr: absUrl(`/fr${path}`),
-        'x-default': absUrl(`/en${path}`)
-      }
+      languages: localeLanguages(path)
     }
   };
 }
@@ -62,4 +67,3 @@ export default function ApproachPage() {
     </>
   );
 }
-

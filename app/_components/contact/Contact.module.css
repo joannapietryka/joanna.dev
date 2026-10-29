@@ -180,14 +180,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
 }
 
-/* ── Bubble image ─────────────────────────────────────────────────────────── */
-/*
- * The source image has a black background.  We place it inside a container
- * that carries a dark radial gradient (dark at centre → transparent at edge).
- * mix-blend-mode:screen then makes every black pixel invisible against the
- * dark centre, while the coloured glass sphere shows through.
- * The gradient fades to transparent so it blends cleanly into the white page.
- */
+/* ── Email mark ───────────────────────────────────────────────────────────── */
 .bubbleWrap {
   position: absolute;
   bottom: -4vh;
@@ -200,13 +193,23 @@
 .bubble {
   width: 100%;
   height: auto;
-  animation: float 9s ease-in-out infinite alternate;
   display: block;
+  transform-origin: center bottom;
+  animation: emailBounce 3.6s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%   { transform: translateY(0) rotate(-1.5deg); }
-  100% { transform: translateY(-20px) rotate(2deg); }
+@keyframes emailBounce {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  38%      { transform: translateY(-18px) rotate(1.4deg); }
+  58%      { transform: translateY(-3px) rotate(-0.4deg); }
+  74%      { transform: translateY(-10px) rotate(0.8deg); }
+  88%      { transform: translateY(0) rotate(-0.6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    animation: none;
+  }
 }
 
 /* ── Right ────────────────────────────────────────────────────────────────── */

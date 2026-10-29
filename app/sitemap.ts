@@ -1,6 +1,6 @@
 import type {MetadataRoute} from 'next';
 
-import {absUrl} from './_lib/site';
+import {absUrl, localeLanguages} from './_lib/site';
 import {routing} from '../i18n/routing';
 
 const PAGES = ['', '/services', '/work', '/journal', '/approach'] as const;
@@ -13,13 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absUrl(`/${locale}${path}`),
       lastModified,
       alternates: {
-        languages: {
-          en: absUrl(`/en${path}`),
-          fr: absUrl(`/fr${path}`),
-          'x-default': absUrl(`/en${path}`)
-        }
+        languages: localeLanguages(path)
       }
     }))
   );
 }
-

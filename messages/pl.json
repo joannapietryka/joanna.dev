@@ -1,0 +1,220 @@
+{
+  "Nav": {
+    "services": "Oferta",
+    "work": "Projekty",
+    "about": "O mnie",
+    "contact": "Kontakt",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu",
+    "languageLabel": "Język",
+    "langEn": "EN",
+    "langFr": "FR",
+    "langPl": "PL"
+  },
+  "Footer": {
+    "sysLabel": "SYS.FOOTER // KONIEC",
+    "online": "ONLINE",
+    "brandMark": "joanna.dev",
+    "lead": "Tworzę produkty cyfrowe — landing page, aplikacje i automatyzacje, które przynoszą realne efekty.",
+    "index": "INDEX",
+    "indexNavAria": "Nawigacja w stopce",
+    "startProject": "ROZPOCZNIJ PROJEKT",
+    "copyrightLegal": "© {year} JOANNA PIETRYKA. WSZELKIE PRAWA ZASTRZEŻONE.",
+    "axis": "AXIS_X: 1440.0 // AXIS_Y: 320.0"
+  },
+  "Projects": {
+    "tags": {
+      "craft": "Craft: Shipped",
+      "medium": "Medium: Digital Products"
+    },
+    "heading": "W akcji",
+    "loading": "Ładowanie",
+    "viewPortfolio": "Zobacz portfolio",
+    "annotations": {
+      "brief": {
+        "title": "Analiza briefu",
+        "desc": "Każdy projekt zaczyna się od wysłuchania potrzeb. Cele, użytkownicy i ograniczenia — wszystko jasne, zanim powstanie pierwsza linia kodu.",
+        "stat": "Najpierw discovery"
+      },
+      "design": {
+        "title": "Design & kodowanie",
+        "desc": "Jedna osoba. Bez agencyjnego balastu. Szybkie pętle feedbacku, szybkie iteracje, działające rozwiązania.",
+        "stat": "Sprint 1–2 tyg."
+      },
+      "shipped": {
+        "title": "Wdrożenie & support",
+        "desc": "Zoptymalizowane, przetestowane, przekazane. Gotowe do działania od pierwszego dnia.",
+        "stat": "100 Lighthouse"
+      }
+    }
+  },
+  "Contact": {
+    "metaStatus": "Accepting projects",
+    "heading": {
+      "write": "Napisz",
+      "me": "do mnie",
+      "message": "wiadomość"
+    },
+    "body": "Masz projekt, pytanie, a może po prostu chcesz się przywitać? Odezwij się do mnie.",
+    "fields": {
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "email": "E-mail",
+      "message": "Wiadomość"
+    },
+    "placeholders": {
+      "name": "Twoje imię",
+      "surname": "Twoje nazwisko",
+      "email": "twoj@email.com",
+      "message": "Opowiedz mi o projekcie…"
+    },
+    "submit": "Wyślij wiadomość",
+    "sending": "Wysyłanie…",
+    "success": {
+      "title": "Wiadomość wysłana",
+      "body": "Dzięki za kontakt — odezwię się wkrótce.",
+      "sendAnother": "Wyślij kolejną"
+    },
+    "errors": {
+      "nameRequired": "Imię jest wymagane.",
+      "surnameRequired": "Nazwisko jest wymagane.",
+      "emailRequired": "E-mail jest wymagany.",
+      "emailInvalid": "Podaj poprawny adres e-mail.",
+      "messageRequired": "Wiadomość jest wymagana.",
+      "messageMin": "Wiadomość musi mieć co najmniej {min} znaków.",
+      "generic": "Coś poszło nie tak.",
+      "network": "Błąd sieci — spróbuj ponownie."
+    }
+  },
+  "Services": {
+    "tags": {
+      "craft": "Craft: Digital",
+      "scope": "Scope: End-to-End"
+    },
+    "heading": "Buduj z myślą\no efektach",
+    "status": "Wydajne rozwiązania cyfrowe tworzone z myślą o realnych efektach",
+    "cta": "Sprawdź ofertę",
+    "cardAria": "Sprawdź ofertę: {title}",
+    "cards": {
+      "websites": {
+        "title": "Strony www",
+        "tag": "Web",
+        "body": "Szybkie strony internetowe szyte na miarę — zaprojektowane tak, by zamieniać odwiedzających w klientów. Nowoczesny design, jasny przekaz i wydajność wbudowana w każdy piksel."
+      },
+      "apps": {
+        "title": "Aplikacje",
+        "tag": "App",
+        "body": "Projektuję i tworzę full-stackowe aplikacje webowe — solidne i intuicyjne. Prowadzę projekt od początku do końca: od rozpoznania potrzeb po wdrożenie."
+      },
+      "automations": {
+        "title": "Automatyzacje",
+        "tag": "Auto",
+        "body": "Workflowy, które łączą Twoje narzędzia i eliminują powtarzalne zadania — oszczędzają czas, zmniejszają liczbę błędów i pozwalają skupić się na tym, co naprawdę ważne."
+      }
+    }
+  },
+  "Home": {
+    "scrub": {
+      "ariaLoadingVideo": "Ładowanie wideo",
+      "loading": "Ładowanie"
+    },
+    "scrollHint": "Przewiń w dół",
+    "meta": {
+      "statusCreating": "Status: Creating"
+    },
+    "circleText": "DESIGN • FRONTEND DEVELOPMENT • ARCHITECTURE •",
+    "title": {
+      "w0": "Od\u00a0pomysłu",
+      "w1": "do\u00a0produktu",
+      "w2": "Szybko"
+    },
+    "subtitle": {
+      "websites": "Strony www",
+      "apps": "Aplikacje",
+      "automations": "Automatyzacje"
+    },
+    "cta": "Rozpocznij projekt"
+  },
+  "About": {
+    "portraitAlt": "Joanna Pietryka – Digital Product Builder",
+    "building": "Building...",
+    "systemStatus": {
+      "label": "System Status",
+      "value": "Online & Ready"
+    },
+    "eyebrow": "Why work with me",
+    "title": "Digital Product \nBuilder",
+    "lead": "Od 2015 roku tworzę produkty cyfrowe. Zamieniam pomysły w konkretne i interaktywne doświadczenia — tak intuicyjne, że wydają się oczywiste.",
+    "cards": {
+      "background": {
+        "label": "// Background",
+        "body": "Większość zawodowego doświadczenia zdobyłam w agencjach reklamowych. Pracowałam dla globalnych marek w szybkim tempie, dbając o wydajność i jakość kodu."
+      },
+      "stack": {
+        "label": "// Stack",
+        "body": "Specjalizuję się w nowoczesnym frontendzie — React i Tailwind CSS — stawiając na czystą architekturę, skalowalność i dobry UX.",
+        "progressLabel": "Frontend Mastery"
+      }
+    },
+    "aiCard": {
+      "title": "Workflow wspierany AI",
+      "body": "Łączę programowanie z zaawansowanymi narzędziami AI i tworzę kompletne produkty cyfrowe — od designu i tekstów po grafiki — szybciej i sprawniej niż w tradycyjnym procesie."
+    }
+  },
+  "AITools": {
+    "tags": {
+      "ai": "AI: Enhanced",
+      "stack": "Stack: Powered"
+    },
+    "heading": {
+      "line1": "Szybsze wykonanie",
+      "line2": "Lepsze wyniki"
+    },
+    "subheading": "Łączę programowanie z zaawansowanymi narzędziami AI, żeby tworzyć kompletne rozwiązania — od kodu i designu po teksty i grafiki. Szybsza realizacja, więcej wariantów do wyboru i lepsze efekty, bez zbędnych opóźnień.",
+    "steps": {
+      "development": {
+        "title": "Inteligentny development",
+        "body": "Szybsze i precyzyjniejsze programowanie dzięki nowoczesnym workflowom wspieranym przez AI."
+      },
+      "design": {
+        "title": "Design gotowy na rozwój",
+        "body": "Szybkie testowanie i dopracowywanie designu bez spowalniania prac."
+      },
+      "visuals": {
+        "title": "Grafiki i video",
+        "body": "Materiały wizualne dopasowane do produktu — tworzone szybko i na miarę."
+      },
+      "copy": {
+        "title": "Teksty, SEO i strategia",
+        "body": "Przekaz, struktura i treść — wszystko spójne z Twoimi celami."
+      }
+    },
+    "orbit": {
+      "ringText": "AI-POWERED • CODE • DESIGN • COPY • VISUALS • SMARTER WORKFLOWS • ",
+      "centerAi": "AI",
+      "centerTools": "narzędzia"
+    }
+  },
+  "ServicesPage": {
+    "techStack": "Stack",
+    "startProject": "Rozpocznij projekt",
+    "buildProcess": "Proces",
+    "deliverables": "Deliverables"
+  },
+  "Work": {
+    "ringText": "BUILT FOR RESULTS • SHIPPED & LIVE • DIGITAL PRODUCTS •",
+    "title": "Wybrane projekty",
+    "visitSite": "Odwiedź stronę",
+    "tags": {
+      "web": "Web design & development"
+    },
+    "cards": {
+      "psychologistTitle": "Psycholog — marka & web",
+      "psychologistDesc": "Strona psychologa zaprojektowana i zbudowana w Webflow — płynne animacje przy scrollu, customowe logo i zintegrowany blog do publikacji treści.",
+      "avamexTitle": "Avamex — IT outsourcing",
+      "avamexDesc": "Strona Webflow dla firmy outsourcingowej — custom branding, płynne animacje i grafiki generowane AI dopasowane do marki.",
+      "lidoTitle": "Lido — wynajem nieruchomości",
+      "lidoDesc": "Strona Vite.js dla firmy wynajmującej nieruchomości — CMS na miarę, dopasowane grafiki oraz szybki i nowoczesny UX."
+    }
+  }
+}

@@ -211,13 +211,12 @@ export function Contact() {
             pietrykajoanna@gmail.com
           </a>
 
-          {/* bubble: mix-blend-mode:screen knocks out the black bg */}
           <div className={styles.bubbleWrap} aria-hidden="true">
             <Image
-              src="/assets/bubble.png"
+              src="/assets/email-transparent.webp"
               alt=""
-              width={520}
-              height={520}
+              width={500}
+              height={500}
               className={styles.bubble}
               priority
             />

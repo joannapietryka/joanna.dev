@@ -124,7 +124,7 @@
 
   /* Align with .colIndex (grid column 7) and CTA toward the trailing edge */
   .barLeft {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 5;
   }
 
   .barRight {
@@ -165,6 +165,9 @@
 }
 
 .brandMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -172,11 +175,25 @@
   line-height: 1.2;
   color: rgb(30 41 59);
   text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.brandLogo {
+  width: 2.45rem;
+  height: 2.45rem;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
 @media (min-width: 768px) {
   .brandMark {
     font-size: 1.125rem;
+  }
+
+  .brandLogo {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 

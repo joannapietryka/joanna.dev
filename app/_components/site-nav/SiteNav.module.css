@@ -60,6 +60,32 @@
   text-decoration: none;
 }
 
+/* Mark sits in the header’s left padding so the wordmark stays on its original line. */
+.logoMark {
+  --mark: 1.85rem;
+  position: fixed;
+  z-index: 101;
+  top: calc(2.5rem + 0.375rem - var(--mark) / 2);
+  left: calc(5rem - var(--mark) - 0.4rem);
+  width: var(--mark);
+  height: var(--mark);
+  object-fit: contain;
+  pointer-events: none;
+  transition:
+    transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.45s ease,
+    top 0.3s ease;
+}
+
+.logoMarkGlassy {
+  top: calc(1.25rem + 0.375rem - var(--mark) / 2);
+}
+
+.logoMarkHidden {
+  transform: translateY(-8rem);
+  opacity: 0;
+}
+
 /* ── Desktop nav links ─────────────────────────────────────────────────────── */
 .navLinks {
   display: flex;
@@ -232,6 +258,11 @@
   .header {
     padding: 2rem 3rem;
   }
+  .logoMark,
+  .logoMarkGlassy {
+    top: calc(2rem + 0.375rem - var(--mark) / 2);
+    left: calc(3rem - var(--mark) - 0.35rem);
+  }
   .navLinks {
     gap: 2rem;
   }
@@ -260,6 +291,19 @@
     /* border-bottom: 1px solid rgba(0, 0, 0, 0.06); */
     pointer-events: auto;
     padding: 1rem 1.25rem;
+  }
+
+  .logoMark,
+  .logoMarkGlassy,
+  .logoMarkHidden {
+    --mark: 1.45rem;
+    /* Center on the 44px menu button, which sets the header line on small screens. */
+    top: calc(1rem - 8px + 44px / 2 - var(--mark) / 2);
+    left: 0.05rem;
+    width: var(--mark);
+    height: var(--mark);
+    transform: none;
+    opacity: 1;
   }
 
   .navLinks {

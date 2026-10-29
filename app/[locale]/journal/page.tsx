@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
-import {absUrl} from '../../_lib/site';
+import {absUrl, localeLanguages} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -9,18 +9,23 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const isFr = locale === 'fr';
   const path = '/journal';
+  const titles: Record<string, string> = {
+    en: 'Journal — Websites, Web Apps & Automations | Joanna Dev',
+    fr: 'Journal — Sites web, apps web & automatisations | Joanna Dev',
+    pl: 'Journal — strony internetowe, aplikacje webowe, automatyzacje | Joanna Dev',
+  };
+  const descriptions: Record<string, string> = {
+    en: 'Notes on websites, landing pages, web apps, fullstack development, and automations. Coming soon.',
+    fr: 'Notes sur les sites web, landing pages, applications web, fullstack development et automatisations. Bientôt disponible.',
+    pl: 'Notatki o stronach internetowych, landing page, aplikacjach webowych, fullstack development i automatyzacjach. Wkrótce.',
+  };
   return {
-    title: isFr ? 'Journal — Joanna Dev' : 'Journal — Joanna Dev',
-    description: isFr ? 'Journal (bientôt disponible).' : 'Journal (coming soon).',
+    title: titles[locale] ?? titles.en,
+    description: descriptions[locale] ?? descriptions.en,
     alternates: {
       canonical: absUrl(`/${locale}${path}`),
-      languages: {
-        en: absUrl(`/en${path}`),
-        fr: absUrl(`/fr${path}`),
-        'x-default': absUrl(`/en${path}`)
-      }
+      languages: localeLanguages(path)
     }
   };
 }
@@ -62,4 +67,3 @@ export default function JournalPage() {
     </>
   );
 }
-

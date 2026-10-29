@@ -4,7 +4,7 @@ import {SiteFooter} from '../../_components/site-footer/SiteFooter';
 import {SiteNav} from '../../_components/site-nav/SiteNav';
 import {AutoPlayVideo} from '../../_components/work/AutoPlayVideo';
 import styles from '../../work/Work.module.css';
-import {absUrl} from '../../_lib/site';
+import {absUrl, localeLanguages} from '../../_lib/site';
 
 export async function generateMetadata({
   params
@@ -12,18 +12,23 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const isFr = locale === 'fr';
   const path = '/work';
+  const titles: Record<string, string> = {
+    en: 'Work — Websites, Landing Pages & Web Apps | Joanna Dev',
+    fr: 'Projets — Sites web, landing pages & apps web | Joanna Dev',
+    pl: 'Projekty — strony internetowe, landing page, aplikacje webowe | Joanna Dev',
+  };
+  const descriptions: Record<string, string> = {
+    en: 'Selected projects: websites, landing pages, web apps, fullstack development, and automations — shipped and live.',
+    fr: 'Projets sélectionnés : sites web, landing pages, applications web, fullstack development et automatisations — livrés et en ligne.',
+    pl: 'Wybrane projekty: strony internetowe, landing page, aplikacje webowe, fullstack development i automatyzacje — dostarczone i live.',
+  };
   return {
-    title: isFr ? 'Projets — Joanna Dev' : 'Work — Joanna Dev',
-    description: isFr ? 'Projets sélectionnés.' : 'Selected projects.',
+    title: titles[locale] ?? titles.en,
+    description: descriptions[locale] ?? descriptions.en,
     alternates: {
       canonical: absUrl(`/${locale}${path}`),
-      languages: {
-        en: absUrl(`/en${path}`),
-        fr: absUrl(`/fr${path}`),
-        'x-default': absUrl(`/en${path}`)
-      }
+      languages: localeLanguages(path)
     }
   };
 }

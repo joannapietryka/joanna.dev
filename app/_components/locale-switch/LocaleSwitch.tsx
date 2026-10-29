@@ -1,10 +1,17 @@
 "use client";
 
 import {useLocale, useTranslations} from "next-intl";
-import {usePathname, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
+import type {AppLocale} from "@/i18n/routing";
 import styles from "./LocaleSwitch.module.css";
 
 type Variant = "default" | "inverse" | "glass";
+
+const LOCALES: {code: AppLocale; labelKey: "langEn" | "langFr" | "langPl"}[] = [
+  {code: "en", labelKey: "langEn"},
+  {code: "fr", labelKey: "langFr"},
+  {code: "pl", labelKey: "langPl"},
+];
 
 export function LocaleSwitch({
   className,
@@ -19,14 +26,13 @@ export function LocaleSwitch({
   const t = useTranslations("Nav");
   const locale = useLocale();
   const router = useRouter();
-  const pathname = usePathname();
 
-  const switchLocale = (nextLocale: "en" | "fr") => {
+  const switchLocale = (nextLocale: AppLocale) => {
     if (nextLocale === locale) return;
     try {
       const url = new URL(window.location.href);
       let path = url.pathname;
-      path = path.replace(/^\/(en|fr)(?=\/|$)/, `/${nextLocale}`);
+      path = path.replace(/^\/(en|fr|pl)(?=\/|$)/, `/${nextLocale}`);
       router.push(`${path}${url.search}${url.hash}`);
       onAfterSelect?.();
     } catch {
@@ -46,25 +52,23 @@ export function LocaleSwitch({
 
   return (
     <div className={rootClass} role="group" aria-label={t("languageLabel")}>
-      <button
-        type="button"
-        className={`${styles.btn} ${locale === "en" ? styles.btnActive : ""}`}
-        aria-pressed={locale === "en"}
-        onClick={() => switchLocale("en")}
-      >
-        {t("langEn")}
-      </button>
-      <span className={styles.sep} aria-hidden>
-        /
-      </span>
-      <button
-        type="button"
-        className={`${styles.btn} ${locale === "fr" ? styles.btnActive : ""}`}
-        aria-pressed={locale === "fr"}
-        onClick={() => switchLocale("fr")}
-      >
-        {t("langFr")}
-      </button>
+      {LOCALES.map((item, i) => (
+        <span key={item.code} style={{display: "contents"}}>
+          {i > 0 ? (
+            <span className={styles.sep} aria-hidden>
+              /
+            </span>
+          ) : null}
+          <button
+            type="button"
+            className={`${styles.btn} ${locale === item.code ? styles.btnActive : ""}`}
+            aria-pressed={locale === item.code}
+            onClick={() => switchLocale(item.code)}
+          >
+            {t(item.labelKey)}
+          </button>
+        </span>
+      ))}
     </div>
   );
 }

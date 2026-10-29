@@ -1,10 +1,11 @@
 "use client";
 
 import {useLocale, useTranslations} from "next-intl";
+import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {useEffect, useRef} from "react";
 import {Link} from "@/i18n/navigation";
-import {MALT_PROFILE_URL} from "../../_lib/site";
+import {getCtaProfileUrl} from "../../_lib/site";
 import {PaperPlaneIcon} from "../icons/PaperPlaneIcon";
 import {LocaleSwitch} from "../locale-switch/LocaleSwitch";
 import styles from "./SiteFooter.module.css";
@@ -169,11 +170,20 @@ export function SiteFooter({onScrollTo}: SiteFooterProps) {
 
           <div className={styles.compactBar}>
             <div className={styles.barLeft}>
-              <span className={styles.brandMark}>{t("brandMark")}</span>
+              <span className={styles.brandMark}>
+                <Image
+                  src="/assets/logo-transparent.webp"
+                  alt=""
+                  width={2048}
+                  height={2048}
+                  className={styles.brandLogo}
+                />
+                {t("brandMark")}
+              </span>
             </div>
             <div className={styles.barRight}>
               <a
-                href={MALT_PROFILE_URL}
+                href={getCtaProfileUrl(locale)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.ctaBtn}

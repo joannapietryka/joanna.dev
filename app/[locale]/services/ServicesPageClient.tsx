@@ -7,7 +7,7 @@ import {Suspense, useEffect, useState} from "react";
 import {SiteFooter} from "../../_components/site-footer/SiteFooter";
 import {SiteNav} from "../../_components/site-nav/SiteNav";
 import {PaperPlaneIcon} from "../../_components/icons/PaperPlaneIcon";
-import {MALT_PROFILE_URL} from "../../_lib/site";
+import {getCtaProfileUrl} from "../../_lib/site";
 import styles from "../../services/ServicesPage.module.css";
 import workBg from "../../work/Work.module.css";
 
@@ -514,12 +514,190 @@ const SERVICES_FR = [
   },
 ] as const;
 
+const SERVICES_PL = [
+  {
+    id: "websites",
+    index: "01",
+    tabLabel: "Web Design",
+    title: "Strony www",
+    lensGradient: "radial-gradient(circle at 30% 30%, #4D6CFF, #9D50FF)",
+    description:
+      "Szybkie strony internetowe skrojone na miarę, landing page’e i portale. Nowoczesny design, skuteczne SEO i wydajność w każdym pikselu.",
+    stack: ["Next.js", "Tailwind", "Variant", "Webflow", "GSAP", "Vercel"],
+    phases: [
+      {
+        num: "01",
+        label: "Faza 01",
+        title: "Analiza & strategia",
+        body: "Definiujemy cele, grupę docelową i konkurencję. Ustalamy strukturę, hierarchię treści i ścieżki konwersji, zanim zacznie się projektowanie.",
+      },
+      {
+        num: "02",
+        label: "Faza 02",
+        title: "Design",
+        body: "Używam Vercel.ai, by szybko generować i porównywać warianty designu. Wspólnie wybieramy kierunek, a potem go dopracowujemy.",
+      },
+      {
+        num: "03",
+        label: "Faza 03",
+        title: "Development",
+        body: "Zaprogramowane w technologii dopadowanej do potrzeb, ze skutecznym SEO i wynikami Lighthouse powyżej 95.",
+      },
+      {
+        num: "04",
+        label: "Faza 04",
+        title: "Wdrożenie i przekazanie",
+        body: "Ostatnie testy, wdrożenie i przekazanie projektu. Po starcie masz pełny dostęp i jasne wskazówki użytkownika.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Strona live",
+        desc: "Strona na Twojej domenie z automatycznym wdrażaniem zmian i podglądem wersji pod osobnym adresem.",
+        icon: SERVICES_EN[0].deliverables[0].icon,
+      },
+      {
+        title: "Integracja CMS",
+        desc: "Edytuj treść bez kodu — blog, case studies, strony zespołu i więcej.",
+        icon: SERVICES_EN[0].deliverables[1].icon,
+      },
+      {
+        title: "Raport performance",
+        desc: "Audit Lighthouse, Core Web Vitals i SEO — w pełni zoptymalizowane.",
+        icon: SERVICES_EN[0].deliverables[3].icon,
+      },
+      {
+        title: "Onboarding",
+        desc: "Dane dostępowe, przydatne linki i prosty przewodnik na start.",
+        icon: SERVICES_EN[0].deliverables[2].icon,
+      },
+    ],
+  },
+  {
+    id: "apps",
+    index: "02",
+    tabLabel: "App Dev",
+    title: "Aplikacje",
+    lensGradient: "radial-gradient(circle at 30% 30%, #FF6B8B, #9D50FF)",
+    description:
+      "Projektuję i tworzę full-stackowe aplikacje webowe — solidne i intuicyjne. Prowadzę projekt od początku do końca: od rozpoznania potrzeb po wdrożenie.",
+    stack: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Node.js", "Variant"],
+    phases: [
+      {
+        num: "01",
+        label: "Faza 01",
+        title: "Discovery & logika",
+        body: "Mapujemy user flow, architekturę danych i wymagania techniczne. Najpierw „dlaczego”, potem „jak”.",
+      },
+      {
+        num: "02",
+        label: "Faza 02",
+        title: "Systemy UI",
+        body: "Stawiem na skalowane biblioteki komponentów i dopracowanych prototypów spójnych wizualnie.",
+      },
+      {
+        num: "03",
+        label: "Faza 03",
+        title: "Build produkcyjny",
+        body: "Czysty, wydajny kod. Frontend, backend i integracje API — zaprojektowane pod rozwój.",
+      },
+      {
+        num: "04",
+        label: "Faza 04",
+        title: "Testy & przekazanie",
+        body: "Testy na różnych urządzeniach, optymalizacja szybkości i wdrożenie produkcyjne.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Pełny codebase",
+        desc: "Utrzymywalne repo, modularna architektura i jasna dokumentacja.",
+        icon: SERVICES_EN[1].deliverables[0].icon,
+      },
+      {
+        title: "Panele admin",
+        desc: "Wewnętrzne dashboardy do zarządzania treścią, użytkownikami i workflowami bez wsparcia.",
+        icon: SERVICES_EN[1].deliverables[1].icon,
+      },
+      {
+        title: "Auth & security",
+        desc: "Bezpieczne uwierzytelnianie i kontrola dostępu oparta o role.",
+        icon: SERVICES_EN[1].deliverables[2].icon,
+      },
+      {
+        title: "Pakiet wdrożeniowy",
+        desc: "Dokumentacja, instruktaż krok po kroku i lista kontrolna wdrożenia.",
+        icon: SERVICES_EN[1].deliverables[3].icon,
+      },
+    ],
+  },
+  {
+    id: "automations",
+    index: "03",
+    tabLabel: "Automatyzacja",
+    title: "Automatyzacje",
+    lensGradient: "radial-gradient(circle at 30% 30%, #E8F0FF, #FF6B8B)",
+    description:
+      "Automatyzacje, które łączą Twoje narzędzia i eliminują powtarzalne zadania — oszczędzają czas i ograniczają błędy.",
+    stack: ["Make", "Zapier", "n8n", "Notion", "Airtable", "Slack"],
+    phases: [
+      {
+        num: "01",
+        label: "Faza 01",
+        title: "Audit procesu",
+        body: "Identyfikujemy wąskie gardła i powtarzalne zadania. Mapujemy workflow end-to-end.",
+      },
+      {
+        num: "02",
+        label: "Faza 02",
+        title: "Architektura flow",
+        body: "Projektujemy flow z logami, obsługą błędów i strukturą pod skalowanie.",
+      },
+      {
+        num: "03",
+        label: "Faza 03",
+        title: "Build & test",
+        body: "Budujemy automatyzację i testujemy w realnych warunkach, aż będzie niezawodna.",
+      },
+      {
+        num: "04",
+        label: "Faza 04",
+        title: "Przekazanie & monitoring",
+        body: "Dokumentacja, szkolenie i monitoring — żeby nie przegapić żadnej awarii.",
+      },
+    ],
+    deliverables: [
+      {
+        title: "Live workflowy",
+        desc: "Automatyzacje wdrożone i aktywne — oszczędność czasu od razu.",
+        icon: SERVICES_EN[2].deliverables[0].icon,
+      },
+      {
+        title: "Dokumentacja",
+        desc: "Jasne przewodniki do utrzymania i rozwijania automatyzacji.",
+        icon: SERVICES_EN[2].deliverables[1].icon,
+      },
+      {
+        title: "Monitoring błędów",
+        desc: "Alerty + dashboardy, żeby wiedzieć natychmiast, gdy coś padnie.",
+        icon: SERVICES_EN[2].deliverables[2].icon,
+      },
+      {
+        title: "Sesja szkoleniowa",
+        desc: "Omówienie krok po kroku, dzięki któremu samodzielnie poprowadzisz projekt.",
+        icon: SERVICES_EN[2].deliverables[3].icon,
+      },
+    ],
+  },
+] as const;
+
 /* ── Inner component (uses useSearchParams — must be inside Suspense) ─────── */
 function ServicesContent() {
   const locale = useLocale();
   const t = useTranslations("ServicesPage");
   const baseLocale = (locale ?? "en").split("-")[0];
-  const services = baseLocale === "fr" ? SERVICES_FR : SERVICES_EN;
+  const services =
+    baseLocale === "fr" ? SERVICES_FR : baseLocale === "pl" ? SERVICES_PL : SERVICES_EN;
   const searchParams = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animKey, setAnimKey] = useState(0);
@@ -623,7 +801,7 @@ function ServicesContent() {
           </div>
 
           <a
-            href={MALT_PROFILE_URL}
+            href={getCtaProfileUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
             className={`${styles.startBtn} ${styles.startBtnPanel}`}
@@ -682,7 +860,7 @@ function ServicesContent() {
 
       {/* Mobile: outside .card so position:fixed isn’t trapped by backdrop-filter; desktop hidden */}
       <a
-        href={MALT_PROFILE_URL}
+        href={getCtaProfileUrl(locale)}
         target="_blank"
         rel="noopener noreferrer"
         className={`${styles.startBtn} ${styles.startBtnDock}`}

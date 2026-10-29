@@ -1,6 +1,6 @@
 "use client";
 
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {useEffect, useMemo, useRef, useState} from "react";
 import { AboutMe } from "../about-me/AboutMe";
 import { AITools } from "../ai-tools/AITools";
@@ -10,7 +10,7 @@ import { Services } from "../services/Services";
 import { PaperPlaneIcon } from "../icons/PaperPlaneIcon";
 import { SiteFooter } from "../site-footer/SiteFooter";
 import { SiteNav } from "../site-nav/SiteNav";
-import { MALT_PROFILE_URL } from "../../_lib/site";
+import { getCtaProfileUrl } from "../../_lib/site";
 import styles from "./StudioGlass.module.css";
 
 /* ── global types (optional CDN / in-app webview safety) ─────────────────── */
@@ -236,6 +236,9 @@ let heroSubtitleRevealProgress = 0;
 /* ── Main component ──────────────────────────────────────────────────────── */
 export function StudioGlass() {
   const t = useTranslations('Home');
+  const locale = useLocale();
+  const isPl = locale === 'pl';
+  const ctaHref = getCtaProfileUrl(locale);
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const heroCardRef = useRef<HTMLElement>(null);
@@ -819,7 +822,10 @@ export function StudioGlass() {
                 </div>
 
                 <div className={styles.heroContent}>
-                  <h1 ref={titleRef} className={styles.heroTitle}>
+                  <h1
+                    ref={titleRef}
+                    className={`${styles.heroTitle}${isPl ? ` ${styles.heroTitlePl}` : ""}`}
+                  >
                     <TitleWord word={t('title.w0')} wordIndex="0" />
                     <TitleWord
                       word={t('title.w1')}
@@ -832,7 +838,10 @@ export function StudioGlass() {
                       className={styles.titleAccent}
                     />
                   </h1>
-                  <p ref={subtitleRef} className={styles.heroSubtitle}>
+                  <p
+                    ref={subtitleRef}
+                    className={`${styles.heroSubtitle}${isPl ? ` ${styles.heroSubtitlePl}` : ""}`}
+                  >
                     {[t('subtitle.websites'), "\u00a0•\u00a0", t('subtitle.apps'), "\u00a0•\u00a0", t('subtitle.automations')].map((word, i) => (
                       <span key={i} data-subtitle-word="" className={styles.subtitleWord}>{word}</span>
                     ))}
@@ -849,7 +858,7 @@ export function StudioGlass() {
                 </div>
 
                 <a
-                  href={MALT_PROFILE_URL}
+                  href={ctaHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.actionBtn}

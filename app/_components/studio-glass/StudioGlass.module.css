@@ -469,6 +469,12 @@
   perspective: 900px;
 }
 
+/* Polish hero copy is longer — slightly smaller type so it still fits */
+.heroTitlePl {
+  font-size: clamp(2.85rem, 5.8vw, 6.5rem);
+  line-height: 1;
+}
+
 /* each word on its own line – nowrap prevents mid-word breaks */
 .titleWord {
   display: block;
@@ -504,6 +510,13 @@
   text-transform: uppercase;
   color: var(--text-primary);
   pointer-events: none;
+}
+
+/* Polish subtitle is longer — keep one line */
+.heroSubtitlePl {
+  font-size: clamp(0.58rem, 0.92vw, 0.8rem);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 /* individual animated words — visible by default (GSAP can still animate from/to) */
@@ -736,6 +749,10 @@
   .heroTitle {
     font-size: 4.5rem;
   }
+
+  .heroTitlePl {
+    font-size: 4rem;
+  }
 }
 
 /* ── Tablet ──────────────────────────────────────────────────────────────── */
@@ -760,6 +777,10 @@
   .heroTitle {
     font-size: clamp(2.8rem, 8vw, 5rem);
     margin: 1.5rem 0;
+  }
+
+  .heroTitlePl {
+    font-size: clamp(2.45rem, 7vw, 4.4rem);
   }
 
   .photoContainer {
@@ -821,6 +842,10 @@
     line-height: 0.9;
   }
 
+  .heroTitlePl {
+    font-size: clamp(2.45rem, 6.2vw, 4.4rem);
+  }
+
   .titleOverlap {
     margin-left: 12%;
     margin-top: -0.14em;
@@ -834,6 +859,11 @@
   .heroSubtitle {
     margin-top: 0.6rem;
     margin-left: 12%;
+  }
+
+  .heroSubtitlePl {
+    margin-left: 6%;
+    font-size: clamp(0.55rem, 1.5vw, 0.72rem);
   }
 
   .actionBtn {
@@ -938,6 +968,10 @@
     line-height: 0.92;
   }
 
+  .heroTitlePl {
+    font-size: clamp(2.1rem, 9.5vw, 3.1rem);
+  }
+
   .titleOverlap {
     margin-left: 8%;
     margin-top: -0.12em;
@@ -951,6 +985,12 @@
   .heroSubtitle {
     margin-top: 0.55rem;
     margin-left: 8%;
+  }
+
+  .heroSubtitlePl {
+    margin-left: 4%;
+    font-size: clamp(0.52rem, 2.4vw, 0.68rem);
+    letter-spacing: 0.08em;
   }
 
   /* ── CTA: rounded-rectangle (glass-style corners), full width ── */
@@ -1017,6 +1057,10 @@
 
   .heroTitle {
     font-size: clamp(2rem, 10.5vw, 2.8rem);
+  }
+
+  .heroTitlePl {
+    font-size: clamp(1.8rem, 9.5vw, 2.5rem);
   }
 
   .heroContent {

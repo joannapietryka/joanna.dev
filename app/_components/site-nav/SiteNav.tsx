@@ -1,6 +1,7 @@
 "use client";
 
 import {useLocale, useTranslations} from 'next-intl';
+import Image from 'next/image';
 import {usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {Link} from '@/i18n/navigation';
@@ -141,6 +142,20 @@ export function SiteNav({ onScrollTo }: Props) {
           <span />
         </button>
       </header>
+
+      {/* Outside the header so mix-blend-mode:difference does not recolor the glass mark. */}
+      <Image
+        src="/assets/logo-transparent.webp"
+        alt=""
+        width={2048}
+        height={2048}
+        priority
+        className={[
+          styles.logoMark,
+          hidden ? styles.logoMarkHidden : "",
+          glassy && !open ? styles.logoMarkGlassy : "",
+        ].join(" ").trim()}
+      />
 
       {/* ── Mobile full-screen overlay ──────────────────────────────────── */}
       <div

@@ -4,6 +4,7 @@ import {JetBrains_Mono, Playfair_Display, Sora} from 'next/font/google';
 import type {Metadata} from 'next';
 
 import './globals.css';
+import {DeferredManifest} from './_components/deferred-manifest/DeferredManifest';
 import {SITE_URL} from './_lib/site';
 
 const jetBrainsMono = JetBrains_Mono({
@@ -30,8 +31,7 @@ export const metadata: Metadata = {
       {url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png'}
     ],
     apple: '/apple-touch-icon.png'
-  },
-  manifest: '/site.webmanifest'
+  }
 };
 
 export default async function RootLayout({
@@ -50,6 +50,7 @@ export default async function RootLayout({
     >
       <body>
         {children}
+        <DeferredManifest />
         <Analytics />
       </body>
     </html>

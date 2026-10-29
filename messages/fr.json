@@ -8,7 +8,8 @@
     "closeMenu": "Fermer le menu",
     "languageLabel": "Langue",
     "langEn": "EN",
-    "langFr": "FR"
+    "langFr": "FR",
+    "langPl": "PL"
   },
   "Footer": {
     "sysLabel": "SYS.FOOTER // FIN",

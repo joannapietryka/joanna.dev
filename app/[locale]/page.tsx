@@ -1,6 +1,6 @@
 import type {Metadata} from 'next';
 import {StudioGlass} from '../_components/studio-glass/StudioGlass';
-import {absUrl} from '../_lib/site';
+import {absUrl, localeLanguages} from '../_lib/site';
 
 export async function generateMetadata({
   params
@@ -8,18 +8,22 @@ export async function generateMetadata({
   params: Promise<{locale: string}>;
 }): Promise<Metadata> {
   const {locale} = await params;
-  const isFr = locale === 'fr';
-  const canonicalPath = isFr ? '/fr' : '/en';
+  const titles: Record<string, string> = {
+    en: 'Joanna Dev — Websites, Landing Pages, Web Apps & Automations',
+    fr: 'Joanna Dev — Sites web, landing pages, apps web & automatisations',
+    pl: 'Joanna Dev — strony internetowe, landing page, aplikacje webowe',
+  };
+  const descriptions: Record<string, string> = {
+    en: 'Digital Product Builder specializing in websites, landing pages, web apps, fullstack development, and business automations. Fast delivery, clean UX, real results.',
+    fr: 'Créatrice de produits digitaux : sites web, landing pages, applications web, fullstack development et automatisations. Livraison rapide, UX soignée, résultats concrets.',
+    pl: 'Tworzę strony internetowe, landing page, aplikacje webowe, fullstack development i automatyzacje. Szybka realizacja, czyste UX i realne efekty biznesowe.',
+  };
   return {
-    title: 'Joanna Dev - Digital Product Builder',
-    description: isFr ? 'Joanna Dev – Créatrice de produits digitaux' : 'Joanna Dev – Digital Product Builder',
+    title: titles[locale] ?? titles.en,
+    description: descriptions[locale] ?? descriptions.en,
     alternates: {
-      canonical: absUrl(canonicalPath),
-      languages: {
-        en: absUrl('/en'),
-        fr: absUrl('/fr'),
-        'x-default': absUrl('/en')
-      }
+      canonical: absUrl(`/${locale}`),
+      languages: localeLanguages()
     }
   };
 }
@@ -27,4 +31,3 @@ export async function generateMetadata({
 export default function Home() {
   return <StudioGlass />;
 }
-

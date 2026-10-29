@@ -4,7 +4,7 @@ import {routing} from './i18n/routing';
 // Next.js 16+ prefers the `proxy` convention over `middleware.ts`.
 export default createMiddleware({
   ...routing,
-  // Redirect / to the best locale (/en or /fr).
+  // Redirect / to the best locale (/en, /fr, or /pl).
   // This fixes "no redirection from /".
   localeDetection: true,
   // hreflang is set in page metadata (alternates.languages); disable middleware
